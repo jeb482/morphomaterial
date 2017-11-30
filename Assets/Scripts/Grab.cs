@@ -8,10 +8,11 @@ public class Grab : MonoBehaviour {
     public LayerMask grabMask;
 
     private GameObject grabbedObject;
-    private bool grabbing;
+    private bool grabbing = false;
 	
     void GrabObject()
     {
+        Debug.Log("Grabbed"); 
         grabbing = true;
         RaycastHit[] hits = Physics.SphereCastAll(transform.position, grabRadius, transform.forward, 0f, grabMask);
         if (hits.Length > 0)
@@ -32,14 +33,17 @@ public class Grab : MonoBehaviour {
 
     void DropObject()
     {
+        Debug.Log("Dropped");
         grabbing = false;
+        
     }
 
 	// Update is called once per frame
 	void Update () {
-        if (!grabbing && OVRInput.Get(OVRInput.Axis1D.PrimaryIndexTrigger) == 1)
+        print(grabbing + " " + OVRInput.Get(OVRInput.Axis1D.SecondaryIndexTrigger));
+        if (!grabbing && OVRInput.Get(OVRInput.Axis1D.SecondaryIndexTrigger) == 1)
             GrabObject();
-        else if (grabbing && OVRInput.Get(OVRInput.Axis1D.PrimaryIndexTrigger) < 1)
+        else if (grabbing && OVRInput.Get(OVRInput.Axis1D.SecondaryIndexTrigger) < 1)
             DropObject();
 	}
 }
