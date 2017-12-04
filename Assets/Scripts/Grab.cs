@@ -40,7 +40,6 @@ public class Grab : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-        print(grabbing + " " + OVRInput.Get(OVRInput.Axis1D.SecondaryIndexTrigger));
         if (!grabbing && OVRInput.Get(OVRInput.Axis1D.SecondaryIndexTrigger) == 1)
             GrabObject();
         else if (grabbing && OVRInput.Get(OVRInput.Axis1D.SecondaryIndexTrigger) < 1)

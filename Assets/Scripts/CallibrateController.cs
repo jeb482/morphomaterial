@@ -5,24 +5,35 @@ using System.Linq;
 
 public class CallibrateController : MonoBehaviour {
 
-    public Vector3 displacement;
+    
+
+
+    private List<Matrix4x4> controllerTransforms;
+    private bool triggerDown = false;
 
 	// Use this for initialization
 	void Start () {
-		
+        controllerTransforms = new List<Matrix4x4>();
 	}
 	
 
 
-
-
-
 	// Update is called once per frame
 	void Update () {
-		
-	}
-
-
+        if (!triggerDown && OVRInput.Get(OVRInput.Axis1D.SecondaryIndexTrigger) >= .95)
+        {
+            controllerTransforms.Add(transform.parent.localToWorldMatrix);
+            Debug.Log("Hi " + transform.parent.localToWorldMatrix);
+            if (controllerTransforms.Count >= 4)
+            {
+                transform.localPosition = solveForOffsetVector(controllerTransforms);
+                transform.localRotation = new Quaternion();
+            }
+            triggerDown = true;
+        }
+        else if (triggerDown && OVRInput.Get(OVRInput.Axis1D.SecondaryIndexTrigger) < .95)
+            triggerDown = false;
+    }
 
     /// <summary>
     /// Finds the homogenous 3d point x (with x_4 = 1) to minimize the least squares
