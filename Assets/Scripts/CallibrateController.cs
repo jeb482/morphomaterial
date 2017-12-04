@@ -13,26 +13,31 @@ public class CallibrateController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        if (GameController.Instance.rightControllerOffset != null)
+            setTransformFromOffset(GameController.Instance.rightControllerOffset);
         controllerTransforms = new List<Matrix4x4>();
 	}
 	
-
-
 	// Update is called once per frame
 	void Update () {
         if (!triggerDown && OVRInput.Get(OVRInput.Axis1D.SecondaryIndexTrigger) >= .95)
         {
             controllerTransforms.Add(transform.parent.localToWorldMatrix);
-            Debug.Log("Hi " + transform.parent.localToWorldMatrix);
             if (controllerTransforms.Count >= 4)
             {
-                transform.localPosition = solveForOffsetVector(controllerTransforms);
-                transform.localRotation = new Quaternion();
+                GameController.Instance.rightControllerOffset = solveForOffsetVector(controllerTransforms);
+                setTransformFromOffset(GameController.Instance.rightControllerOffset);
             }
             triggerDown = true;
         }
         else if (triggerDown && OVRInput.Get(OVRInput.Axis1D.SecondaryIndexTrigger) < .95)
             triggerDown = false;
+    }
+
+    public void setTransformFromOffset(Vector3 offset)
+    {
+        transform.localPosition = offset;
+        transform.localRotation = new Quaternion();
     }
 
     /// <summary>
