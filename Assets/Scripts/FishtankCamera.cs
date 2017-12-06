@@ -4,10 +4,6 @@ using UnityEngine;
 
 
 public class FishtankCamera : MonoBehaviour {
-
-    public Vector3 screenBottomLeft;
-    public Vector3 screenTopLeft;
-    public Vector3 screenTopRight;
     public GameObject leftEyeTracker;
     public GameObject rightEyeTracker; // If only one tracker, set same as left?
     public float nearPlane;
@@ -31,21 +27,23 @@ public class FishtankCamera : MonoBehaviour {
      */
     void updateScreenSpaceTransform()
     {
-        if (screenBottomLeft == null || screenTopLeft == null || screenTopRight == null)
+        if ((GameController.Instance.lowerLeftScreenCorner == null) ||
+            (GameController.Instance.upperLeftScreenCorner == null) || 
+            (GameController.Instance.upperRightScreenCorner == null))
             return;
 
-        Vector3 U = screenTopRight - screenTopLeft;
-        Vector3 V = (screenTopLeft  - screenBottomLeft).normalized;
+        Vector3 U = GameController.Instance.upperRightScreenCorner - GameController.Instance.upperLeftScreenCorner;
+        Vector3 V = (GameController.Instance.upperLeftScreenCorner - GameController.Instance.lowerLeftScreenCorner).normalized;
         Vector3 W = Vector3.Cross(U, V).normalized;
         U = Vector3.Cross(V, W).normalized;
 
-        VRToScreenSpace.SetRow(0, new Vector4(U.x, V.x, W.x, -screenBottomLeft.x));
-        VRToScreenSpace.SetRow(1, new Vector4(U.y, V.y, W.y, -screenBottomLeft.y));
-        VRToScreenSpace.SetRow(2, new Vector4(U.z, V.z, W.z, -screenBottomLeft.z));
+        VRToScreenSpace.SetRow(0, new Vector4(U.x, V.x, W.x, -GameController.Instance.lowerLeftScreenCorner.x));
+        VRToScreenSpace.SetRow(1, new Vector4(U.y, V.y, W.y, -GameController.Instance.lowerLeftScreenCorner.y));
+        VRToScreenSpace.SetRow(2, new Vector4(U.z, V.z, W.z, -GameController.Instance.lowerLeftScreenCorner.z));
         VRToScreenSpace.SetRow(3, new Vector4(0,     0,   0,                   1));
 
-        Vector3 H = VRToScreenSpace.MultiplyPoint(screenTopRight);
-        Vector3 L = VRToScreenSpace.MultiplyPoint(screenBottomLeft);
+        Vector3 H = VRToScreenSpace.MultiplyPoint(GameController.Instance.upperRightScreenCorner);
+        Vector3 L = VRToScreenSpace.MultiplyPoint(GameController.Instance.lowerLeftScreenCorner);
         screenSpaceH = new Vector2(H.x, H.y);
         screenSpaceL = new Vector2(L.x, L.y);
     }

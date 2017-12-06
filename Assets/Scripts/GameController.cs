@@ -25,7 +25,6 @@ public class GameController : MonoBehaviour {
         if (Instance == null)
         {
             DontDestroyOnLoad(gameObject);
-            LoadCalibration();
             Instance = this;
             calibrationPath = Application.persistentDataPath + "/Callibrations.dat";
         } else if (Instance != this)
@@ -34,7 +33,12 @@ public class GameController : MonoBehaviour {
         }
     }
 
-    
+
+    private void Start()
+    {
+        LoadCalibration();
+    }
+
     // Update is called once per frame
     void Update() {
         if (Input.GetKeyUp(KeyCode.S) && !isSaved)
@@ -54,6 +58,7 @@ public class GameController : MonoBehaviour {
         if (upperRightScreenCorner != null)
             data.upperRightScreenCorner = upperRightScreenCorner;
 
+        Debug.Log(calibrationPath);
         BinaryFormatter bf = new BinaryFormatter();
         FileStream file = File.Open(calibrationPath, FileMode.OpenOrCreate);
         bf.Serialize(file, data);
@@ -68,15 +73,19 @@ public class GameController : MonoBehaviour {
             Debug.Log("Loading calibration data");
             BinaryFormatter bf = new BinaryFormatter();
             FileStream file = File.Open(calibrationPath, FileMode.Open);
-            CalibrationData data = (CalibrationData) bf.Deserialize(file);
+            CalibrationData data = (CalibrationData)bf.Deserialize(file);
             file.Close();
 
-            rightControllerOffset  = data.rightControllerOffset;
-            lowerLeftScreenCorner  = data.lowerLeftScreenCorner;
-            upperLeftScreenCorner  = data.upperLeftScreenCorner;
+            rightControllerOffset = data.rightControllerOffset;
+            lowerLeftScreenCorner = data.lowerLeftScreenCorner;
+            upperLeftScreenCorner = data.upperLeftScreenCorner;
             upperRightScreenCorner = data.upperRightScreenCorner;
-        } else
+        }
+        else
+        {
+            Debug.Log(calibrationPath);
             Debug.Log("No calibration data to load");
+        }
     }
 }
 
