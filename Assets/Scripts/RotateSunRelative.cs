@@ -1,0 +1,37 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+
+public class RotateSunRelative : MonoBehaviour {
+    public Transform sun;
+    public Transform controller;
+
+    private Quaternion inverseControllerRot;
+    private Quaternion originalSunRot;
+    
+
+    private bool grabbed = false;
+	
+	// Update is called once per frame
+	void Update () {
+	    if (!grabbed && OVRInput.Get(OVRInput.Axis1D.SecondaryHandTrigger) >= .95)
+        {
+            grabbed = true;
+            originalSunRot = sun.rotation;
+            inverseControllerRot = Quaternion.Inverse(controller.rotation);
+        } else if (grabbed && OVRInput.Get(OVRInput.Axis1D.SecondaryHandTrigger) <.95)
+        {
+            grabbed = false;
+        } else if (grabbed)
+        {
+            Quaternion relativeRotation = inverseControllerRot * controller.rotation;
+            // TODO: Axis align the rotation
+            sun.transform.rotation = originalSunRot * relativeRotation;
+            // TODO: If upsidown, reverse
+            
+        }
+
+
+    }
+}

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.17354046, g: 0.21694839, b: 0.29904723, a: 1}
+  m_IndirectSpecularColor: {r: 0.17354046, g: 0.21694842, b: 0.29904726, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -583,6 +583,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1678405503}
   - component: {fileID: 1678405504}
+  - component: {fileID: 1678405505}
   m_Layer: 0
   m_Name: HeadTrackingController
   m_TagString: Untagged
@@ -620,6 +621,18 @@ MonoBehaviour:
   m_TrackingType: 0
   m_UpdateType: 0
   m_UseRelativeTransform: 1
+--- !u!114 &1678405505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1678405502}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 429cc00f52d09bd4bbf3a1d5281f924a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sun: {fileID: 1356995438}
 --- !u!1001 &1938236169
 Prefab:
   m_ObjectHideFlags: 0
