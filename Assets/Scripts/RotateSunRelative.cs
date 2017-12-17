@@ -23,13 +23,13 @@ public class RotateSunRelative : MonoBehaviour {
             inverseControllerRot = Quaternion.Inverse(controller.rotation);
         } else if (grabbed && OVRInput.Get(OVRInput.Axis1D.SecondaryHandTrigger) <.95)
         {
-            Debug.Log("Released");
+            Debug.Log("Grabbed");
             grabbed = false;
         } else if (grabbed)
         {
-            Quaternion relativeRotation = inverseControllerRot * controller.rotation;
+            Quaternion relativeRotation = controller.rotation * inverseControllerRot;
             // TODO: Axis align the rotation
-            sun.transform.rotation = originalSunRot * relativeRotation;
+            sun.transform.rotation = relativeRotation * originalSunRot;
             // TODO: If upsidown, reverse
             
         }

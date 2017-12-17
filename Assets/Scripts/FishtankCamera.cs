@@ -145,7 +145,7 @@ public class FishtankCamera : MonoBehaviour {
         Vector3 screenSpaceCamPos = getTransformedEyePose(leftEyeTracker.transform.position);
         Vector3 virtualCameraPosition = virtualScreenXform.localToWorldMatrix.MultiplyPoint(screenSpaceCamPos);
 
-        cam.worldToCameraMatrix = Matrix4x4.LookAt(virtualCameraPosition, virtualScreenXform.position, GameController.Instance.upperLeftScreenCorner - GameController.Instance.lowerLeftScreenCorner);
+        cam.worldToCameraMatrix = Matrix4x4.LookAt(virtualCameraPosition, virtualScreenXform.position, new Vector3(0,1,0));
     }
 
     void AccurateUpdate()

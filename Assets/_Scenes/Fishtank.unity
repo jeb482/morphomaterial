@@ -247,6 +247,23 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 33029180901780206, guid: 9646232080bda37468368dccb0718a60,
+        type: 2}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+    - target: {fileID: 4214414839613858, guid: 9646232080bda37468368dccb0718a60, type: 2}
+      propertyPath: m_LocalScale.y
+      value: 0.001
+      objectReference: {fileID: 0}
+    - target: {fileID: 4214414839613858, guid: 9646232080bda37468368dccb0718a60, type: 2}
+      propertyPath: m_LocalScale.z
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4214414839613858, guid: 9646232080bda37468368dccb0718a60, type: 2}
+      propertyPath: m_LocalScale.x
+      value: -10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9646232080bda37468368dccb0718a60, type: 2}
   m_IsPrefabParent: 0
@@ -260,6 +277,7 @@ GameObject:
   - component: {fileID: 528622626}
   - component: {fileID: 528622625}
   - component: {fileID: 528622624}
+  - component: {fileID: 528622627}
   m_Layer: 0
   m_Name: VirtualMonitor
   m_TagString: Untagged
@@ -294,7 +312,7 @@ MeshRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 528622623}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -336,6 +354,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &528622627
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 528622623}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e06d669d8ea1fcd40963964a5c590280, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &792830791 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1000010482306814, guid: 84c8b8609f9bb434eaf5248f17ff1293,
@@ -370,7 +399,6 @@ GameObject:
   - component: {fileID: 842522401}
   - component: {fileID: 842522400}
   - component: {fileID: 842522399}
-  - component: {fileID: 842522403}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -444,17 +472,6 @@ Transform:
   m_Father: {fileID: 528622626}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &842522403
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 842522398}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e06d669d8ea1fcd40963964a5c590280, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1289091737
 Prefab:
   m_ObjectHideFlags: 0
@@ -503,7 +520,7 @@ Prefab:
         type: 2}
       propertyPath: leftEyeTracker
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 792830791}
     - target: {fileID: 114315748277005190, guid: 1c74c242c68bc0341b6ea47372a4ee15,
         type: 2}
       propertyPath: rightEyeTracker
@@ -517,12 +534,12 @@ Prefab:
     - target: {fileID: 114315748277005190, guid: 1c74c242c68bc0341b6ea47372a4ee15,
         type: 2}
       propertyPath: nearPlane
-      value: 30
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 114315748277005190, guid: 1c74c242c68bc0341b6ea47372a4ee15,
         type: 2}
       propertyPath: farPlane
-      value: 0.1
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 114315748277005190, guid: 1c74c242c68bc0341b6ea47372a4ee15,
         type: 2}

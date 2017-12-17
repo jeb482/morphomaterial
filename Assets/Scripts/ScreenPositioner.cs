@@ -18,7 +18,7 @@ public class ScreenPositioner : MonoBehaviour {
         transform.localScale = new Vector3((GameController.Instance.upperRightScreenCorner - GameController.Instance.upperLeftScreenCorner).magnitude / 2,
                                            (GameController.Instance.upperLeftScreenCorner - GameController.Instance.lowerLeftScreenCorner).magnitude / 2,
                                            1);
-        transform.position = (GameController.Instance.upperRightScreenCorner + GameController.Instance.lowerLeftScreenCorner) / 2;
+        //transform.position = (GameController.Instance.upperRightScreenCorner + GameController.Instance.lowerLeftScreenCorner) / 2;
 
     }
 }
