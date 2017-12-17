@@ -19,15 +19,15 @@ public class recordScreenPosition : MonoBehaviour {
             switch (numPointsRecorded)
             {
                 case 0:
-                    GameController.Instance.lowerLeftScreenCorner = transform.localPosition;
+                    GameController.Instance.lowerLeftScreenCorner = transform.position;
                     Debug.Log("Lower left recorded");
                     break;
                 case 1:
-                    GameController.Instance.upperLeftScreenCorner = transform.localPosition;
+                    GameController.Instance.upperLeftScreenCorner = transform.position;
                     Debug.Log("Upper left recorded");
                     break;
                 case 2:
-                    GameController.Instance.upperRightScreenCorner = transform.localPosition;
+                    GameController.Instance.upperRightScreenCorner = transform.position;
                     Debug.Log("Upper right recorded");
                     break;
             }

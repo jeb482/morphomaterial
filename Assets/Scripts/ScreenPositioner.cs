@@ -11,7 +11,7 @@ public class ScreenPositioner : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        Debug.Log("Offset: " + GameController.Instance.rightControllerOffset);
+        //Debug.Log("Offset: " + GameController.Instance.rightControllerOffset);
         // Debug.Log("LL: " + GameController.Instance.lowerLeftScreenCorner);
         // Debug.Log("UL: " + GameController.Instance.upperLeftScreenCorner);
         // Debug.Log("UR: " + GameController.Instance.upperRightScreenCorner);

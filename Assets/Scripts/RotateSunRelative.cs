@@ -18,10 +18,12 @@ public class RotateSunRelative : MonoBehaviour {
 	    if (!grabbed && OVRInput.Get(OVRInput.Axis1D.SecondaryHandTrigger) >= .95)
         {
             grabbed = true;
+            Debug.Log("Grabbed");
             originalSunRot = sun.rotation;
             inverseControllerRot = Quaternion.Inverse(controller.rotation);
         } else if (grabbed && OVRInput.Get(OVRInput.Axis1D.SecondaryHandTrigger) <.95)
         {
+            Debug.Log("Released");
             grabbed = false;
         } else if (grabbed)
         {
