@@ -124,7 +124,7 @@ public class FishtankCamera : MonoBehaviour {
         Vector3 origin = GameController.Instance.lowerLeftScreenCorner;
         Vector3 x = (GameController.Instance.upperRightScreenCorner - GameController.Instance.upperLeftScreenCorner).normalized;
         Vector3 y = (GameController.Instance.upperLeftScreenCorner - GameController.Instance.lowerLeftScreenCorner).normalized;
-        Vector3 z = Vector3.Cross(x, y);
+        Vector3 z = -Vector3.Cross(x, y);
         x = Vector3.Cross(y, z);
 
         var v = worldSpacePosition - origin;
