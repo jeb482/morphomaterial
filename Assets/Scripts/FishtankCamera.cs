@@ -9,6 +9,10 @@ public class FishtankCamera : MonoBehaviour {
     public float nearPlane;
     public float farPlane;
     public Transform virtualScreenXform;
+    public float viewportHeight;
+    public float viewportWidth;
+    public Vector3 screenSpaceHeadPos;
+    
 
     private Camera cam;
     private Matrix4x4 VRToScreenSpace;
@@ -17,11 +21,20 @@ public class FishtankCamera : MonoBehaviour {
     
 
 
+
+
     // Use this for initialization
     void Start () {
-		cam = GetComponent<Camera>();
+        updateWindowData();
+        viewportHeight = (GameController.Instance.upperLeftScreenCorner - GameController.Instance.lowerLeftScreenCorner).magnitude;
+        viewportWidth = (GameController.Instance.upperRightScreenCorner - GameController.Instance.upperLeftScreenCorner).magnitude;
+        cam = GetComponent<Camera>();
         updateScreenSpaceTransform();
-        Debug.Log("La   " + cam.projectionMatrix);
+    }
+
+    void TestFishTankProjection()
+    {
+       // P = getFishtankMatrix(,)
     }
 
     /**
@@ -75,20 +88,19 @@ public class FishtankCamera : MonoBehaviour {
 
         P[1, 0] = 0;
         P[1, 1] = 2*E.z / (H.y - L.y);
-        P[1, 2] = (H.y + L.y - 2 * E.y) / (H.y - L.y);
+        P[1, 2] = (H.y + L.y + 2 * E.y) / (H.y - L.y);
         P[1, 3] = (-E.z * (H.y + L.y)) / (H.y - L.y);
 
         P[2, 0] = 0;
         P[2, 1] = 0;
         P[2, 2] = (N + F - 2*E.z) / (N - F);
-        P[2, 3] = N - E.z - (N*((N + F - 2*E.z) / (N - F)));
+        P[2, 3] = N - E.z - N*((N + F - 2*E.z) / (N - F));
 
         P[3, 0] = 0;
         P[3, 1] = 0;
         P[3, 2] = -1;
         P[3, 3] = E.z;
 
-     //   Debug.Log(P);
         return P;
     }
          
@@ -124,8 +136,8 @@ public class FishtankCamera : MonoBehaviour {
         Vector3 origin = GameController.Instance.lowerLeftScreenCorner;
         Vector3 x = (GameController.Instance.upperRightScreenCorner - GameController.Instance.upperLeftScreenCorner).normalized;
         Vector3 y = (GameController.Instance.upperLeftScreenCorner - GameController.Instance.lowerLeftScreenCorner).normalized;
-        Vector3 z = Vector3.Cross(x, y);
-        x = Vector3.Cross(y, z);
+        Vector3 z = Vector3.Cross(x, y).normalized;
+        x = Vector3.Cross(y, z).normalized;
 
         var v = worldSpacePosition - origin;
 
@@ -136,33 +148,58 @@ public class FishtankCamera : MonoBehaviour {
     void Update () {
         if (leftEyeTracker == null)
             return;
-        NaiveUpdate();
+        AccurateUpdate();
     }
 
     void NaiveUpdate()
     {
 
-        Vector3 screenSpaceCamPos = getTransformedEyePose(leftEyeTracker.transform.position);
-        Vector3 virtualCameraPosition = virtualScreenXform.localToWorldMatrix.MultiplyPoint(screenSpaceCamPos);
+        screenSpaceHeadPos = getTransformedEyePose(leftEyeTracker.transform.position);
+        Vector3 virtualCameraPosition = virtualScreenXform.localToWorldMatrix.MultiplyPoint(screenSpaceHeadPos);
 
-        cam.worldToCameraMatrix = Matrix4x4.LookAt(virtualCameraPosition, virtualScreenXform.position, new Vector3(0,1,0));
+        //transform.position = virtualScreenXform.localToWorldMatrix.MultiplyPoint(screenSpaceCamPos);
+        //transform.LookAt(virtualScreenXform, new Vector3(0, 1, 0));
+        transform.position = virtualCameraPosition;
+        transform.LookAt(virtualScreenXform.position, Vector3.up);
+
+        //cam.worldToCameraMatrix = Matrix4x4.LookAt(virtualCameraPosition, virtualScreenXform.position, new Vector3(0,1,0));
+
     }
 
     void AccurateUpdate()
     {
-        screenSpaceL = new Vector3(0, 0);
-        screenSpaceH = new Vector3(1, 1);
+        screenSpaceL = new Vector3(0, 0, 0);
+        screenSpaceH = new Vector3(.475f, .3f, 0);
 
         // Debug.Log("Pose " + leftEyeTracker.GetComponent<Transform>().localToWorldMatrix);
-        Vector3 leftEyePos = leftEyeTracker.GetComponent<Transform>().localToWorldMatrix.MultiplyPoint(new Vector3(0, 0, 0));
-
-        // Debug.Log(leftEyePos);
-
+     // Vector3 leftEyePos = leftEyeTracker.GetComponent<Transform>().localToWorldMatrix.MultiplyPoint(new Vector3(0, 0, 0));
+        screenSpaceHeadPos = getTransformedEyePose(leftEyeTracker.transform.position);
+        // Debug.Log(leftEyePos);                                                                                                                                                                                                                  
         // Debug.Log("Tracker Pose " + leftEyePos);
+        Vector3 virtualCameraPosition = virtualScreenXform.localToWorldMatrix.MultiplyPoint(screenSpaceHeadPos);
+        transform.position = virtualCameraPosition;
+        //transform.position = virtualCameraPosition;
+        //transform.LookAt(virtualScreenXform.position, Vector3.up);
 
-        cam.projectionMatrix = getFishtankMatrix(leftEyePos, screenSpaceH, screenSpaceL, nearPlane, farPlane);
+        //Matrix4x4 V = Matrix4x4.identity;
+        //V[2, 2] = -1f;
+        //V = virtualScreenXform.worldToLocalMatrix;
+     /// cam.projectionMatrix  = Matrix4x4.Frustum(leftEyePos.x, screenSpaceH.x - leftEyePos.x, leftEyePos.y, screenSpaceH.y - leftEyePos.x, leftEyePos.z, 1000);
+
+        //transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+        //cam.projectionMatrix = getFishtankMatrix(leftEyePos, screenSpaceH, screenSpaceL, nearPlane, farPlane);
+
+        //cam.transform.SetPositionAndRotation(virtualScreenXform.position, virtualScreenXform.rotation);
+        //cam.transform.SetPositionAndRotation(cam.transform.,virtualScreenXform.rotation);
         //cam.projectionMatrix = getProjectionMatrix(nearPlane, farPlane, 1, 2);
 
         return;
+    }
+
+    void updateWindowData()
+    {
+        Debug.Log("Window size: " + Screen.width + ", " + Screen.height);
+        Debug.Log("Screen size: " + Screen.currentResolution.width + ", " + Screen.currentResolution.height);
+
     }
 }

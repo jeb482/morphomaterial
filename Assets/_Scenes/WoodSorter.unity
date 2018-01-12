@@ -151,6 +151,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 114771861184430958, guid: 006e31c2ff788834a8e1b587e939b454,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 006e31c2ff788834a8e1b587e939b454, type: 2}
   m_IsPrefabParent: 0
@@ -261,6 +266,29 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 84c8b8609f9bb434eaf5248f17ff1293, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &549856949 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1000011125779090, guid: 84c8b8609f9bb434eaf5248f17ff1293,
+    type: 2}
+  m_PrefabInternal: {fileID: 454439411}
+--- !u!4 &549856951 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4000013364346644, guid: 84c8b8609f9bb434eaf5248f17ff1293,
+    type: 2}
+  m_PrefabInternal: {fileID: 454439411}
+--- !u!114 &549856952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 549856949}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 429cc00f52d09bd4bbf3a1d5281f924a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sun: {fileID: 299516394}
+  controller: {fileID: 549856951}
 --- !u!1001 &870977179
 Prefab:
   m_ObjectHideFlags: 0
@@ -307,6 +335,25 @@ Prefab:
 Transform:
   m_PrefabParentObject: {fileID: 448722, guid: 84c8b8609f9bb434eaf5248f17ff1293, type: 2}
   m_PrefabInternal: {fileID: 454439411}
+--- !u!1 &1308125898 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 157742, guid: 84c8b8609f9bb434eaf5248f17ff1293, type: 2}
+  m_PrefabInternal: {fileID: 454439411}
+--- !u!114 &1308125900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1308125898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b2700ebfc601844db9411c51fc074f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grabRadius: 0
+  grabMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1001 &1577947100
 Prefab:
   m_ObjectHideFlags: 0
