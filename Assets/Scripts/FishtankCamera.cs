@@ -171,28 +171,10 @@ public class FishtankCamera : MonoBehaviour {
         screenSpaceL = new Vector3(0, 0, 0);
         screenSpaceH = new Vector3(.475f, .3f, 0);
 
-        // Debug.Log("Pose " + leftEyeTracker.GetComponent<Transform>().localToWorldMatrix);
-     // Vector3 leftEyePos = leftEyeTracker.GetComponent<Transform>().localToWorldMatrix.MultiplyPoint(new Vector3(0, 0, 0));
         screenSpaceHeadPos = getTransformedEyePose(leftEyeTracker.transform.position);
-        // Debug.Log(leftEyePos);                                                                                                                                                                                                                  
-        // Debug.Log("Tracker Pose " + leftEyePos);
         Vector3 virtualCameraPosition = virtualScreenXform.localToWorldMatrix.MultiplyPoint(screenSpaceHeadPos);
         transform.position = virtualCameraPosition;
-        //transform.position = virtualCameraPosition;
-        //transform.LookAt(virtualScreenXform.position, Vector3.up);
-
-        //Matrix4x4 V = Matrix4x4.identity;
-        //V[2, 2] = -1f;
-        //V = virtualScreenXform.worldToLocalMatrix;
-     /// cam.projectionMatrix  = Matrix4x4.Frustum(leftEyePos.x, screenSpaceH.x - leftEyePos.x, leftEyePos.y, screenSpaceH.y - leftEyePos.x, leftEyePos.z, 1000);
-
-        //transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
-        //cam.projectionMatrix = getFishtankMatrix(leftEyePos, screenSpaceH, screenSpaceL, nearPlane, farPlane);
-
-        //cam.transform.SetPositionAndRotation(virtualScreenXform.position, virtualScreenXform.rotation);
-        //cam.transform.SetPositionAndRotation(cam.transform.,virtualScreenXform.rotation);
-        //cam.projectionMatrix = getProjectionMatrix(nearPlane, farPlane, 1, 2);
-
+        cam.projectionMatrix  = Matrix4x4.Frustum(-screenSpaceHeadPos.x, screenSpaceH.x - screenSpaceHeadPos.x, -screenSpaceHeadPos.y, screenSpaceH.y - screenSpaceHeadPos.y, .001f-screenSpaceHeadPos.z, -100);
         return;
     }
 
