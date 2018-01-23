@@ -12,7 +12,7 @@ public class FishtankCamera : MonoBehaviour {
     public float viewportHeight;
     public float viewportWidth;
     public Vector3 screenSpaceHeadPos;
-    
+    public FrustumPlanes frustumPlanes;
 
     private Camera cam;
     private Matrix4x4 VRToScreenSpace;
@@ -170,11 +170,19 @@ public class FishtankCamera : MonoBehaviour {
     {
         screenSpaceL = new Vector3(0, 0, 0);
         screenSpaceH = new Vector3(.475f, .3f, 0);
-
+        
         screenSpaceHeadPos = getTransformedEyePose(leftEyeTracker.transform.position);
         Vector3 virtualCameraPosition = virtualScreenXform.localToWorldMatrix.MultiplyPoint(screenSpaceHeadPos);
         transform.position = virtualCameraPosition;
-        cam.projectionMatrix  = Matrix4x4.Frustum(-screenSpaceHeadPos.x, screenSpaceH.x - screenSpaceHeadPos.x, -screenSpaceHeadPos.y, screenSpaceH.y - screenSpaceHeadPos.y, .001f-screenSpaceHeadPos.z, -100);
+
+        frustumPlanes.left = -screenSpaceHeadPos.x;
+        frustumPlanes.right = screenSpaceH.x - screenSpaceHeadPos.x;
+        frustumPlanes.bottom = -screenSpaceHeadPos.y;
+        frustumPlanes.top = screenSpaceH.y - screenSpaceHeadPos.y;
+        frustumPlanes.zNear = .001f - screenSpaceHeadPos.z;
+        frustumPlanes.zFar = -100;
+
+        cam.projectionMatrix = Matrix4x4.Frustum(frustumPlanes);
         return;
     }
 

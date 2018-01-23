@@ -15,13 +15,13 @@ public class RotateSunRelative : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	    if (!grabbed && OVRInput.Get(OVRInput.Axis1D.PrimaryHandTrigger) >= .95)
+	    if (!grabbed && (OVRInput.Get(OVRInput.Axis1D.PrimaryHandTrigger) >= .95 || Input.GetKey(KeyCode.Space))) 
         {
             grabbed = true;
             Debug.Log("Grabbed");
             originalSunRot = sun.rotation;
             inverseControllerRot = Quaternion.Inverse(controller.rotation);
-        } else if (grabbed && OVRInput.Get(OVRInput.Axis1D.PrimaryHandTrigger) <.95)
+        } else if (grabbed && (OVRInput.Get(OVRInput.Axis1D.PrimaryHandTrigger) <.95 && !Input.GetKey(KeyCode.Space)))
         {
             Debug.Log("Grabbed");
             grabbed = false;
