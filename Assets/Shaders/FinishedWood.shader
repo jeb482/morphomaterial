@@ -54,7 +54,7 @@
 				}
 
 
-				float eta = 1.55;
+				float eta = 599;
 				float n_cellulose = 1.55;
 				float3 v = normalize(i.eyeDir);
 				float3 u = normalize(tex2D(_FiberAxisTex, i.uv));
