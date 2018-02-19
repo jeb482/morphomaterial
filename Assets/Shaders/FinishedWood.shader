@@ -4,7 +4,7 @@
 		_HighlightWidthTex("Highlight width", 2D) = "white" {}
 		_DiffuseTex("Diffuse color", 2D) = "white" {}
 		_FiberColorTex("Fiber color", 2D) = "white" {}
-		_SpecularReflection("Specular", Float) = 1.0 
+		_SpecularReflection("Specular", Float) = 0.05 
 	}
 	SubShader {
 		Pass {
@@ -42,15 +42,17 @@
 			float _SpecularReflection;
 
 			float gaussian(float sigma, float x) {
-				return 1 / (sigma*sqrt(2 * 3.1415963))*exp((x*x) / (2 * sigma*sigma));
+				return 1 / (sigma*sqrt(2 * 3.1415963))*exp((-x*x) / (2 * sigma*sigma));
 			}
 
 			fixed4 frag(v2f i) : SV_Target
 			{
 				float3 n = normalize(i.normal);
 				float3 l = _WorldSpaceLightPos0;
+				float3 k_d = tex2D(_DiffuseTex, i.uv);
+				float3 ambient = k_d*ShadeSH9(half4(n, 1));
 				if (dot(n, l) < 0) {
-					return half4(0,0,0,1);
+					return half4(ambient,1);
 				}
 
 
@@ -59,7 +61,7 @@
 				float3 v = normalize(i.eyeDir);
 				float3 u = normalize(tex2D(_FiberAxisTex, i.uv));
 				float3 h = normalize((n + v) / 2);
-				float3 k_d = tex2D(_DiffuseTex, i.uv);
+				
 				float3 k_f = tex2D(_FiberColorTex, i.uv);
 				float beta = tex2D(_HighlightWidthTex, i.uv);
 
@@ -76,11 +78,15 @@
 				float psi_h = psi_r + psi_i;
 
 				float3 L_d = k_d * I * max(dot(n, l), 0);
-				float3 L_s = k_s * I * pow(max(dot(n, h), 0), eta);
+				float3 L_s = k_s * I * pow(max(dot(n, h), 0), 1.55);
 
-				float3 L_f = k_f * I * gaussian(beta, psi_h) / pow(cos(psi_d / 2), 2);
+				float3 L_f =  k_f * I * gaussian(beta, psi_h) / pow(cos(psi_d / 2), 2);
 
-				return half4(L_d + L_s + L_f, 1);
+
+				// Ambient: ShadeSH9(half4(worldNormal,1));
+				//
+				//float3 ambient = k_d * 0.);
+				return half4(L_d + L_s + L_f + ambient, 1);
 
 			}
 			ENDCG
