@@ -60,9 +60,9 @@ public class AlloCamMouseController : MonoBehaviour {
             Vector3 delta = Input.mousePosition - originalMousePos;
             transform.SetPositionAndRotation(originalPosition, originalRotation);
 
-
+            transform.RotateAround(target.transform.position, worldX, sensitivity * -delta.y);
             transform.RotateAround(target.transform.position, worldY, sensitivity*delta.x);
-            transform.RotateAround(target.transform.position, worldX, sensitivity*-delta.y);
+   
             //Debug.Log(Input.mousePosition - originalMousePos);
 
         }
