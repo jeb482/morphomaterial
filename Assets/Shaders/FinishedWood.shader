@@ -48,15 +48,16 @@
 			fixed4 frag(v2f i) : SV_Target
 			{
 				float3 n = normalize(i.normal);
-				float3 l = _WorldSpaceLightPos0;
+				float3 l = normalize(mul(UNITY_MATRIX_V,_WorldSpaceLightPos0));
 				float3 k_d = tex2D(_DiffuseTex, i.uv);
 				float3 ambient = k_d*ShadeSH9(half4(n, 1));
-				if (dot(n, l) < 0) {
+
+				if (dot(n, l) < -.001) {
 					return half4(ambient,1);
 				}
 
 
-				float eta = 599;
+
 				float n_cellulose = 1.55;
 				float3 v = normalize(i.eyeDir);
 				float3 u = normalize(tex2D(_FiberAxisTex, i.uv));
