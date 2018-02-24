@@ -7,7 +7,7 @@ public class AlloCamMouseController : MonoBehaviour {
     public float sensitivity;
 
     bool mousePressed = false;
-    bool altMode = false;
+    bool camMode = false;
     Vector3 originalMousePos;
     Vector3 originalPosition;
     Quaternion originalRotation;
@@ -29,23 +29,22 @@ public class AlloCamMouseController : MonoBehaviour {
         if (Input.GetMouseButtonDown(0))
         {
             mousePressed = true;
-            originalPosition = this.transform.position;
-            originalRotation = this.transform.rotation;
-            originalScale = this.transform.localScale;
-            originalMousePos = Input.mousePosition;
-            
+            originalMousePos = Input.mousePosition; 
             worldX = (GetComponent<Camera>().ScreenToWorldPoint(new Vector3(100,0,1)) - GetComponent<Camera>().ScreenToWorldPoint(new Vector3(0, 0, 1))).normalized;
             worldY = (GetComponent<Camera>().ScreenToWorldPoint(new Vector3(0, 100, 1)) - GetComponent<Camera>().ScreenToWorldPoint(new Vector3(0, 0, 1))).normalized;
-            Debug.Log(worldX + " "  + worldY);
             if (Input.GetKey(KeyCode.LeftAlt) || (Input.GetKey(KeyCode.LeftAlt)))
             {
-                altMode = true;
-                Debug.Log("Alt is down.");
+                camMode = true;
+                originalPosition = this.transform.position;
+                originalRotation = this.transform.rotation;
+                originalScale = this.transform.localScale;
             }
             else
             {
-                altMode = false;
-                Debug.Log("No Alt, right?");
+                camMode = false;
+                originalPosition = target.transform.position;
+                originalRotation = target.transform.rotation;
+                originalScale = target.transform.localScale;
             }
             
         }
@@ -58,10 +57,18 @@ public class AlloCamMouseController : MonoBehaviour {
         if (mousePressed)
         {
             Vector3 delta = Input.mousePosition - originalMousePos;
-            transform.SetPositionAndRotation(originalPosition, originalRotation);
+            if (camMode)
+            {
+                transform.SetPositionAndRotation(originalPosition, originalRotation);
+                transform.RotateAround(target.transform.position, worldX, sensitivity * -delta.y);
+                transform.RotateAround(target.transform.position, worldY, sensitivity * delta.x);
+            } else
+            {
+                target.transform.SetPositionAndRotation(originalPosition, originalRotation);
+                target.transform.RotateAround(target.transform.position, worldX, sensitivity * -delta.y);
+                target.transform.RotateAround(target.transform.position, worldY, sensitivity * delta.x);
+            }
 
-            transform.RotateAround(target.transform.position, worldX, sensitivity * -delta.y);
-            transform.RotateAround(target.transform.position, worldY, sensitivity*delta.x);
    
             //Debug.Log(Input.mousePosition - originalMousePos);
 
