@@ -159,6 +159,73 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 006e31c2ff788834a8e1b587e939b454, type: 2}
   m_IsPrefabParent: 0
+--- !u!1001 &205467687
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4173200683045188, guid: 332a9134cf161f943bfc0a5e26a7c7af, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4173200683045188, guid: 332a9134cf161f943bfc0a5e26a7c7af, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -0.1364
+      objectReference: {fileID: 0}
+    - target: {fileID: 4173200683045188, guid: 332a9134cf161f943bfc0a5e26a7c7af, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4173200683045188, guid: 332a9134cf161f943bfc0a5e26a7c7af, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4173200683045188, guid: 332a9134cf161f943bfc0a5e26a7c7af, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4173200683045188, guid: 332a9134cf161f943bfc0a5e26a7c7af, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4173200683045188, guid: 332a9134cf161f943bfc0a5e26a7c7af, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4173200683045188, guid: 332a9134cf161f943bfc0a5e26a7c7af, type: 2}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1287996872176604, guid: 332a9134cf161f943bfc0a5e26a7c7af, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1287996872176604, guid: 332a9134cf161f943bfc0a5e26a7c7af, type: 2}
+      propertyPath: m_Name
+      value: Bottle (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 33220967516593030, guid: 332a9134cf161f943bfc0a5e26a7c7af,
+        type: 2}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 4300000, guid: 49dcc87081ca4854898422379c942c8a, type: 3}
+    - target: {fileID: 4173200683045188, guid: 332a9134cf161f943bfc0a5e26a7c7af, type: 2}
+      propertyPath: m_LocalScale.x
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 4173200683045188, guid: 332a9134cf161f943bfc0a5e26a7c7af, type: 2}
+      propertyPath: m_LocalScale.z
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 4173200683045188, guid: 332a9134cf161f943bfc0a5e26a7c7af, type: 2}
+      propertyPath: m_LocalScale.y
+      value: 0.08
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 332a9134cf161f943bfc0a5e26a7c7af, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &299516392
 GameObject:
   m_ObjectHideFlags: 0
@@ -242,7 +309,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!23 &585192779
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -411,7 +478,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 0.1
   far clip plane: 1000
   field of view: 60
   orthographic: 0
@@ -454,8 +521,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71a8b522ced21c74b9e0fe5145a9dbad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 585192778}
+  target: {fileID: 1233738144}
   sensitivity: 0.2
+--- !u!1 &1233738144 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1287996872176604, guid: 332a9134cf161f943bfc0a5e26a7c7af,
+    type: 2}
+  m_PrefabInternal: {fileID: 205467687}
+--- !u!114 &1233738150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1233738144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f46486c385913c045aa25057b6468962, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: {fileID: 2100000, guid: 4f272f6bb5fa6604a9ae1768f53ad2dc, type: 2}
 --- !u!1001 &1577947100
 Prefab:
   m_ObjectHideFlags: 0

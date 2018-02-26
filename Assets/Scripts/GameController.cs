@@ -9,16 +9,16 @@ public class GameController : MonoBehaviour {
 
     public static GameController Instance;
 
-    public Vector3 rightControllerOffset; //{  set { _rightControllerOffset = value; isSaved = false; } get { return _rightControllerOffset;  } }
-    public Vector3 lowerLeftScreenCorner ;// {  set { _lowerLeftScreenCorner = value; isSaved = false; } get { return _lowerLeftScreenCorner;  } }
-    public Vector3 upperLeftScreenCorner ;// {  set { _upperLeftScreenCorner = value; isSaved = false; } get { return _upperLeftScreenCorner;  } }
-    public Vector3 upperRightScreenCorner;// { set { _upperRightScreenCorner = value; isSaved = false; } get { return _upperRightScreenCorner; } }
+    public Vector3 rightControllerOffset;
+    public Vector3 lowerLeftScreenCorner;
+    public Vector3 upperLeftScreenCorner;
+    public Vector3 upperRightScreenCorner;
+    public GameObject targetObject;
+
+
+    enum Experiment { Wood, Bottle };
 
     private bool isSaved = false;
-   // private Vector3 _rightControllerOffset;
-   // private Vector3 _lowerLeftScreenCorner;
-   // private Vector3 _upperLeftScreenCorner;
-   // private Vector3 _upperRightScreenCorner;
     private static string calibrationPath; 
 
     void Awake() {
@@ -62,6 +62,8 @@ public class GameController : MonoBehaviour {
         isSaved = true;
     }
 
+
+
     public void LoadCalibration()
     {
         if (File.Exists(calibrationPath))
@@ -87,6 +89,12 @@ public class GameController : MonoBehaviour {
             Debug.Log("No calibration data to load");
         }
     }
+
+
+    private void swapExperiments()
+    {
+
+    }
 }
 
 [Serializable]
@@ -97,5 +105,7 @@ public class CalibrationData
     [SerializeField] public Vector3 upperLeftScreenCorner;
     [SerializeField] public Vector3 upperRightScreenCorner;
 }
+
+
 
 

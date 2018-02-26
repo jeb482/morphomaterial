@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: walnut1
+  m_Shader: {fileID: 4800000, guid: 0617e3ffa453a56469488b4a2aa0581a, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _DiffuseTex:
+        m_Texture: {fileID: 2800000, guid: afeffabf2d88f62428c4bf4bf3b55e9a, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _FiberAxisTex:
+        m_Texture: {fileID: 2800000, guid: a6cf4f4c7c23f1b44875e968006e1aa9, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _FiberColorTex:
+        m_Texture: {fileID: 2800000, guid: 9a463adeb5c9957498861a69090be069, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _HighlightWidthTex:
+        m_Texture: {fileID: 2800000, guid: caab60fe10438e946a8e327cdd9dbf36, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _SpecularReflection: 0.05
+    m_Colors: []
