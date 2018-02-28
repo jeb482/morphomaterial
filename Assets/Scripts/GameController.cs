@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 using System.Xml.Serialization;
 using System.IO;
 using System;
@@ -16,10 +19,16 @@ public class GameController : MonoBehaviour {
     public GameObject targetObject;
 
 
-    enum Experiment { Wood, Bottle };
+
+
+    enum Subject { None, Wood, Bottle };
+
+    private Subject subject = Subject.Bottle;
+    private bool loadingScene = false;
 
     private bool isSaved = false;
-    private static string calibrationPath; 
+    private static string calibrationPath;
+
 
     void Awake() {
         if (Instance == null)
@@ -37,12 +46,44 @@ public class GameController : MonoBehaviour {
     private void Start()
     {
         LoadCalibration();
+        targetObject = Instantiate(Resources.Load("Bottle")) as GameObject;
+        DontDestroyOnLoad(targetObject);
     }
 
     // Update is called once per frame
     void Update() {
         if (Input.GetKeyUp(KeyCode.S) && !isSaved)
-            SaveCalibration();    
+            SaveCalibration();
+
+        if (Input.GetKeyDown(KeyCode.PageDown))
+        {
+            StartCoroutine(LoadNextScene());
+        }
+    }
+
+    IEnumerator LoadNextScene()
+    {
+        string sceneName = SceneManager.GetActiveScene().name;
+        Debug.Log(sceneName);
+        string nextScene = "";
+        switch (sceneName)
+        {
+            case "HMD":
+                nextScene = "Viewport"; break;
+            case "Viewport":
+                nextScene = "Fishtank"; break;
+            case "Fishtank":
+                nextScene = "HMD"; break;    
+        }
+        if (nextScene != "")
+        {
+            AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(nextScene);
+            while (!asyncLoad.isDone)
+            {
+                Debug.Log("La");
+                yield return null;
+            }
+        }
     }
 
     public void SaveCalibration()

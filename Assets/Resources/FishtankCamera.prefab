@@ -100,6 +100,17 @@ MonoBehaviour:
   rightEyeTracker: {fileID: 0}
   nearPlane: 0.01
   farPlane: 30
+  virtualScreenXform: {fileID: 0}
+  viewportHeight: 0
+  viewportWidth: 0
+  screenSpaceHeadPos: {x: 0, y: 0, z: 0}
+  frustumPlanes:
+    left: 0
+    right: 0
+    bottom: 0
+    top: 0
+    zNear: 0
+    zFar: 0
 --- !u!124 &124348511205532038
 Behaviour:
   m_ObjectHideFlags: 1

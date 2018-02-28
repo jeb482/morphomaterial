@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class AlloCamMouseController : MonoBehaviour {
-    public GameObject target;
     public float sensitivity;
 
     bool mousePressed = false;
@@ -25,6 +24,8 @@ public class AlloCamMouseController : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
+        if (GameController.Instance.targetObject == null)
+            return;
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -32,7 +33,7 @@ public class AlloCamMouseController : MonoBehaviour {
             originalMousePos = Input.mousePosition; 
             worldX = (GetComponent<Camera>().ScreenToWorldPoint(new Vector3(100,0,1)) - GetComponent<Camera>().ScreenToWorldPoint(new Vector3(0, 0, 1))).normalized;
             worldY = (GetComponent<Camera>().ScreenToWorldPoint(new Vector3(0, 100, 1)) - GetComponent<Camera>().ScreenToWorldPoint(new Vector3(0, 0, 1))).normalized;
-            if (Input.GetKey(KeyCode.LeftAlt) || (Input.GetKey(KeyCode.LeftAlt)))
+            if (Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt))
             {
                 camMode = true;
                 originalPosition = this.transform.position;
@@ -42,9 +43,9 @@ public class AlloCamMouseController : MonoBehaviour {
             else
             {
                 camMode = false;
-                originalPosition = target.transform.position;
-                originalRotation = target.transform.rotation;
-                originalScale = target.transform.localScale;
+                originalPosition = GameController.Instance.targetObject.transform.position;
+                originalRotation = GameController.Instance.targetObject.transform.rotation;
+                originalScale = GameController.Instance.targetObject.transform.localScale;
             }
             
         }
@@ -60,13 +61,14 @@ public class AlloCamMouseController : MonoBehaviour {
             if (camMode)
             {
                 transform.SetPositionAndRotation(originalPosition, originalRotation);
-                transform.RotateAround(target.transform.position, worldX, sensitivity * -delta.y);
-                transform.RotateAround(target.transform.position, worldY, sensitivity * delta.x);
+                transform.RotateAround(GameController.Instance.targetObject.transform.position, worldX, sensitivity * -delta.y);
+                transform.RotateAround(GameController.Instance.targetObject.transform.position, worldY, sensitivity * delta.x);
             } else
             {
-                target.transform.SetPositionAndRotation(originalPosition, originalRotation);
-                target.transform.RotateAround(target.transform.position, worldX, sensitivity * -delta.y);
-                target.transform.RotateAround(target.transform.position, worldY, sensitivity * delta.x);
+                Debug.Log("la");
+                GameController.Instance.targetObject.transform.SetPositionAndRotation(originalPosition, originalRotation);
+                GameController.Instance.targetObject.transform.RotateAround(GameController.Instance.targetObject.transform.position, worldX, sensitivity * -delta.y);
+                GameController.Instance.targetObject.transform.RotateAround(GameController.Instance.targetObject.transform.position, worldY, sensitivity * delta.x);
             }
 
    

@@ -51,3 +51,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c31ca061de151b4aaaf83c3f933c43f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rightControllerOffset: {x: 0, y: 0, z: 0}
+  lowerLeftScreenCorner: {x: 0, y: 0, z: 0}
+  upperLeftScreenCorner: {x: 0, y: 0, z: 0}
+  upperRightScreenCorner: {x: 0, y: 0, z: 0}
+  targetObject: {fileID: 0}
