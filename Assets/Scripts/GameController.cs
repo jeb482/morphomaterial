@@ -21,9 +21,9 @@ public class GameController : MonoBehaviour {
 
 
 
-    enum Subject { None, Wood, Bottle };
+    enum Experiment { None, Wood, Bottle };
 
-    private Subject subject = Subject.Bottle;
+    private Experiment currentExperiment = Experiment.Bottle;
     private bool loadingScene = false;
 
     private bool isSaved = false;
@@ -59,6 +59,11 @@ public class GameController : MonoBehaviour {
         {
             StartCoroutine(LoadNextScene());
         }
+        
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            swapExperiment();
+        }
     }
 
     IEnumerator LoadNextScene()
@@ -80,9 +85,24 @@ public class GameController : MonoBehaviour {
             AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(nextScene);
             while (!asyncLoad.isDone)
             {
-                Debug.Log("La");
                 yield return null;
             }
+        }
+    }
+
+    private void swapExperiment()
+    {
+        Destroy(targetObject);
+        switch(currentExperiment)
+        {
+            case Experiment.Bottle:
+                currentExperiment = Experiment.Wood;
+                targetObject = Instantiate(Resources.Load("Bottle")) as GameObject;
+                break;
+            case Experiment.Wood:
+                currentExperiment = Experiment.Bottle;
+                targetObject = Instantiate(Resources.Load("Cube")) as GameObject;
+                break;
         }
     }
 
@@ -129,12 +149,6 @@ public class GameController : MonoBehaviour {
             Debug.Log(calibrationPath);
             Debug.Log("No calibration data to load");
         }
-    }
-
-
-    private void swapExperiments()
-    {
-
     }
 }
 
