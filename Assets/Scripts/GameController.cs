@@ -18,7 +18,7 @@ public class GameController : MonoBehaviour {
     public Vector3 upperRightScreenCorner;
     public GameObject targetObject;
 
-
+    public Matrix4x4 realWorldToScreen;
 
 
     enum Experiment { None, Wood, Bottle };
@@ -121,6 +121,7 @@ public class GameController : MonoBehaviour {
         xmlf.Serialize(file, data);
         file.Close();
         isSaved = true;
+        updateRealWorldToScreen();
     }
 
 
@@ -143,12 +144,27 @@ public class GameController : MonoBehaviour {
             Debug.Log("LL: " + lowerLeftScreenCorner);
             Debug.Log("UL: " + upperLeftScreenCorner);
             Debug.Log("UR: " + upperRightScreenCorner);
+            updateRealWorldToScreen();
         }
         else
         {
             Debug.Log(calibrationPath);
             Debug.Log("No calibration data to load");
         }
+    }
+
+    public void updateRealWorldToScreen()
+    {
+        Vector3 origin = lowerLeftScreenCorner;
+        Vector3 x = (upperRightScreenCorner - upperLeftScreenCorner).normalized;
+        Vector3 y = (upperLeftScreenCorner  - lowerLeftScreenCorner).normalized;
+        Vector3 z = Vector3.Cross(x, y).normalized;
+        x = Vector3.Cross(y, z).normalized;
+
+        realWorldToScreen.SetRow(0, new Vector4(x.x, x.y, x.z, -Vector3.Dot(x, origin)));
+        realWorldToScreen.SetRow(1, new Vector4(y.x, y.y, y.z, -Vector3.Dot(y, origin)));
+        realWorldToScreen.SetRow(2, new Vector4(z.x, z.y, z.z, -Vector3.Dot(z, origin)));
+        realWorldToScreen.SetRow(3, new Vector4(  0,   0,   0,                       1));
     }
 }
 
