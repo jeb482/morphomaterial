@@ -5,9 +5,6 @@ using System.Linq;
 
 public class CallibrateController : MonoBehaviour {
 
-    
-
-
     private List<Matrix4x4> controllerTransforms;
     private bool triggerDown = false;
 
