@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class AlloCamMouseController : MonoBehaviour {
     public float sensitivity;
+    public bool allowObjectRotation = false;
 
     bool mousePressed = false;
     bool camMode = false;
@@ -14,6 +15,8 @@ public class AlloCamMouseController : MonoBehaviour {
 
     Vector3 worldX;
     Vector3 worldY;
+
+
 	// Use this for initialization
 	void Start () {
 		
@@ -40,7 +43,7 @@ public class AlloCamMouseController : MonoBehaviour {
                 originalRotation = this.transform.rotation;
                 originalScale = this.transform.localScale;
             }
-            else
+            else 
             {
                 camMode = false;
                 originalPosition = GameController.Instance.targetObject.transform.position;
@@ -63,7 +66,7 @@ public class AlloCamMouseController : MonoBehaviour {
                 transform.SetPositionAndRotation(originalPosition, originalRotation);
                 transform.RotateAround(GameController.Instance.targetObject.transform.position, worldX, sensitivity * -delta.y);
                 transform.RotateAround(GameController.Instance.targetObject.transform.position, worldY, sensitivity * delta.x);
-            } else
+            } else if (allowObjectRotation)
             {
                 Debug.Log("la");
                 GameController.Instance.targetObject.transform.SetPositionAndRotation(originalPosition, originalRotation);

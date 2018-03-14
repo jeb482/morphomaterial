@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class rotationManip : MonoBehaviour {
 
     public Camera cam;
@@ -11,9 +12,12 @@ public class rotationManip : MonoBehaviour {
     public GameObject zHandle;
     public GameObject wHandle;
 
+    public float mScale = 1;
+
     enum RotationMode {None, Free, X, Y, Z};
 
     private RotationMode mode = RotationMode.None;
+    private Vector3 originalScreenPoint;
     private Vector3 lastSpherePoint;
     private GameObject sphere = null;
     private GameObject[] handles;
@@ -59,10 +63,11 @@ public class rotationManip : MonoBehaviour {
         transform.SetPositionAndRotation(target.transform.position, target.transform.rotation);
         RaycastHit hit = new RaycastHit();
         Vector3 center = target.transform.position;
-        float radius = 4f * Mathf.Sin(cam.fieldOfView) / 4 * (center - cam.transform.position).magnitude;
+        float radius = mScale * 4f * Mathf.Sin(cam.fieldOfView) / 4 * (center - cam.transform.position).magnitude;
         this.transform.localScale = new Vector3(radius, radius, radius);
         if (Input.GetMouseButtonDown(0)) {
-            if (!sphereRayIntersect(cam.ScreenPointToRay(Input.mousePosition), center, radius, ref hit))
+            originalScreenPoint = Input.mousePosition;
+            if (!sphereRayIntersect(cam.ScreenPointToRay(originalScreenPoint), center, radius, ref hit))
                 return;
 
             lastSpherePoint = hit.point;
@@ -85,6 +90,7 @@ public class rotationManip : MonoBehaviour {
                     lastSpherePoint = hit.point;
                 } else
                 {
+                    
 
                 }
                 break;
