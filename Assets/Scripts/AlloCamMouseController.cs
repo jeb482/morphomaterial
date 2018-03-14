@@ -67,8 +67,8 @@ public class AlloCamMouseController : MonoBehaviour {
             {
                 Debug.Log("la");
                 GameController.Instance.targetObject.transform.SetPositionAndRotation(originalPosition, originalRotation);
-                GameController.Instance.targetObject.transform.RotateAround(GameController.Instance.targetObject.transform.position, worldX, sensitivity * -delta.y);
-                GameController.Instance.targetObject.transform.RotateAround(GameController.Instance.targetObject.transform.position, worldY, sensitivity * delta.x);
+//                GameController.Instance.targetObject.transform.Rotate(GameController.Instance.targetObject.transform.position, worldX, sensitivity * -delta.y);
+//                GameController.Instance.targetObject.transform.Rotate(GameController.Instance.targetObject.transform.position, worldY, sensitivity * delta.x);
             }
 
    
