@@ -12,11 +12,12 @@ public class Grab : MonoBehaviour {
 	
     void GrabObject()
     {
-        Debug.Log("Grabbed"); 
         grabbing = true;
-        RaycastHit[] hits = Physics.SphereCastAll(transform.position, grabRadius, transform.forward, 0f, grabMask);
+        RaycastHit[] hits = Physics.SphereCastAll(transform.position, grabRadius, transform.forward, 0f, grabMask);        
         if (hits.Length > 0)
         {
+            Debug.Log("Grabbed");
+            
             int closestHit = 0;
             for (int i = 0; i < hits.Length; i++)
             {
@@ -33,16 +34,25 @@ public class Grab : MonoBehaviour {
 
     void DropObject()
     {
-        Debug.Log("Dropped");
         grabbing = false;
-        
+        if (grabbedObject != null)
+        {
+            Debug.Log("Dropped");
+            grabbedObject.transform.parent = null;
+            grabbedObject = null;
+        }
+
     }
 
 	// Update is called once per frame
 	void Update () {
-        if (!grabbing && OVRInput.Get(OVRInput.Axis1D.SecondaryIndexTrigger) == 1)
+        //;
+        if (!grabbing && OVRInput.Get(OVRInput.Axis1D.SecondaryHandTrigger) > 0.9)
+        {
+            Debug.Log("Trying to grab: " + OVRInput.Get(OVRInput.Axis1D.SecondaryHandTrigger));
             GrabObject();
-        else if (grabbing && OVRInput.Get(OVRInput.Axis1D.SecondaryIndexTrigger) < 1)
+        }
+        else if (grabbing && OVRInput.Get(OVRInput.Axis1D.SecondaryHandTrigger) < 0.9)
             DropObject();
 	}
 }
