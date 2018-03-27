@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class Teleporter : MonoBehaviour {
     public Color pathColor;
+    public GameObject player;
+    public GameObject HMD;
 
-
+    bool validTarget = false;
     private bool selecting = false;
     private GameObject intersectionTarget = null;
     private GameObject splat = null;
@@ -45,6 +47,13 @@ public class Teleporter : MonoBehaviour {
         }
         else if (OVRInput.GetUp(OVRInput.Button.SecondaryThumbstick))
         {
+            if (validTarget)
+            {
+                Vector3 newPos = splat.transform.position + (player.transform.position - HMD.transform.position);
+                newPos.y = player.transform.position.y;
+                player.transform.position = newPos;
+            }
+                
             Debug.Log("unsplat");
             splat.SetActive(false);
             selecting = false;
@@ -61,10 +70,12 @@ public class Teleporter : MonoBehaviour {
                 splat.transform.position = hit.point;
                 splat.transform.rotation = Quaternion.FromToRotation(hit.normal, new Vector3(0, 1, 0));
                 rayEnds[1] = splat.transform.position;
+                validTarget = true;
             } else
             {
                 splat.SetActive(false);
                 rayEnds[1] = transform.position + transform.TransformDirection(new Vector3(0, 0, 1)) * 30;
+                validTarget = false;
             }
             rayEnds[0] = transform.position;
             Vector3[] lineSeg = new Vector3[10];
