@@ -3,16 +3,36 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Teleporter : MonoBehaviour {
+    public Color pathColor;
+
 
     private bool selecting = false;
     private GameObject intersectionTarget = null;
     private GameObject splat = null;
+    private GameObject rendererObject;
     private LineRenderer lineRenderer;
+    private Vector3[] rayEnds;
 	// Use this for initialization
 	void Start () {
         Debug.Log("Begin.");
         splat = Instantiate(Resources.Load("PortTarget"), null) as GameObject;
-        lineRenderer = new LineRenderer();
+        rendererObject = new GameObject();
+
+        lineRenderer = splat.AddComponent<LineRenderer>();
+        rayEnds = new Vector3[2];
+        
+        lineRenderer.startWidth = 1f;
+        lineRenderer.endWidth = 1f;
+        lineRenderer.positionCount = 10;
+        lineRenderer.useWorldSpace = true;
+        lineRenderer.startColor = pathColor;
+        lineRenderer.endColor = pathColor;
+        lineRenderer.loop = false;
+        lineRenderer.material = new Material(Shader.Find("Unlit/Color"));
+        lineRenderer.widthMultiplier = 0.005f;
+        Debug.Log(lineRenderer.isVisible);
+
+
     }
 	
 	// Update is called once per frame
@@ -33,16 +53,28 @@ public class Teleporter : MonoBehaviour {
         else if (selecting) {
             Ray r = new Ray(transform.position, transform.TransformDirection(new Vector3(0,0,1)));
             RaycastHit hit;
+            
             if (Physics.Raycast(r, out hit, 16))
             {
                 splat.SetActive(true);
                 Debug.Log(hit.point);
                 splat.transform.position = hit.point;
                 splat.transform.rotation = Quaternion.FromToRotation(hit.normal, new Vector3(0, 1, 0));
+                rayEnds[1] = splat.transform.position;
             } else
             {
                 splat.SetActive(false);
+                rayEnds[1] = transform.position + transform.TransformDirection(new Vector3(0, 0, 1)) * 30;
             }
+            rayEnds[0] = transform.position;
+            Vector3[] lineSeg = new Vector3[10];
+            for (int i = 0; i < 10; i++)
+            {
+                lineSeg[i] = ((9 - i) / 9f) * rayEnds[0] + (i / 9f) * rayEnds[1];
+            }
+            lineRenderer.SetPositions(lineSeg);
+
+
         }
            
         
