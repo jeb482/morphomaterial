@@ -6,33 +6,42 @@ public class Teleporter : MonoBehaviour {
 
     private bool selecting = false;
     private GameObject intersectionTarget = null;
-    private GameObject splat = null; 
+    private GameObject splat = null;
+    private LineRenderer lineRenderer;
 	// Use this for initialization
 	void Start () {
-        Debug.Log("Up.");
-	}
+        Debug.Log("Begin.");
+        splat = Instantiate(Resources.Load("PortTarget"), null) as GameObject;
+        lineRenderer = new LineRenderer();
+    }
 	
 	// Update is called once per frame
 	void Update () {
-	    if (OVRInput.GetDown(OVRInput.Button.SecondaryThumbstickDown))
+	    if (OVRInput.GetDown(OVRInput.Button.SecondaryThumbstick))
         {
             Debug.Log("splat");
-            splat = (GameObject) Resources.Load("PortTarget");
+            splat.SetActive(true);
             selecting = true;
         }
-        else if (OVRInput.GetUp(OVRInput.Button.SecondaryThumbstickDown))
+        else if (OVRInput.GetUp(OVRInput.Button.SecondaryThumbstick))
         {
             Debug.Log("unsplat");
-            Destroy(splat);
-            splat = null;
+            splat.SetActive(false);
+            selecting = false;
+            
         }
         else if (selecting) {
-            Ray r = new Ray(transform.position, transform.TransformPoint(new Vector3(0,0,1)));
+            Ray r = new Ray(transform.position, transform.TransformDirection(new Vector3(0,0,1)));
             RaycastHit hit;
-            if (Physics.Raycast(r, out hit))
+            if (Physics.Raycast(r, out hit, 16))
             {
+                splat.SetActive(true);
+                Debug.Log(hit.point);
                 splat.transform.position = hit.point;
-                splat.transform.rotation = Quaternion.FromToRotation(new Vector3(0, 0, 1), hit.normal);
+                splat.transform.rotation = Quaternion.FromToRotation(hit.normal, new Vector3(0, 1, 0));
+            } else
+            {
+                splat.SetActive(false);
             }
         }
            

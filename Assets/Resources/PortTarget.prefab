@@ -22,13 +22,13 @@ GameObject:
   - component: {fileID: 33587948861097868}
   - component: {fileID: 136170200449921114}
   - component: {fileID: 23487116316623486}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: PortTarget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4900543945878610
 Transform:
   m_ObjectHideFlags: 1
