@@ -67,6 +67,7 @@
 				float3 n = normalize(i.normal);
 
 				float3 k_d = tex2D(_DiffuseTex, i.uv);
+				//float3 ambient = k_d * ShadeSH9(half4(n, 1));
 				float3 ambient = k_d * ShadeSH9(half4(n, 1));
 				float3 v = -normalize(i.pos);
 				float3 u = normalize(tex2D(_FiberAxisTex, i.uv)); // Potential error. What coordinate space is Axis in?
