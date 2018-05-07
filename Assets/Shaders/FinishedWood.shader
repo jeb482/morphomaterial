@@ -24,15 +24,19 @@
 				float3 normal : NORMAL;
 				float3 pos : TEXCOORD1;
 				float4 vertex : SV_POSITION;
+				float3 tangent : TANGENT0;
+				float3 bitangent : TANGENT1;
 			};
 
 
-			v2f vert(appdata_base v) {
+			v2f vert(appdata_tan v) {
 				v2f o;
 				o.vertex = UnityObjectToClipPos(v.vertex);
 				o.uv = v.texcoord;
 				o.pos = UnityObjectToViewPos(v.vertex);
 				o.normal = mul(UNITY_MATRIX_IT_MV, float4(v.normal,0)).xyz;
+				o.tangent = mul(UNITY_MATRIX_IT_MV, v.tangent.xyz);
+				o.bitangent = mul(UNITY_MATRIX_IT_MV, cross(v.normal, v.tangent.xyz) * v.tangent.w);
 				return o;
 			}
 
@@ -65,12 +69,22 @@
 			{
 				
 				float3 n = normalize(i.normal);
+				float3 tangent = normalize(i.tangent);
+				float3 bitangent = normalize(i.bitangent);
+
+
 
 				float3 k_d = tex2D(_DiffuseTex, i.uv);
 				//float3 ambient = k_d * ShadeSH9(half4(n, 1));
 				float3 ambient = k_d * ShadeSH9(half4(n, 1));
+
 				float3 v = -normalize(i.pos);
-				float3 u = normalize(tex2D(_FiberAxisTex, i.uv)); // Potential error. What coordinate space is Axis in?
+				
+				float3 axis = tex2D(_FiberAxisTex, i.uv); // Potential error. What coordinate space is Axis in?
+				axis = (axis - 0.5) * 2;
+
+				float3 u = normalize(tangent*axis.x + bitangent * axis.y + n * axis.z);
+				
 				float3 h = normalize((n + v) / 2);
 				float3 k_f = tex2D(_FiberColorTex, i.uv);
 				float beta = tex2D(_HighlightWidthTex, i.uv);
@@ -142,7 +156,7 @@
 						r = length(l);
 
 					l = normalize((l).xyz);
-					ndl = dot(n, l);
+					ndl = -dot(n, l);
 					
 					psi_i = asin(dot(l, u) / n_cellulose);
 					psi_d = psi_r - psi_i;
