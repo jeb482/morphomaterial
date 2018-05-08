@@ -29,14 +29,15 @@
 			};
 
 
-			v2f vert(appdata_tan v) {
+			v2f vert(appdata_tan  v) {
 				v2f o;
 				o.vertex = UnityObjectToClipPos(v.vertex);
 				o.uv = v.texcoord;
 				o.pos = UnityObjectToViewPos(v.vertex);
+				
 				o.normal = mul(UNITY_MATRIX_IT_MV, float4(v.normal,0)).xyz;
-				o.tangent = mul(UNITY_MATRIX_IT_MV, v.tangent.xyz);
-				o.bitangent = mul(UNITY_MATRIX_IT_MV, cross(v.normal, v.tangent.xyz) * v.tangent.w);
+				o.tangent = UnityObjectToViewPos(v.tangent.xyz).xyz;
+				o.bitangent = mul(UNITY_MATRIX_MV, cross(v.normal, v.tangent.xyz) * v.tangent.w);
 				return o;
 			}
 
@@ -76,15 +77,20 @@
 
 				float3 k_d = tex2D(_DiffuseTex, i.uv);
 				//float3 ambient = k_d * ShadeSH9(half4(n, 1));
-				float3 ambient = k_d * ShadeSH9(half4(n, 1));
+				float3 ambient = 10*k_d * ShadeSH9(half4(n, 1));
 
 				float3 v = -normalize(i.pos);
 				
-				float3 axis = tex2D(_FiberAxisTex, i.uv); // Potential error. What coordinate space is Axis in?
-				axis = (axis - 0.5) * 2;
+				//float3 axis = tex2D(_FiberAxisTex, i.uv); // Potential error. What coordinate space is Axis in?
+				//axis = (axis - 0.5) * 2;
+				float3 axis = UnpackNormal(tex2D(_FiberAxisTex, i.uv));
 
-				float3 u = normalize(tangent*axis.x + bitangent * axis.y + n * axis.z);
-				
+				//float3 u = normalize(tangent*axis.x + bitangent * axis.y + n * axis.z);
+				float3 u;
+				u.x = dot(float3(tangent.x, bitangent.x, n.x), axis);
+				u.y = dot(float3(tangent.y, bitangent.y, n.y), axis);
+				u.z = dot(float3(tangent.z, bitangent.z, n.z), axis);
+
 				float3 h = normalize((n + v) / 2);
 				float3 k_f = tex2D(_FiberColorTex, i.uv);
 				float beta = tex2D(_HighlightWidthTex, i.uv);
