@@ -35,7 +35,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DiffuseTex:
-        m_Texture: {fileID: 2800000, guid: afeffabf2d88f62428c4bf4bf3b55e9a, type: 3}
+        m_Texture: {fileID: 2800000, guid: 4fc60eae510029e47a66270b3bc450be, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
@@ -43,15 +43,15 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _FiberAxisTex:
-        m_Texture: {fileID: 2800000, guid: a6cf4f4c7c23f1b44875e968006e1aa9, type: 3}
+        m_Texture: {fileID: 2800000, guid: 3a12a472c165c7e4e9ca69a69cdf4cee, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _FiberColorTex:
-        m_Texture: {fileID: 2800000, guid: 9a463adeb5c9957498861a69090be069, type: 3}
+        m_Texture: {fileID: 2800000, guid: aa8fb180800b0394fbb01c063ea38afb, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _HighlightWidthTex:
-        m_Texture: {fileID: 2800000, guid: caab60fe10438e946a8e327cdd9dbf36, type: 3}
+        m_Texture: {fileID: 2800000, guid: 70495986f2567034f8e14f4cde4155dc, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
