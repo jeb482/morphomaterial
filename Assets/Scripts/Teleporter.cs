@@ -66,7 +66,7 @@ public class Teleporter : MonoBehaviour {
             if (Physics.Raycast(r, out hit, 16))
             {
                 splat.SetActive(true);
-                Debug.Log(hit.point);
+                //Debug.Log(hit.point);
                 splat.transform.position = hit.point;
                 splat.transform.rotation = Quaternion.FromToRotation(hit.normal, new Vector3(0, 1, 0));
                 rayEnds[1] = splat.transform.position;

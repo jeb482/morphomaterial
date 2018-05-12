@@ -85,11 +85,11 @@
 				//axis = (axis - 0.5) * 2;
 				float3 axis = UnpackNormal(tex2D(_FiberAxisTex, i.uv));
 
-				//float3 u = normalize(tangent*axis.x + bitangent * axis.y + n * axis.z);
-				float3 u;
-				u.x = dot(float3(tangent.x, bitangent.x, n.x), axis);
-				u.y = dot(float3(tangent.y, bitangent.y, n.y), axis);
-				u.z = dot(float3(tangent.z, bitangent.z, n.z), axis);
+				float3 u = normalize(tangent*axis.x + bitangent * axis.y + n * axis.z);
+				//float3 u;
+				//u.x = dot(float3(tangent.x, bitangent.x, n.x), axis);
+				//u.y = dot(float3(tangent.y, bitangent.y, n.y), axis);
+				//u.z = dot(float3(tangent.z, bitangent.z, n.z), axis);
 
 				float3 h = normalize((n + v) / 2);
 				float3 k_f = tex2D(_FiberColorTex, i.uv);
@@ -162,7 +162,7 @@
 						r = length(l);
 
 					l = normalize((l).xyz);
-					ndl = -dot(n, l);
+					ndl = dot(n, l);
 					
 					psi_i = asin(dot(l, u) / n_cellulose);
 					psi_d = psi_r - psi_i;
