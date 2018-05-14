@@ -39,6 +39,7 @@ public class CameraManager : MonoBehaviour {
             case CameraConfiguration.HMDCam:
                 Viewport.SetActive(false);
                 CameraRig.SetActive(true);
+               // CameraRig.GetComponent<Camera>().enabled = true;
                 Player.SetActive(true);
                 FishTank.SetActive(false);
                 break;
@@ -47,6 +48,7 @@ public class CameraManager : MonoBehaviour {
                 Player.SetActive(true);
                 Player.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
                 CameraRig.SetActive(false);
+                //CameraRig.GetComponent<Camera>().enabled = false;
                 FishTank.SetActive(true);
                 break;
             case CameraConfiguration.ViewportCam:
