@@ -20,12 +20,19 @@ public class TrialPicker : MonoBehaviour {
         trials.Add(new WoodTrialDescription("walnut1-sq", "walnut1-sq", "walnut1-sq", "walnut1-sq", 0.05f, "walnut1-sq", "walnut1-sq", "walnut1-sq", "walnut1-sq", 0.05f));
         trials.Add(new WoodTrialDescription("walnut2-sq", "walnut2-sq", "walnut2-sq", "walnut2-sq", 0.05f, "walnut2-sq", "walnut2-sq", "walnut2-sq", "walnut2-sq", 0.05f));
         trials.Add(new WoodTrialDescription("padauk-sq", "padauk-sq", "padauk-sq", "padauk-sq", 0.05f, "padauk-sq", "padauk-sq", "padauk-sq", "padauk-sq", 0.05f));
+        trials.Add(new WoodTrialDescription("walnut1-sq", "cmaple-sq", "cmaple-sq", "cmaple-sq", 0.05f, "cmaple-sq", "cmaple-sq", "cmaple-sq", "cmaple-sq", 0.05f));
+        trials.Add(new WoodTrialDescription("walnut1-sq", "walnut2-sq", "walnut1-sq", "walnut1-sq", 0.05f, "walnut1-sq", "walnut1-sq", "walnut1-sq", "walnut1-sq", 0.05f));
+        trials.Add(new WoodTrialDescription("walnut2-sq", "walnut2-sq", "padauk-sq", "walnut2-sq", 0.05f, "walnut2-sq", "walnut2-sq", "walnut2-sq", "walnut2-sq", 0.05f));
+        trials.Add(new WoodTrialDescription("padauk-sq", "padauk-sq", "padauk-sq", "cmaple-sq", 0.05f, "padauk-sq", "padauk-sq", "padauk-sq", "padauk-sq", 0.05f));
+
         updateTrial(1);
         //    block1.GetComponent<Renderer>().material.
     }
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Equals))
+            trialNum = (lastTrialNum + 1) % trials.Count;
         if (trialNum != lastTrialNum)
             updateTrial(trialNum);
         lastTrialNum = trialNum;
