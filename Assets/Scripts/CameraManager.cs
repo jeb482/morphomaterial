@@ -8,6 +8,7 @@ public class CameraManager : MonoBehaviour {
     public GameObject Player;
     public Transform Focus;
     public float Sensitivity = 1;
+    public float FishTankDistance = 3;
 
     public enum CameraConfiguration { HMDCam, FishTankCam, ViewportCam};
     public CameraConfiguration cameraConfig = CameraConfiguration.HMDCam;
@@ -70,18 +71,15 @@ public class CameraManager : MonoBehaviour {
             //if (Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt))
             //{
                 isOribiting = true;
-                originalPosition = currentCam.transform.position;
-                originalRotation = currentCam.transform.rotation;
-                originalScale = currentCam.transform.localScale;
+                originalPosition = currentCamXform.position;
+                originalRotation = currentCamXform.rotation;
+                //originalScale = currentCam.transform.lossyScale;
             //}
 
 
         }
 
-        if (Input.GetMouseButtonUp(0))
-        {
-            isOribiting = false;
-        }
+
 
         if (isOribiting && Focus != null)
         {
@@ -89,13 +87,20 @@ public class CameraManager : MonoBehaviour {
             currentCamXform.SetPositionAndRotation(originalPosition, originalRotation);
             currentCamXform.RotateAround(Focus.transform.position, worldX, Sensitivity * -delta.y);
             currentCamXform.RotateAround(Focus.transform.position, worldY, Sensitivity * delta.x);
+            //currentCamXform.localScale = new Vector3(1/currentCamXform.parent.localScale.x, 1/currentCamXform.parent.localScale.y, 1/currentCamXform.parent.localScale.z);
             if (cameraConfig == CameraConfiguration.ViewportCam)
                 currentCamXform.LookAt(Focus);
             else
             {
                 currentCamXform.LookAt(Focus);
                 FishtankCam.transform.LookAt(Focus);
+                currentCamXform.localPosition *= (FishTankDistance / FishtankCam.transform.localPosition.magnitude); 
             }
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            isOribiting = false;
         }
 
     }
@@ -146,7 +151,7 @@ public class CameraManager : MonoBehaviour {
         {
             FishtankCam.transform.SetParent(Focus);
             VirtualScreen.transform.SetParent(Focus);
-            VirtualScreen.transform.localPosition = new Vector3(0, 0, -3);
+            VirtualScreen.transform.localPosition = new Vector3(0, 0, -FishTankDistance);
             VirtualScreen.transform.LookAt(Vector3.zero);
         }
     }
