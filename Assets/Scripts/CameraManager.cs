@@ -7,8 +7,9 @@ public class CameraManager : MonoBehaviour {
     public GameObject Viewport;
     public GameObject Player;
     public Transform Focus;
-    public float Sensitivity = 1;
-    public float FishTankDistance = 3;
+    public float RotationSensitivity = 1f;
+    public float FishTankDistance = 3f;
+    public float ZoomSensitivity = 8f;
 
     public enum CameraConfiguration { HMDCam, FishTankCam, ViewportCam};
     public CameraConfiguration cameraConfig = CameraConfiguration.HMDCam;
@@ -43,7 +44,14 @@ public class CameraManager : MonoBehaviour {
             SetConfig(CameraConfiguration.ViewportCam);
 
         if (cameraConfig == CameraConfiguration.FishTankCam || cameraConfig == CameraConfiguration.ViewportCam)
+            HandleZoom();
             HandleOrbit();
+    }
+
+    void HandleZoom()
+    {
+        float deltaZ = Input.GetAxis("Mouse ScrollWheel");
+        FishTankDistance += ZoomSensitivity * deltaZ;
     }
 
     void HandleOrbit()
@@ -85,8 +93,8 @@ public class CameraManager : MonoBehaviour {
         {
             Vector3 delta = Input.mousePosition - originalMousePos;
             currentCamXform.SetPositionAndRotation(originalPosition, originalRotation);
-            currentCamXform.RotateAround(Focus.transform.position, worldX, Sensitivity * -delta.y);
-            currentCamXform.RotateAround(Focus.transform.position, worldY, Sensitivity * delta.x);
+            currentCamXform.RotateAround(Focus.transform.position, worldX, RotationSensitivity * -delta.y);
+            currentCamXform.RotateAround(Focus.transform.position, worldY, RotationSensitivity * delta.x);
             //currentCamXform.localScale = new Vector3(1/currentCamXform.parent.localScale.x, 1/currentCamXform.parent.localScale.y, 1/currentCamXform.parent.localScale.z);
             if (cameraConfig == CameraConfiguration.ViewportCam)
                 currentCamXform.LookAt(Focus);
