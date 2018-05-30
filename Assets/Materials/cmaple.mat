@@ -73,7 +73,9 @@ Material:
     m_Floats:
     - _BumpScale: 1
     - _Cutoff: 0.5
+    - _Debug: 0
     - _DetailNormalMapScale: 1
+    - _DiffuseMultipier: 15
     - _DstBlend: 0
     - _GlossMapScale: 1
     - _Glossiness: 0.5

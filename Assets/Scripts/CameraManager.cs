@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraManager : MonoBehaviour {
+    public static CameraManager Instance;
+
     public GameObject FishTank;
     public GameObject Viewport;
     public GameObject Player;
@@ -24,14 +26,28 @@ public class CameraManager : MonoBehaviour {
     private Vector3 worldY;
     private Vector3 originalPosition;
     private Quaternion originalRotation;
-    private Vector3 originalScale;
+    
+
+
+    // Create as a singleton
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            DontDestroyOnLoad(gameObject);
+            Instance = this;
+        }
+        else if (Instance != this)
+        {
+            Destroy(gameObject);
+        }
+    }
+
     // Use this for initialization
     void Start () {
-        Debug.Log("Laaa");
         CameraRig = Player.transform.Find("OVRCameraRig").gameObject;
         VirtualScreen = FishTank.transform.Find("VirtualScreenLocation").gameObject;
         FishtankCam = FishTank.transform.Find("FishtankCamera").gameObject.GetComponent<Camera>();
-        //Debug.Log();
 	}
 	
 	// Update is called once per frame

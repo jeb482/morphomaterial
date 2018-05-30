@@ -25,17 +25,32 @@ public class TrialPicker : MonoBehaviour {
         trials.Add(new WoodTrialDescription("walnut2-sq", "walnut2-sq", "padauk-sq", "walnut2-sq", 0.05f, "walnut2-sq", "walnut2-sq", "walnut2-sq", "walnut2-sq", 0.05f));
         trials.Add(new WoodTrialDescription("padauk-sq", "padauk-sq", "padauk-sq", "cmaple-sq", 0.05f, "padauk-sq", "padauk-sq", "padauk-sq", "padauk-sq", 0.05f));
 
-        updateTrial(1);
+        updateTrial(0);
         //    block1.GetComponent<Renderer>().material.
     }
 
     void Update()
     {
+        // Switch wood models on blocks
         if (Input.GetKeyDown(KeyCode.Equals))
             trialNum = (lastTrialNum + 1) % trials.Count;
+        else if (Input.GetKeyDown(KeyCode.Minus))
+            trialNum = (lastTrialNum - 1) % trials.Count;
         if (trialNum != lastTrialNum)
             updateTrial(trialNum);
         lastTrialNum = trialNum;
+
+        // Switch block of focus
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            Debug.Log("Z");
+            if (CameraManager.Instance.Focus == block1.transform)
+                CameraManager.Instance.Focus = block2.transform;
+            else
+                CameraManager.Instance.Focus = block1.transform;
+        }
+
+
     }
 
 
@@ -43,7 +58,7 @@ public class TrialPicker : MonoBehaviour {
     // Need from resources and assign to tetures like "_DiffuseTex"
     void updateTrial(int index)
     {
-        print("Did it");
+        //print("Did it");
         if (index >= trials.Count)
             index = 0;
 

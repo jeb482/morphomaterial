@@ -10,8 +10,8 @@ public class CallibrateController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        if (GameController.Instance.rightControllerOffset != null)
-            setTransformFromOffset(GameController.Instance.rightControllerOffset);
+        //if (GameController.Instance.rightControllerOffset != null)
+        setTransformFromOffset(GameController.Instance.rightControllerOffset);
         controllerTransforms = new List<Matrix4x4>();
 	}
 	
