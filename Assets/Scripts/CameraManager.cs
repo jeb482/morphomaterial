@@ -132,7 +132,7 @@ public class CameraManager : MonoBehaviour {
             else
             {
                 currentCamXform.LookAt(Focus);
-                FishtankCam.transform.LookAt(Focus);
+                FishtankCam.transform.rotation = currentCamXform.rotation;
             }
         }
 
