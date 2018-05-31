@@ -35,7 +35,7 @@ public class TrialPicker : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Equals))
             trialNum = (lastTrialNum + 1) % trials.Count;
         else if (Input.GetKeyDown(KeyCode.Minus))
-            trialNum = (lastTrialNum - 1) % trials.Count;
+            trialNum = (lastTrialNum - 1 + trials.Count) % trials.Count;
         if (trialNum != lastTrialNum)
             updateTrial(trialNum);
         lastTrialNum = trialNum;
@@ -99,6 +99,7 @@ public class TrialPicker : MonoBehaviour {
 
         public void PopulateMaterials(Material mat1, Material mat2)
         {
+            Debug.Log(diffusePath1);
             var axTex1 = Resources.Load("wood\\" + fiberAxisPath1 + "\\axis") as Texture2D;
             mat1.SetTexture("_FiberAxisTex", axTex1);
             var hiliteTex1 = Resources.Load("wood\\" + highLightWidthPath1 + "\\hilight") as Texture2D;
