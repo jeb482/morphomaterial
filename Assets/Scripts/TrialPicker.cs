@@ -10,6 +10,8 @@ public class TrialPicker : MonoBehaviour {
     }
     public GameObject block1;
     public GameObject block2;
+    public Transform block1Origin;
+    public Transform block2Origin;
     public int trialNum;
     private int lastTrialNum;
     private List<WoodTrialDescription> trials = new List<WoodTrialDescription>();
@@ -44,10 +46,10 @@ public class TrialPicker : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Z))
         {
             Debug.Log("Z");
-            if (CameraManager.Instance.Focus == block1.transform)
-                CameraManager.Instance.Focus = block2.transform;
+            if (CameraManager.Instance.Focus == block1Origin)
+                CameraManager.Instance.Focus = block2Origin;
             else
-                CameraManager.Instance.Focus = block1.transform;
+                CameraManager.Instance.Focus = block1Origin;
         }
 
 
