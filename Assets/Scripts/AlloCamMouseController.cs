@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class AlloCamMouseController : MonoBehaviour {
-    public float sensitivity;
-    public bool allowObjectRotation = false;
+    public float sensitivity = 1;
+    public bool allowObjectRotation = true;
+    public Transform Focus; 
+    public CameraManager camManager;
 
     bool mousePressed = false;
     bool camMode = false;
@@ -27,30 +29,18 @@ public class AlloCamMouseController : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        if (GameController.Instance.targetObject == null)
+        if (GameController.Instance.targetObject == null || camManager.cameraConfig == CameraManager.CameraConfiguration.HMDCam)
             return;
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !Input.GetKey(KeyCode.LeftAlt))
         {
             mousePressed = true;
-            originalMousePos = Input.mousePosition; 
-            worldX = (GetComponent<Camera>().ScreenToWorldPoint(new Vector3(100,0,1)) - GetComponent<Camera>().ScreenToWorldPoint(new Vector3(0, 0, 1))).normalized;
-            worldY = (GetComponent<Camera>().ScreenToWorldPoint(new Vector3(0, 100, 1)) - GetComponent<Camera>().ScreenToWorldPoint(new Vector3(0, 0, 1))).normalized;
-            if (Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt))
-            {
-                camMode = true;
-                originalPosition = this.transform.position;
-                originalRotation = this.transform.rotation;
-                originalScale = this.transform.localScale;
-            }
-            else 
-            {
-                camMode = false;
-                originalPosition = GameController.Instance.targetObject.transform.position;
-                originalRotation = GameController.Instance.targetObject.transform.rotation;
-                originalScale = GameController.Instance.targetObject.transform.localScale;
-            }
-            
+            originalMousePos = Input.mousePosition;
+            worldX = (camManager.ScreenToWorldPoint(new Vector3(100, 0, 1)) - camManager.ScreenToWorldPoint(new Vector3(0, 0, 1))).normalized;
+            worldY = (camManager.ScreenToWorldPoint(new Vector3(0, 100, 1)) - camManager.ScreenToWorldPoint(new Vector3(0, 0, 1))).normalized;
+            originalPosition = Focus.position;
+            originalRotation = Focus.rotation;
+            originalScale = Focus.localScale;
         }
 
         if (Input.GetMouseButtonUp(0))
@@ -61,22 +51,10 @@ public class AlloCamMouseController : MonoBehaviour {
         if (mousePressed)
         {
             Vector3 delta = Input.mousePosition - originalMousePos;
-            if (camMode)
-            {
-                transform.SetPositionAndRotation(originalPosition, originalRotation);
-                transform.RotateAround(GameController.Instance.targetObject.transform.position, worldX, sensitivity * -delta.y);
-                transform.RotateAround(GameController.Instance.targetObject.transform.position, worldY, sensitivity * delta.x);
-            } else if (allowObjectRotation)
-            {
-                Debug.Log("la");
-                GameController.Instance.targetObject.transform.SetPositionAndRotation(originalPosition, originalRotation);
-//                GameController.Instance.targetObject.transform.Rotate(GameController.Instance.targetObject.transform.position, worldX, sensitivity * -delta.y);
-//                GameController.Instance.targetObject.transform.Rotate(GameController.Instance.targetObject.transform.position, worldY, sensitivity * delta.x);
-            }
-
-   
-            //Debug.Log(Input.mousePosition - originalMousePos);
-
+            Debug.Log("Hey" + delta.x);
+            Focus.SetPositionAndRotation(originalPosition, originalRotation);
+            Focus.Rotate(worldX, sensitivity * -delta.y);
+            Focus.Rotate(worldY, sensitivity * delta.x);
         }
     }
 }

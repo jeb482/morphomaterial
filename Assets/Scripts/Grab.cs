@@ -6,6 +6,7 @@ public class Grab : MonoBehaviour {
 
     public float grabRadius;
     public LayerMask grabMask;
+    public Transform Grabber;
 
     private GameObject grabbedObject;
     private bool grabbing = false;
@@ -13,7 +14,7 @@ public class Grab : MonoBehaviour {
     void GrabObject()
     {
         grabbing = true;
-        RaycastHit[] hits = Physics.SphereCastAll(transform.position, grabRadius, transform.forward, 0f, grabMask);        
+        RaycastHit[] hits = Physics.SphereCastAll(Grabber.position, grabRadius, Grabber.forward, 0f, grabMask);        
         if (hits.Length > 0)
         {
             Debug.Log("Grabbed");
@@ -26,8 +27,8 @@ public class Grab : MonoBehaviour {
             }
             grabbedObject = hits[closestHit].transform.gameObject;
             grabbedObject.GetComponent<Rigidbody>().isKinematic = true;
-            grabbedObject.transform.position = transform.position;
-            grabbedObject.transform.parent = transform;
+            grabbedObject.transform.position = Grabber.position;
+            grabbedObject.transform.parent = Grabber;
             // Grab the object
         }
     }

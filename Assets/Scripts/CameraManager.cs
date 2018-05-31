@@ -95,7 +95,7 @@ public class CameraManager : MonoBehaviour {
 
     void GetOrbitInput(Camera currentCam, Transform currentCamXform)
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && Input.GetKey(KeyCode.LeftAlt))
         {
             originalMousePos = Input.mousePosition;
             
@@ -190,6 +190,19 @@ public class CameraManager : MonoBehaviour {
             VirtualScreen.transform.SetParent(Focus);
             VirtualScreen.transform.localPosition = new Vector3(0, 0, -CameraDistance);
             VirtualScreen.transform.LookAt(Vector3.zero);
+        }
+    }
+
+    public Vector3 ScreenToWorldPoint(Vector3 screenPoint)
+    {
+        switch (cameraConfig)
+        {
+            case CameraConfiguration.FishTankCam:
+                return FishtankCam.ScreenToWorldPoint(screenPoint);
+            case CameraConfiguration.ViewportCam:
+                return Viewport.GetComponent<Camera>().ScreenToWorldPoint(screenPoint);
+            default:
+                return new Vector3(0, 0, 0);
         }
     }
 
