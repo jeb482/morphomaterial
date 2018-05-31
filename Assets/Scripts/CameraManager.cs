@@ -27,6 +27,8 @@ public class CameraManager : MonoBehaviour {
     private Vector3 worldY;
     private Vector3 originalPosition;
     private Quaternion originalRotation;
+
+    private Transform LastFocus;
     
 
 
@@ -60,6 +62,8 @@ public class CameraManager : MonoBehaviour {
             SetConfig(CameraConfiguration.FishTankCam);
         else if (Input.GetKeyDown(KeyCode.Alpha3))
             SetConfig(CameraConfiguration.ViewportCam);
+        else if (LastFocus != Focus)
+            SetConfig(cameraConfig);
 
         // Unless in HMD Mode, update camera
         Camera currentCam;
@@ -80,6 +84,7 @@ public class CameraManager : MonoBehaviour {
         GetZoomInput();
         GetOrbitInput(currentCam, currentCamXform);
         Draw(currentCam, currentCamXform);
+        LastFocus = Focus;
     }
 
     void GetZoomInput()
@@ -140,7 +145,6 @@ public class CameraManager : MonoBehaviour {
 
     void SetConfig(CameraConfiguration config)
     {
-        Debug.Log(config);
         cameraConfig = config;
         switch (config)
         {
