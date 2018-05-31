@@ -113,7 +113,7 @@ public class CameraManager : MonoBehaviour {
             isOribiting = false;
         }
     }
-    
+     
     /// <summary>
     /// Sets the camera transformation given it's orinetation and distance with respect to the Focus
     /// </summary>

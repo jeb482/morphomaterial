@@ -19,7 +19,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _AnisoTex:
-        m_Texture: {fileID: 2800000, guid: c29886077dc5fe843a6545a2611c6ef2, type: 3}
+        m_Texture: {fileID: 2800000, guid: bc0a07ee84d84f349a97288f96fd806d, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -59,7 +59,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecularTex:
-        m_Texture: {fileID: 2800000, guid: 7211a58220a0ce74c990d1e605409dd6, type: 3}
+        m_Texture: {fileID: 2800000, guid: c828120721c8a1d4196889655e5a1288, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:

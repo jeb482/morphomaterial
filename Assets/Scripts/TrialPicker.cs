@@ -60,14 +60,10 @@ public class TrialPicker : MonoBehaviour {
     // Need from resources and assign to tetures like "_DiffuseTex"
     void updateTrial(int index)
     {
-        //print("Did it");
         if (index >= trials.Count)
             index = 0;
 
         trials[index].PopulateMaterials(block1.GetComponent<Renderer>().material, block2.GetComponent<Renderer>().material);
-
-//        block1.GetComponent<Renderer>().material.SetTexture("_DiffuseTex", tex);// = new Color(1,0,0);
-        //block1.GetComponent<Renderer>().materials.GetValue(0).color = new Color(1,0,0);
     }
 
 
@@ -101,7 +97,6 @@ public class TrialPicker : MonoBehaviour {
 
         public void PopulateMaterials(Material mat1, Material mat2)
         {
-            Debug.Log(diffusePath1);
             var axTex1 = Resources.Load("wood\\" + fiberAxisPath1 + "\\axis") as Texture2D;
             mat1.SetTexture("_FiberAxisTex", axTex1);
             var hiliteTex1 = Resources.Load("wood\\" + highLightWidthPath1 + "\\hilight") as Texture2D;
