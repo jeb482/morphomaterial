@@ -8,6 +8,7 @@ using UnityEngine;
 /// </summary>
 public class recordScreenPosition : MonoBehaviour {
 
+    public Transform leftController;
     private bool aButtonDown = false;
     private int numPointsRecorded = 0;
 
@@ -30,8 +31,12 @@ public class recordScreenPosition : MonoBehaviour {
                     GameController.Instance.upperRightScreenCorner = transform.position;
                     Debug.Log("Upper right recorded");
                     break;
+                case 3:
+                    GameController.Instance.fishtankEyeOffset = leftController.InverseTransformPoint(transform.position);
+                    Debug.Log("FishTank Offset Recorded" + leftController.InverseTransformPoint(transform.position));
+                    break;
             }
-            numPointsRecorded = (numPointsRecorded + 1) % 3;
+            numPointsRecorded = (numPointsRecorded + 1) % 4;
             aButtonDown = true;
         }
         else if (aButtonDown && !OVRInput.GetDown(OVRInput.Button.One))

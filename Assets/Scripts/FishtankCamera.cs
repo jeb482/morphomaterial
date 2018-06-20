@@ -48,8 +48,12 @@ public class FishtankCamera : MonoBehaviour {
     {
         screenSpaceL = new Vector3(0, 0, 0);
         screenSpaceH = new Vector3(.475f, .3f, 0);
-        
-        screenSpaceHeadPos = getTransformedEyePose(leftEyeTracker.transform.position);
+
+        Vector3 fishtankEyeOffset = new Vector3(0,0,0);
+        if (GameController.Instance.fishtankEyeOffset != null)
+            fishtankEyeOffset = GameController.Instance.fishtankEyeOffset;
+
+        screenSpaceHeadPos = getTransformedEyePose(leftEyeTracker.transform.TransformPoint(fishtankEyeOffset));
         Vector3 virtualCameraPosition = virtualScreenXform.localToWorldMatrix.MultiplyPoint(screenSpaceHeadPos);
         transform.position = virtualCameraPosition;
 

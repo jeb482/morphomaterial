@@ -13,6 +13,7 @@ public class CameraManager : MonoBehaviour {
     public float CameraDistance = 3f;
     public float ZoomSensitivity = 8f;
     public float MinimumCameraDistance = 1f;
+    public float MaximumCameraDistance = 8f;
 
     public enum CameraConfiguration { HMDCam, FishTankCam, ViewportCam};
     public CameraConfiguration cameraConfig = CameraConfiguration.HMDCam;

@@ -16,6 +16,7 @@ public class GameController : MonoBehaviour {
     public Vector3 lowerLeftScreenCorner;
     public Vector3 upperLeftScreenCorner;
     public Vector3 upperRightScreenCorner;
+    public Vector3 fishtankEyeOffset;
     public GameObject targetObject;
 
     public Matrix4x4 realWorldToScreen;
@@ -114,6 +115,7 @@ public class GameController : MonoBehaviour {
         data.lowerLeftScreenCorner = lowerLeftScreenCorner;
         data.upperLeftScreenCorner = upperLeftScreenCorner;
         data.upperRightScreenCorner = upperRightScreenCorner;
+        data.fishtankEyeOffset = fishtankEyeOffset;
 
         Debug.Log(calibrationPath);
         XmlSerializer xmlf = new XmlSerializer(typeof(CalibrationData));
@@ -140,10 +142,12 @@ public class GameController : MonoBehaviour {
             lowerLeftScreenCorner = data.lowerLeftScreenCorner;
             upperLeftScreenCorner = data.upperLeftScreenCorner;
             upperRightScreenCorner = data.upperRightScreenCorner;
-            Debug.Log("Offset: " + rightControllerOffset);
+            fishtankEyeOffset = data.fishtankEyeOffset;
+            Debug.Log("Right Controller Offset: " + rightControllerOffset);
             Debug.Log("LL: " + lowerLeftScreenCorner);
             Debug.Log("UL: " + upperLeftScreenCorner);
             Debug.Log("UR: " + upperRightScreenCorner);
+            Debug.Log("Fishtank Eye Offset: " + fishtankEyeOffset);
             updateRealWorldToScreen();
         }
         else
@@ -175,6 +179,7 @@ public class CalibrationData
     [SerializeField] public Vector3 lowerLeftScreenCorner;
     [SerializeField] public Vector3 upperLeftScreenCorner;
     [SerializeField] public Vector3 upperRightScreenCorner;
+    [SerializeField] public Vector3 fishtankEyeOffset;
 }
 
 

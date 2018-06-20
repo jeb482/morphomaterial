@@ -81,7 +81,7 @@ Shader "Custom/DiffractionShader" {
 		inline fixed4 LightingDiffraction(SurfaceOutputStandard s, fixed3 viewDir, UnityGI gi)
 		{
 			
-			// Original colour
+			// Original color
 			fixed4 pbr = LightingStandard(s, viewDir, gi);
 		
 			float3 L = gi.light.dir;
