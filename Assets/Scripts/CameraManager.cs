@@ -28,6 +28,8 @@ public class CameraManager : MonoBehaviour {
     private Vector3 worldY;
     private Vector3 originalPosition;
     private Quaternion originalRotation;
+    private float lastDeltaY = 0;
+    private bool lockDeltaY = false;
 
     private Transform LastFocus;
     
@@ -91,7 +93,9 @@ public class CameraManager : MonoBehaviour {
     void GetZoomInput()
     {
         float deltaZ = Input.GetAxis("Mouse ScrollWheel");
-        CameraDistance = System.Math.Max(MinimumCameraDistance, CameraDistance - ZoomSensitivity * deltaZ);
+        CameraDistance = System.Math.Max(MinimumCameraDistance,
+                         System.Math.Min(MaximumCameraDistance,
+                         CameraDistance - ZoomSensitivity * deltaZ));
     }
 
     void GetOrbitInput(Camera currentCam, Transform currentCamXform)
@@ -125,9 +129,26 @@ public class CameraManager : MonoBehaviour {
         {
             Vector3 delta = Input.mousePosition - originalMousePos;
             currentCamXform.SetPositionAndRotation(originalPosition, originalRotation);
+
+            // Don't let user rotate over y axis.{
+            var oldViewDir = currentCamXform.InverseTransformVector(new Vector3(0, 0, 1)).normalized;
             currentCamXform.RotateAround(Focus.transform.position, worldX, RotationSensitivity * -delta.y);
-            currentCamXform.RotateAround(Focus.transform.position, worldY, RotationSensitivity * delta.x);
-            //currentCamXform.localScale = new Vector3(1/currentCamXform.parent.localScale.x, 1/currentCamXform.parent.localScale.y, 1/currentCamXform.parent.localScale.z);
+            var newViewDir = currentCamXform.InverseTransformVector(new Vector3(0, 0, 1)).normalized;
+            if ((lockDeltaY && System.Math.Abs(delta.y) > System.Math.Abs(lastDeltaY)) || (System.Math.Sign(newViewDir.x) != System.Math.Sign(oldViewDir.x) || System.Math.Sign(newViewDir.z) != System.Math.Sign(oldViewDir.z) && (oldViewDir.x != 0 || oldViewDir.z != 0)))
+            {
+                currentCamXform.RotateAround(Focus.transform.position, worldX, RotationSensitivity * delta.y - lastDeltaY);
+                lockDeltaY = true;
+            }
+            else
+            {
+                lockDeltaY = false;
+                lastDeltaY = delta.y;
+                currentCamXform.RotateAround(Focus.transform.position, worldY, RotationSensitivity * delta.x);
+            }
+
+            // Rotate about Y
+            
+            
             if (cameraConfig == CameraConfiguration.ViewportCam)
                 currentCamXform.LookAt(Focus);
             else
