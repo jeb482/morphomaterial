@@ -39,6 +39,7 @@ public class FishtankCamera : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
+        updateWindowData();
         if (leftEyeTracker == null)
             return;
         UpdateViewFrustum();
@@ -70,7 +71,7 @@ public class FishtankCamera : MonoBehaviour {
 
     void updateWindowData()
     {
-        Debug.Log("Window size: " + Screen.width + ", " + Screen.height);
-        Debug.Log("Screen size: " + Screen.currentResolution.width + ", " + Screen.currentResolution.height);
+        //Debug.Log("Window size: " + Screen.width + ", " + Screen.height);
+        //Debug.Log("Screen size: " + Screen.currentResolution.width + ", " + Screen.currentResolution.height);
     }
 }

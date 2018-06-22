@@ -20,6 +20,7 @@ public class CameraManager : MonoBehaviour {
 
     private GameObject CameraRig;
     private GameObject VirtualScreen;
+    private GameObject FishtankCamObj;
     private Camera FishtankCam;
 
     private bool isOribiting = false;
@@ -53,7 +54,8 @@ public class CameraManager : MonoBehaviour {
     void Start () {
         CameraRig = Player.transform.Find("OVRCameraRig").gameObject;
         VirtualScreen = FishTank.transform.Find("VirtualScreenLocation").gameObject;
-        FishtankCam = FishTank.transform.Find("FishtankCamera").gameObject.GetComponent<Camera>();
+        FishtankCamObj = FishTank.transform.Find("FishtankCamera").gameObject;
+        FishtankCam = FishtankCamObj.GetComponent<Camera>();
 	}
 	
 	// Update is called once per frame
@@ -212,6 +214,7 @@ public class CameraManager : MonoBehaviour {
             VirtualScreen.transform.SetParent(Focus);
             VirtualScreen.transform.localPosition = new Vector3(0, 0, -CameraDistance);
             VirtualScreen.transform.LookAt(Vector3.zero);
+           
         }
     }
 
@@ -226,6 +229,18 @@ public class CameraManager : MonoBehaviour {
             default:
                 return new Vector3(0, 0, 0);
         }
+    }
+
+    public void RecenterFishTank()
+    {
+        Debug.Log("Re-centering FishTank");
+        Vector3 oldScreenCenter = (GameController.Instance.lowerLeftScreenCorner + GameController.Instance.upperRightScreenCorner) / 2;
+        Vector3 centerDiff = FishtankCamObj.transform.TransformPoint(GameController.Instance.fishtankEyeOffset) - oldScreenCenter;
+        Vector3 headForward = FishtankCamObj.transform.TransformPoint(GameController.Instance.fishtankEyeOffset) - FishtankCamObj.transform.position;
+
+        //GameController.Instance.lowerLeftScreenCorner += 
+
+        //ConfigureFishtank();
     }
 
 }
