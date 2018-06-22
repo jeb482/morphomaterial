@@ -184,6 +184,11 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 961a7766958d57d418f9dfd207c6266b, type: 2}
   m_IsPrefabParent: 0
+--- !u!4 &519573488 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4981030616136454, guid: a9a85640d4a2432489d923cf189d76ed,
+    type: 2}
+  m_PrefabInternal: {fileID: 2013054599}
 --- !u!1 &520833901
 GameObject:
   m_ObjectHideFlags: 0
@@ -950,6 +955,11 @@ Prefab:
       propertyPath: MinimumCameraDistance
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114335333373388056, guid: a9a85640d4a2432489d923cf189d76ed,
+        type: 2}
+      propertyPath: EyeLocation
+      value: 
+      objectReference: {fileID: 519573488}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a9a85640d4a2432489d923cf189d76ed, type: 2}
   m_IsPrefabParent: 0

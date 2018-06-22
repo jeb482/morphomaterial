@@ -9,6 +9,7 @@ public class CameraManager : MonoBehaviour {
     public GameObject Viewport;
     public GameObject Player;
     public Transform Focus;
+    public Transform EyeLocation;
     public float RotationSensitivity = 1f;
     public float CameraDistance = 3f;
     public float ZoomSensitivity = 8f;
@@ -234,11 +235,25 @@ public class CameraManager : MonoBehaviour {
     public void RecenterFishTank()
     {
         Debug.Log("Re-centering FishTank");
-        Vector3 oldScreenCenter = (GameController.Instance.lowerLeftScreenCorner + GameController.Instance.upperRightScreenCorner) / 2;
-        Vector3 centerDiff = FishtankCamObj.transform.TransformPoint(GameController.Instance.fishtankEyeOffset) - oldScreenCenter;
-        Vector3 headForward = FishtankCamObj.transform.TransformPoint(GameController.Instance.fishtankEyeOffset) - FishtankCamObj.transform.position;
 
-        //GameController.Instance.lowerLeftScreenCorner += 
+        // The vector from the screen center to the user's eye .
+        Vector3 oldScreenCenter = (GameController.Instance.lowerLeftScreenCorner + GameController.Instance.upperRightScreenCorner) / 2;
+        Vector3 centerDiff = EyeLocation.TransformPoint(GameController.Instance.fishtankEyeOffset) - oldScreenCenter;
+
+        // The vector of the user's nose points in.
+        Vector3 headForward = EyeLocation.TransformPoint(GameController.Instance.fishtankEyeOffset) - FishtankCamObj.transform.position;
+        headForward.y = 0;
+        headForward.Normalize();
+
+        // Subtract out component of difference parallel to user's gaze.
+        centerDiff -= Vector3.Dot(centerDiff, headForward) * headForward;
+
+
+        GameController.Instance.lowerLeftScreenCorner += centerDiff;
+        GameController.Instance.upperLeftScreenCorner += centerDiff;
+        GameController.Instance.upperRightScreenCorner += centerDiff;
+
+        GameController.Instance.updateRealWorldToScreen();
 
         //ConfigureFishtank();
     }
