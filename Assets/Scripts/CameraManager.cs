@@ -135,7 +135,7 @@ public class CameraManager : MonoBehaviour {
 
             // Don't let user rotate over y axis.{
             var oldViewDir = currentCamXform.InverseTransformVector(new Vector3(0, 0, 1)).normalized;
-            currentCamXform.RotateAround(Focus.transform.position, worldX, RotationSensitivity * -delta.y);
+            //currentCamXform.RotateAround(Focus.transform.position, worldX, RotationSensitivity * -delta.y);
             var newViewDir = currentCamXform.InverseTransformVector(new Vector3(0, 0, 1)).normalized;
             if ((lockDeltaY && System.Math.Abs(delta.y) > System.Math.Abs(lastDeltaY)) || (System.Math.Sign(newViewDir.x) != System.Math.Sign(oldViewDir.x) || System.Math.Sign(newViewDir.z) != System.Math.Sign(oldViewDir.z) && (oldViewDir.x != 0 || oldViewDir.z != 0)))
             {
@@ -146,7 +146,7 @@ public class CameraManager : MonoBehaviour {
             {
                 lockDeltaY = false;
                 lastDeltaY = delta.y;
-                currentCamXform.RotateAround(Focus.transform.position, worldY, RotationSensitivity * delta.x);
+                //currentCamXform.RotateAround(Focus.transform.position, worldY, RotationSensitivity * delta.x);
             }
 
             // Rotate about Y
