@@ -12,16 +12,16 @@ public class FishtankCamera : MonoBehaviour {
     public float viewportHeight;
     public float viewportWidth;
     public Vector3 screenSpaceHeadPos;
-    public FrustumPlanes frustumPlanes;
+    public float viewScale = 1;
+    public Vector2 screenDims = new Vector2(.475f,.3f);
 
+    public float screenScale = 1;
 
-    public float screenScale;
-
-
+    private FrustumPlanes frustumPlanes;
     private Camera cam;
     private Vector2 screenSpaceL;
     private Vector2 screenSpaceH;
-   
+    private Matrix4x4 virtualScreenToWorldMat = new Matrix4x4(); 
     // Use this for initialization
     void Start () {
         updateWindowData();
@@ -54,12 +54,21 @@ public class FishtankCamera : MonoBehaviour {
         screenSpaceL = new Vector3(0, 0, 0);
         screenSpaceH = new Vector3(.475f, .3f, 0);
 
+        // Offset from controller to eye
         Vector3 fishtankEyeOffset = new Vector3(0,0,0);
         if (GameController.Instance.fishtankEyeOffset != null)
             fishtankEyeOffset = GameController.Instance.fishtankEyeOffset;
 
+        // Get 
+        
         screenSpaceHeadPos = getTransformedEyePose(leftEyeTracker.transform.TransformPoint(fishtankEyeOffset));
+        virtualScreenXform.localPosition = new Vector3(-screenScale * screenDims.x / 2, -screenScale * screenDims.y / 2, 0);
+        virtualScreenXform.localScale = new Vector3(screenScale * screenDims.x, screenScale * screenDims.y, screenScale);
         Vector3 virtualCameraPosition = virtualScreenXform.localToWorldMatrix.MultiplyPoint(screenSpaceHeadPos);
+        //virtualScreenToWorldMat.SetTRS(virtualScreenXform.TransformPoint(screenDims.x / 2, screenDims.y / 2, 0),
+        //    virtualScreenXform.rotation,
+        //    new Vector3(screenScale * screenDims.x, screenScale * screenDims.y, screenScale));
+        //Vector3 virtualCameraPosition = virtualScreenToWorldMat.MultiplyPoint(screenSpaceHeadPos);
         transform.position = virtualCameraPosition;
 
 
