@@ -159,7 +159,7 @@ public class GameController : MonoBehaviour {
 
     public void updateRealWorldToScreen()
     {
-        Vector3 origin = lowerLeftScreenCorner;
+        Vector3 origin = (lowerLeftScreenCorner + upperRightScreenCorner)/2;
         Vector3 x = (upperRightScreenCorner - upperLeftScreenCorner).normalized;
         Vector3 y = (upperLeftScreenCorner  - lowerLeftScreenCorner).normalized;
         Vector3 z = Vector3.Cross(x, y).normalized;

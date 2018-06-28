@@ -6,18 +6,15 @@ using UnityEngine;
 public class FishtankCamera : MonoBehaviour {
     public GameObject leftEyeTracker;
     public GameObject rightEyeTracker; // If only one tracker, set same as left?
-    public float nearPlane;
-    public float farPlane;
-    public Transform virtualScreenXform;
-    public float viewportHeight;
-    public float viewportWidth;
+    public Transform focus;
+    Vector2 viewportSize = new Vector2(.475f, .3f);
     public Vector3 screenSpaceHeadPos;
     public float viewScale = 1;
     public Vector2 screenDims = new Vector2(.475f,.3f);
+    public FrustumPlanes frustumPlanes;
+    public float zNear = .1f;
+    public float zFar = 10f;
 
-    public float screenScale = 1;
-
-    private FrustumPlanes frustumPlanes;
     private Camera cam;
     private Vector2 screenSpaceL;
     private Vector2 screenSpaceH;
@@ -25,8 +22,8 @@ public class FishtankCamera : MonoBehaviour {
     // Use this for initialization
     void Start () {
         updateWindowData();
-        viewportHeight = (GameController.Instance.upperLeftScreenCorner - GameController.Instance.lowerLeftScreenCorner).magnitude;
-        viewportWidth = (GameController.Instance.upperRightScreenCorner - GameController.Instance.upperLeftScreenCorner).magnitude;
+        //viewportHeight = (GameController.Instance.upperLeftScreenCorner - GameController.Instance.lowerLeftScreenCorner).magnitude;
+        //viewportWidth = (GameController.Instance.upperRightScreenCorner - GameController.Instance.upperLeftScreenCorner).magnitude;
         cam = GetComponent<Camera>();
     }
 
@@ -46,7 +43,35 @@ public class FishtankCamera : MonoBehaviour {
         updateWindowData();
         if (leftEyeTracker == null)
             return;
-        UpdateViewFrustum();
+        UpdateViewFrustumFocus();
+    }
+
+    void UpdateViewFrustumFocus()
+    {
+        Vector2 screemDims = new Vector2(.475f, .3f);
+
+        // Deal with offset from controller to eye
+        Vector3 fishtankEyeOffset = new Vector3(0, 0, 0);
+        if (GameController.Instance.fishtankEyeOffset != null)
+            fishtankEyeOffset = GameController.Instance.fishtankEyeOffset;
+
+        // Get head pos in Screen Frame
+        screenSpaceHeadPos = getTransformedEyePose(leftEyeTracker.transform.TransformPoint(fishtankEyeOffset));
+
+        // Align with virtual screen;
+        transform.position = focus.TransformPoint(screenSpaceHeadPos);
+        //transform.LookAt(focus.position);
+
+        // Construct a viewing frustum intersecting the screen.
+        frustumPlanes.zNear = zNear;
+        float screenToNearScale = -frustumPlanes.zNear / screenSpaceHeadPos.z;
+        float halfS = .5f * viewScale;
+        frustumPlanes.top    = screenToNearScale*( halfS*screenDims.y - screenSpaceHeadPos.y);
+        frustumPlanes.right  = screenToNearScale*( halfS*screenDims.x - screenSpaceHeadPos.x);
+        frustumPlanes.bottom = screenToNearScale*(-halfS*screenDims.y - screenSpaceHeadPos.y);
+        frustumPlanes.left   = screenToNearScale*(-halfS*screenDims.x - screenSpaceHeadPos.x);
+        frustumPlanes.zFar = zFar;
+        cam.projectionMatrix = Matrix4x4.Frustum(frustumPlanes);
     }
 
     void UpdateViewFrustum()
@@ -59,12 +84,14 @@ public class FishtankCamera : MonoBehaviour {
         if (GameController.Instance.fishtankEyeOffset != null)
             fishtankEyeOffset = GameController.Instance.fishtankEyeOffset;
 
+
+
         // Get 
         screenSpaceHeadPos = getTransformedEyePose(leftEyeTracker.transform.TransformPoint(fishtankEyeOffset));
-        virtualScreenXform.localPosition= new Vector3(-.475f,-.3f,0);
-        Vector3 virtualCameraPosition = virtualScreenXform.localToWorldMatrix.MultiplyPoint(screenSpaceHeadPos);
-        transform.rotation = virtualScreenXform.rotation;
-        transform.position = viewScale*virtualCameraPosition;
+        //virtualScreenXform.localPosition= new Vector3(-.475f,-.3f,0);
+        //Vector3 virtualCameraPosition = virtualScreenXform.localToWorldMatrix.MultiplyPoint(screenSpaceHeadPos);
+        //transform.rotation = virtualScreenXform.rotation;
+        //transform.position = viewScale*virtualCameraPosition;
 
         // screenSpaceHeadPos = getTransformedEyePose(leftEyeTracker.transform.TransformPoint(fishtankEyeOffset));
         // virtualScreenXform.localPosition = new Vector3(-screenScale * screenDims.x / 2, -screenScale * screenDims.y / 2, 0);
