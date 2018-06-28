@@ -154,6 +154,10 @@ public class CameraManager : MonoBehaviour {
             
             if (cameraConfig == CameraConfiguration.ViewportCam)
                 currentCamXform.LookAt(Focus);
+                if (Focus != null)
+                {
+                 currentCamXform.localPosition *= (CameraDistance / currentCamXform.localPosition.magnitude);
+                }
             else
             {
                 currentCamXform.LookAt(Focus);
@@ -161,11 +165,11 @@ public class CameraManager : MonoBehaviour {
             }
         }
 
-        // Update distance
-        if (Focus != null)
-        {
-            currentCamXform.localPosition *= (CameraDistance / currentCamXform.localPosition.magnitude);
-        }
+//        // Update distance
+//        if (Focus != null)
+//        {
+//            currentCamXform.localPosition *= (CameraDistance / currentCamXform.localPosition.magnitude);
+//        }
     }
 
     void SetConfig(CameraConfiguration config)
@@ -213,7 +217,7 @@ public class CameraManager : MonoBehaviour {
         {
             FishtankCam.transform.SetParent(Focus);
             VirtualScreen.transform.SetParent(Focus);
-            VirtualScreen.transform.localPosition = new Vector3(0, 0, -CameraDistance);
+            VirtualScreen.transform.localPosition = new Vector3(0, 0, 0);
             VirtualScreen.transform.LookAt(Vector3.zero);
            
         }

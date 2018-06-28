@@ -60,20 +60,25 @@ public class FishtankCamera : MonoBehaviour {
             fishtankEyeOffset = GameController.Instance.fishtankEyeOffset;
 
         // Get 
-        
         screenSpaceHeadPos = getTransformedEyePose(leftEyeTracker.transform.TransformPoint(fishtankEyeOffset));
-        virtualScreenXform.localPosition = new Vector3(-screenScale * screenDims.x / 2, -screenScale * screenDims.y / 2, 0);
-        virtualScreenXform.localScale = new Vector3(screenScale * screenDims.x, screenScale * screenDims.y, screenScale);
+        virtualScreenXform.localPosition= new Vector3(-.475f,-.3f,0);
         Vector3 virtualCameraPosition = virtualScreenXform.localToWorldMatrix.MultiplyPoint(screenSpaceHeadPos);
-        //virtualScreenToWorldMat.SetTRS(virtualScreenXform.TransformPoint(screenDims.x / 2, screenDims.y / 2, 0),
-        //    virtualScreenXform.rotation,
-        //    new Vector3(screenScale * screenDims.x, screenScale * screenDims.y, screenScale));
-        //Vector3 virtualCameraPosition = virtualScreenToWorldMat.MultiplyPoint(screenSpaceHeadPos);
-        transform.position = virtualCameraPosition;
+        transform.rotation = virtualScreenXform.rotation;
+        transform.position = viewScale*virtualCameraPosition;
+
+        // screenSpaceHeadPos = getTransformedEyePose(leftEyeTracker.transform.TransformPoint(fishtankEyeOffset));
+        // virtualScreenXform.localPosition = new Vector3(-screenScale * screenDims.x / 2, -screenScale * screenDims.y / 2, 0);
+        // virtualScreenXform.localScale = new Vector3(screenScale * screenDims.x, screenScale * screenDims.y, screenScale);
+        // Vector3 virtualCameraPosition = virtualScreenXform.localToWorldMatrix.MultiplyPoint(screenSpaceHeadPos);
+        // //virtualScreenToWorldMat.SetTRS(virtualScreenXform.TransformPoint(screenDims.x / 2, screenDims.y / 2, 0),
+        // //    virtualScreenXform.rotation,
+        // //    new Vector3(screenScale * screenDims.x, screenScale * screenDims.y, screenScale));
+        // //Vector3 virtualCameraPosition = virtualScreenToWorldMat.MultiplyPoint(screenSpaceHeadPos);
+        // transform.position = virtualCameraPosition;
 
 
         frustumPlanes.zNear = .1f; //- ;
-        Debug.Log(screenSpaceHeadPos.z);
+
         float nearPlaneScale = -(.1f/screenSpaceHeadPos.z);//((screenSpaceHeadPos.z + frustumPlanes.zNear) / screenSpaceHeadPos.z);
 
         frustumPlanes.left = nearPlaneScale*(-screenSpaceHeadPos.x);
