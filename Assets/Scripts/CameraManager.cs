@@ -10,6 +10,7 @@ public class CameraManager : MonoBehaviour {
     public GameObject Player;
     public Transform Focus;
     public Transform EyeLocation;
+    
     public float RotationSensitivity = 1f;
     public float CameraDistance = 3f;
     public float ZoomSensitivity = 8f;
@@ -20,9 +21,8 @@ public class CameraManager : MonoBehaviour {
     public CameraConfiguration cameraConfig = CameraConfiguration.HMDCam;
 
     private GameObject CameraRig;
-    private GameObject VirtualScreen;
     private GameObject FishtankCamObj;
-    private Camera FishtankCam;
+    //private Camera FishtankCam;
 
     private bool isOribiting = false;
     private Vector3 originalMousePos;
@@ -32,6 +32,7 @@ public class CameraManager : MonoBehaviour {
     private Quaternion originalRotation;
     private float lastDeltaY = 0;
     private bool lockDeltaY = false;
+    private FishtankCamera fishTankCam; 
 
     private Transform LastFocus;
     
@@ -54,10 +55,10 @@ public class CameraManager : MonoBehaviour {
     // Use this for initialization
     void Start () {
         CameraRig = Player.transform.Find("OVRCameraRig").gameObject;
-        VirtualScreen = FishTank.transform.Find("VirtualScreenLocation").gameObject;
         FishtankCamObj = FishTank.transform.Find("FishtankCamera").gameObject;
-        FishtankCam = FishtankCamObj.GetComponent<Camera>();
-	}
+        fishTankCam = FishtankCamObj.GetComponent<FishtankCamera>();
+        //FishtankCam = FishtankCamObj.GetComponent<Camera>();
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -71,34 +72,24 @@ public class CameraManager : MonoBehaviour {
         else if (LastFocus != Focus)
             SetConfig(cameraConfig);
 
-        // Unless in HMD Mode, update camera
-        Camera currentCam;
-        Transform currentCamXform;
+        // Update camera
+        float zoomInput = Input.GetAxis("Mouse ScrollWheel");
         switch (cameraConfig)
         {
             case CameraConfiguration.FishTankCam:
-                currentCam = FishtankCam;
-                currentCamXform = VirtualScreen.transform;
+                fishTankCam.modifyScale(zoomInput);
                 break;
             case CameraConfiguration.ViewportCam:
-                currentCam = Viewport.GetComponent<Camera>();
-                currentCamXform = Viewport.transform;
+                GetOrbitInput(Viewport.GetComponent<Camera>(), Viewport.transform);
+                Draw(Viewport.GetComponent<Camera>(), Viewport.transform, zoomInput);
                 break;
             default:
                 return;
         }
-        GetZoomInput();
-        GetOrbitInput(currentCam, currentCamXform);
-        Draw(currentCam, currentCamXform);
-        LastFocus = Focus;
-    }
+        
+        
 
-    void GetZoomInput()
-    {
-        float deltaZ = Input.GetAxis("Mouse ScrollWheel");
-        CameraDistance = System.Math.Max(MinimumCameraDistance,
-                         System.Math.Min(MaximumCameraDistance,
-                         CameraDistance - ZoomSensitivity * deltaZ));
+        LastFocus = Focus;
     }
 
     void GetOrbitInput(Camera currentCam, Transform currentCamXform)
@@ -114,8 +105,6 @@ public class CameraManager : MonoBehaviour {
             originalPosition = currentCamXform.position;
             originalRotation = currentCamXform.rotation;
         }
-
-
         if (Input.GetMouseButtonUp(0))
         {
             isOribiting = false;
@@ -125,8 +114,10 @@ public class CameraManager : MonoBehaviour {
     /// <summary>
     /// Sets the camera transformation given it's orinetation and distance with respect to the Focus
     /// </summary>
-    void Draw(Camera currentCam, Transform currentCamXform)
+    void Draw(Camera currentCam, Transform currentCamXform, float zoomInput)
     {
+
+        CameraDistance = System.Math.Min(MaximumCameraDistance, System.Math.Max(MinimumCameraDistance, CameraDistance + zoomInput));
         // Update transformation based on orbit
         if (isOribiting && Focus != null)
         {
@@ -135,7 +126,7 @@ public class CameraManager : MonoBehaviour {
 
             // Don't let user rotate over y axis.{
             var oldViewDir = currentCamXform.InverseTransformVector(new Vector3(0, 0, 1)).normalized;
-            //currentCamXform.RotateAround(Focus.transform.position, worldX, RotationSensitivity * -delta.y);
+            currentCamXform.RotateAround(Focus.transform.position, worldX, RotationSensitivity * -delta.y);
             var newViewDir = currentCamXform.InverseTransformVector(new Vector3(0, 0, 1)).normalized;
             if ((lockDeltaY && System.Math.Abs(delta.y) > System.Math.Abs(lastDeltaY)) || (System.Math.Sign(newViewDir.x) != System.Math.Sign(oldViewDir.x) || System.Math.Sign(newViewDir.z) != System.Math.Sign(oldViewDir.z) && (oldViewDir.x != 0 || oldViewDir.z != 0)))
             {
@@ -146,23 +137,14 @@ public class CameraManager : MonoBehaviour {
             {
                 lockDeltaY = false;
                 lastDeltaY = delta.y;
-                //currentCamXform.RotateAround(Focus.transform.position, worldY, RotationSensitivity * delta.x);
+                currentCamXform.RotateAround(Focus.transform.position, worldY, RotationSensitivity * delta.x);
             }
 
             // Rotate about Y
-            
-            
-            if (cameraConfig == CameraConfiguration.ViewportCam)
-                currentCamXform.LookAt(Focus);
-                if (Focus != null)
-                {
-                 currentCamXform.localPosition *= (CameraDistance / currentCamXform.localPosition.magnitude);
-                }
-            else
-            {
-                currentCamXform.LookAt(Focus);
-                FishtankCam.transform.rotation = currentCamXform.rotation;
-            }
+            currentCamXform.LookAt(Focus);
+            if (Focus != null)
+                currentCamXform.localPosition *= (CameraDistance / currentCamXform.localPosition.magnitude);
+           
         }
 
 //        // Update distance
@@ -215,11 +197,7 @@ public class CameraManager : MonoBehaviour {
         FishTank.SetActive(true);
         if (Focus != null)
         {
-            FishtankCam.transform.SetParent(Focus);
-            VirtualScreen.transform.SetParent(Focus);
-            VirtualScreen.transform.localPosition = new Vector3(0, 0, 0);
-            VirtualScreen.transform.LookAt(Vector3.zero);
-           
+            fishTankCam.focus = Focus;
         }
     }
 
@@ -228,7 +206,7 @@ public class CameraManager : MonoBehaviour {
         switch (cameraConfig)
         {
             case CameraConfiguration.FishTankCam:
-                return FishtankCam.ScreenToWorldPoint(screenPoint);
+                return FishtankCamObj.GetComponent<Camera>().ScreenToWorldPoint(screenPoint);
             case CameraConfiguration.ViewportCam:
                 return Viewport.GetComponent<Camera>().ScreenToWorldPoint(screenPoint);
             default:

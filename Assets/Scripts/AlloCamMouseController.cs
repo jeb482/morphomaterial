@@ -53,8 +53,8 @@ public class AlloCamMouseController : MonoBehaviour {
             Vector3 delta = Input.mousePosition - originalMousePos;
             Debug.Log("Hey" + delta.x);
             Focus.SetPositionAndRotation(originalPosition, originalRotation);
-            Focus.Rotate(worldX, sensitivity * -delta.y);
-            Focus.Rotate(worldY, sensitivity * delta.x);
+            Focus.Rotate(worldX, sensitivity * delta.y, Space.World);
+            Focus.Rotate(worldY, sensitivity * -delta.x, Space.World);
         }
     }
 }

@@ -405,7 +405,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4182716285314216, guid: 55ad92d63ef5d2248869ae9752a52f82, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -0
+      value: -0.06
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 55ad92d63ef5d2248869ae9752a52f82, type: 2}
@@ -1150,5 +1150,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sensitivity: 1
   allowObjectRotation: 1
-  Focus: {fileID: 1518189901}
+  Focus: {fileID: 1833481709}
   camManager: {fileID: 1102129316}

@@ -688,6 +688,21 @@ Prefab:
       propertyPath: m_LocalScale.y
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114379169196047884, guid: a9a85640d4a2432489d923cf189d76ed,
+        type: 2}
+      propertyPath: focus
+      value: 
+      objectReference: {fileID: 1042941282}
+    - target: {fileID: 114379169196047884, guid: a9a85640d4a2432489d923cf189d76ed,
+        type: 2}
+      propertyPath: validScaleRange.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114379169196047884, guid: a9a85640d4a2432489d923cf189d76ed,
+        type: 2}
+      propertyPath: validScaleRange.y
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a9a85640d4a2432489d923cf189d76ed, type: 2}
   m_IsPrefabParent: 0
