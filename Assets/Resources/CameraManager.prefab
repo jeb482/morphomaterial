@@ -172,6 +172,7 @@ GameObject:
   - component: {fileID: 20385178612739458}
   - component: {fileID: 124186594236727012}
   - component: {fileID: 81473372976054260}
+  - component: {fileID: 114880526772485426}
   m_Layer: 0
   m_Name: Viewport
   m_TagString: Untagged
@@ -814,7 +815,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1453584684465876}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.26, y: -0.108, z: -0.251}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4280822558805796}
@@ -1715,10 +1716,12 @@ MonoBehaviour:
   Viewport: {fileID: 1363933759738110}
   Player: {fileID: 1784514996258472}
   Focus: {fileID: 0}
+  EyeLocation: {fileID: 4981030616136454}
   RotationSensitivity: 1
   CameraDistance: 3
   ZoomSensitivity: 4
   MinimumCameraDistance: 0.5
+  MaximumCameraDistance: 8
   cameraConfig: 0
 --- !u!114 &114379169196047884
 MonoBehaviour:
@@ -1733,12 +1736,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leftEyeTracker: {fileID: 1761612020324520}
   rightEyeTracker: {fileID: 1761612020324520}
-  nearPlane: 0.001
-  farPlane: 3000
-  virtualScreenXform: {fileID: 4504666043565768}
-  viewportHeight: 439
-  viewportWidth: 899
+  focus: {fileID: 0}
   screenSpaceHeadPos: {x: 0, y: 0, z: 0}
+  viewScale: 1
+  validScaleRange: {x: 0.1, y: 5}
+  scaleSensitivity: 1
+  screenDims: {x: 0.475, y: 0.3}
   frustumPlanes:
     left: 0
     right: 0
@@ -1746,6 +1749,8 @@ MonoBehaviour:
     top: 0
     zNear: 0
     zFar: 0
+  zNear: 0.1
+  zFar: 10
 --- !u!114 &114522516338270072
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1924,6 +1929,21 @@ MonoBehaviour:
   bottomRight: {fileID: 1305688000031256}
   topLeft: {fileID: 1620235783821942}
   topRight: {fileID: 1368822587673006}
+--- !u!114 &114880526772485426
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1363933759738110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ff8f019bb19c8543bc9e9e50b0f5b31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Focus: {fileID: 0}
+  RotationSensitivity: 1
+  distance: 1
+  ZoomSensitivity: 1
 --- !u!114 &114925738272966468
 MonoBehaviour:
   m_ObjectHideFlags: 1

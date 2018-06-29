@@ -17,12 +17,6 @@ public class CameraManager : MonoBehaviour {
     public Transform Focus;
     public Transform EyeLocation;
     
-    public float RotationSensitivity = 1f;
-    public float CameraDistance = 3f;
-    public float ZoomSensitivity = 8f;
-    public float MinimumCameraDistance = 1f;
-    public float MaximumCameraDistance = 8f;
-
     public enum CameraConfiguration { HMDCam, FishTankCam, ViewportCam};
     public CameraConfiguration cameraConfig = CameraConfiguration.HMDCam;
 
@@ -84,6 +78,7 @@ public class CameraManager : MonoBehaviour {
         switch (cameraConfig)
         {
             case CameraConfiguration.FishTankCam:
+                //fishTankCam.orbitAndZoom();
                 fishTankCam.modifyScale();
                 break;
             case CameraConfiguration.ViewportCam:
@@ -126,8 +121,8 @@ public class CameraManager : MonoBehaviour {
         if (Focus != null) {
             var Cam = Viewport.GetComponent<Camera>();
             viewportCam.Focus = Focus;
-            Cam.transform.SetParent(Focus);
-            Cam.transform.localPosition = new Vector3(0,0,-3);
+            
+            Cam.transform.position = Focus.transform.TransformPoint(new Vector3(0,0,-3));
             Cam.transform.LookAt(Focus);
         }
     }
@@ -141,7 +136,7 @@ public class CameraManager : MonoBehaviour {
         FishTank.SetActive(true);
         if (Focus != null)
         {
-            fishTankCam.focus = Focus;
+            fishTankCam.Focus = Focus;
         }
     }
 
@@ -156,5 +151,50 @@ public class CameraManager : MonoBehaviour {
             default:
                 return new Vector3(0, 0, 0);
         }
+    }
+
+
+    /// <summary>
+    /// Returns a unit vector in the world space direction of the active camera's gaze.
+    /// </summary>
+    /// <returns></returns>
+    public Vector3 getViewDirection()
+    {
+        switch (cameraConfig)
+        {
+            case CameraConfiguration.FishTankCam:
+                return FishtankCamObj.GetComponent<Camera>().transform.TransformVector(new Vector3(0,0,1)).normalized;
+            case CameraConfiguration.ViewportCam:
+                return Viewport.GetComponent<Camera>().transform.TransformVector(new Vector3(0, 0, 1)).normalized;
+            default:
+                return new Vector3(0, 0, 0);
+        }
+    }
+
+    public Vector3 GetCamPos()
+    {
+        switch (cameraConfig)
+        {
+            case CameraConfiguration.FishTankCam:
+                return FishtankCamObj.GetComponent<Camera>().transform.position;
+            case CameraConfiguration.ViewportCam:
+                return Viewport.GetComponent<Camera>().transform.position;
+            default:
+                return new Vector3(0, 0, 0);
+        }
+    }
+
+    public Ray ScreenPointToRay(Vector3 screenPoint)
+    {
+        switch (cameraConfig)
+        {
+            case CameraConfiguration.FishTankCam:
+                return FishtankCamObj.GetComponent<Camera>().ScreenPointToRay(screenPoint);
+            case CameraConfiguration.ViewportCam:
+                return Viewport.GetComponent<Camera>().ScreenPointToRay(screenPoint);
+            default:
+                return new Ray();
+        }
+
     }
 }

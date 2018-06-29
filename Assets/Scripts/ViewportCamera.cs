@@ -39,7 +39,9 @@ public class ViewportCamera : MonoBehaviour {
         // Handle input for revolution.
         if (isOrbiting && Focus != null)
         {
-            Vector3 screenX = (cam.ScreenToWorldPoint(new Vector3(100, 0, 1)) - cam.ScreenToWorldPoint(new Vector3(0, 0, 1))).normalized;
+            Vector3 screenX = (cam.ScreenToWorldPoint(new Vector3(100, 0, 1)) - cam.ScreenToWorldPoint(new Vector3(0, 0, 1)));
+            screenX.y = 0;
+            screenX.Normalize();
             Vector3 screenY = (cam.ScreenToWorldPoint(new Vector3(0, 100, 1)) - cam.ScreenToWorldPoint(new Vector3(0, 0, 1))).normalized;
 
             Vector3 delta = Input.mousePosition - lastMousePos;
@@ -59,6 +61,7 @@ public class ViewportCamera : MonoBehaviour {
             lastRotation = transform.rotation;
         }
 
+        // Zoom
         float zoomInput = Input.GetAxis("Mouse ScrollWheel");
         if (zoomInput == 0f)
             return;

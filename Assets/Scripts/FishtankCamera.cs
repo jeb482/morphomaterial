@@ -6,12 +6,13 @@ using UnityEngine;
 public class FishtankCamera : MonoBehaviour {
     public GameObject leftEyeTracker;
     public GameObject rightEyeTracker; // If only one tracker, set same as left?
-    public Transform focus;
+    public Transform Focus;
     Vector2 viewportSize = new Vector2(.475f, .3f);
     public Vector3 screenSpaceHeadPos;
     public float viewScale = 1;
     public Vector2 validScaleRange = new Vector2(0.1f,3);
     public float scaleSensitivity = 1;
+    public float RotationSensitivity = 1;
 
     public Vector2 screenDims = new Vector2(.475f,.3f);
     public FrustumPlanes frustumPlanes;
@@ -21,7 +22,15 @@ public class FishtankCamera : MonoBehaviour {
     private Camera cam;
     private Vector2 screenSpaceL;
     private Vector2 screenSpaceH;
-    private Matrix4x4 virtualScreenToWorldMat = new Matrix4x4(); 
+    private Matrix4x4 virtualScreenToWorldMat = new Matrix4x4();
+    private bool isOrbiting = false;
+    private Vector3 lastMousePos;
+    private Vector3 lastPosition;
+    private Quaternion lastRotation;
+    Transform parentTransform;
+    
+
+
     // Use this for initialization
     void Start () {
         updateWindowData();
@@ -38,6 +47,53 @@ public class FishtankCamera : MonoBehaviour {
     Vector3 getTransformedEyePose(Vector3 worldSpacePosition)
     {
         return GameController.Instance.realWorldToScreen.MultiplyPoint3x4(worldSpacePosition);
+    }
+
+
+    public void orbitAndZoom()
+    {
+        // Establish whether or not we are orbiting
+        if (Input.GetMouseButtonDown(0) && Input.GetKey(KeyCode.LeftAlt))
+        {
+            isOrbiting = true; lastMousePos = Input.mousePosition;
+            lastMousePos = Input.mousePosition;
+            lastPosition = transform.position;
+            lastRotation = transform.rotation;
+        }
+        else if (Input.GetMouseButtonUp(0))
+        {
+            isOrbiting = false;
+            return;
+        }
+
+        // Handle input for revolution.
+        if (isOrbiting && Focus != null)
+        {
+            Vector3 screenX = (cam.ScreenToWorldPoint(new Vector3(100, 0, 1)) - cam.ScreenToWorldPoint(new Vector3(0, 0, 1)));
+            screenX.y = 0;
+            screenX.Normalize();
+            Vector3 screenY = (cam.ScreenToWorldPoint(new Vector3(0, 100, 1)) - cam.ScreenToWorldPoint(new Vector3(0, 0, 1))).normalized;
+
+            Vector3 delta = Input.mousePosition - lastMousePos;
+            Debug.Log(delta);
+            Vector3 oldViewDir = transform.InverseTransformVector(new Vector3(0, 0, 1)).normalized;
+            transform.RotateAround(Focus.transform.position, screenX, RotationSensitivity * -delta.y);
+            Vector3 newViewDir = transform.InverseTransformVector(new Vector3(0, 0, 1)).normalized;
+
+            if (System.Math.Sign(newViewDir.x) != System.Math.Sign(oldViewDir.x) ||
+                System.Math.Sign(newViewDir.z) != System.Math.Sign(oldViewDir.z) &&
+                (oldViewDir.x != 0 || oldViewDir.z != 0))
+            {
+                transform.RotateAround(Focus.transform.position, screenX, RotationSensitivity * delta.y);
+            }
+            transform.RotateAround(Focus.transform.position, new Vector3(0, 1, 0), RotationSensitivity * delta.x);
+            lastMousePos = Input.mousePosition;
+            lastPosition = transform.position;
+            lastRotation = transform.rotation;
+        }
+
+        modifyScale();
+
     }
 
     public void modifyScale()
@@ -68,8 +124,8 @@ public class FishtankCamera : MonoBehaviour {
         screenSpaceHeadPos = getTransformedEyePose(leftEyeTracker.transform.TransformPoint(fishtankEyeOffset));
 
         // Align with virtual screen;
-        transform.position = focus.TransformPoint(screenSpaceHeadPos);
-
+        transform.position = Focus.TransformPoint(screenSpaceHeadPos);
+        //transform.position = lastRotation.
 
         // Construct a viewing frustum intersecting the screen.
         frustumPlanes.zNear = zNear;
