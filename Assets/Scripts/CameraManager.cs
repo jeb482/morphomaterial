@@ -2,6 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// The CameraManager is a singleton class which switches between the Viewport,
+/// Fishtank, and HMD configurations, enabling and disabling the appropriate
+/// components in each configuration, and calling appropriate methods from
+/// the Viewport, Fishtank, and HMD apparatuses from frame to frame.
+/// </summary>
 public class CameraManager : MonoBehaviour {
     public static CameraManager Instance;
 
@@ -32,7 +38,8 @@ public class CameraManager : MonoBehaviour {
     private Quaternion originalRotation;
     private float lastDeltaY = 0;
     private bool lockDeltaY = false;
-    private FishtankCamera fishTankCam; 
+    private FishtankCamera fishTankCam;
+    private ViewportCamera viewportCam;
 
     private Transform LastFocus;
     
@@ -57,6 +64,7 @@ public class CameraManager : MonoBehaviour {
         CameraRig = Player.transform.Find("OVRCameraRig").gameObject;
         FishtankCamObj = FishTank.transform.Find("FishtankCamera").gameObject;
         fishTankCam = FishtankCamObj.GetComponent<FishtankCamera>();
+        viewportCam = Viewport.GetComponent<ViewportCamera>();
         //FishtankCam = FishtankCamObj.GetComponent<Camera>();
     }
 	
@@ -73,15 +81,15 @@ public class CameraManager : MonoBehaviour {
             SetConfig(cameraConfig);
 
         // Update camera
-        float zoomInput = Input.GetAxis("Mouse ScrollWheel");
         switch (cameraConfig)
         {
             case CameraConfiguration.FishTankCam:
-                fishTankCam.modifyScale(zoomInput);
+                fishTankCam.modifyScale();
                 break;
             case CameraConfiguration.ViewportCam:
-                GetOrbitInput(Viewport.GetComponent<Camera>(), Viewport.transform);
-                Draw(Viewport.GetComponent<Camera>(), Viewport.transform, zoomInput);
+                viewportCam.orbitAndZoom();
+                //GetOrbitInput(Viewport.GetComponent<Camera>(), Viewport.transform);
+                //Draw(Viewport.GetComponent<Camera>(), Viewport.transform, zoomInput);
                 break;
             default:
                 return;
@@ -182,6 +190,7 @@ public class CameraManager : MonoBehaviour {
         FishTank.SetActive(false);
         if (Focus != null) {
             var Cam = Viewport.GetComponent<Camera>();
+            viewportCam.Focus = Focus;
             Cam.transform.SetParent(Focus);
             Cam.transform.localPosition = new Vector3(0,0,-3);
             Cam.transform.LookAt(Focus);

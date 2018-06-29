@@ -40,10 +40,10 @@ public class FishtankCamera : MonoBehaviour {
         return GameController.Instance.realWorldToScreen.MultiplyPoint3x4(worldSpacePosition);
     }
 
-    public void modifyScale(float delta)
+    public void modifyScale()
     {
-        //viewScale = System.Math.Min(viewScale + scaleSensitivity * delta, validScaleRange.y) ;
-        viewScale = System.Math.Min(validScaleRange.y, System.Math.Max(validScaleRange.x, viewScale + scaleSensitivity*delta));
+        float zoomInput = Input.GetAxis("Mouse ScrollWheel");
+        viewScale = System.Math.Min(validScaleRange.y, System.Math.Max(validScaleRange.x, viewScale + scaleSensitivity* zoomInput));
     }
 
 
