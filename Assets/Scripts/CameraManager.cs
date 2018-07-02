@@ -222,6 +222,7 @@ public class CameraManager : MonoBehaviour {
             case CameraConfiguration.FishTankCam:
                 return;
             case CameraConfiguration.ViewportCam:
+                viewportCam.SetView(longitude, latitude, zoom);
                 return;
             default:
                 return;

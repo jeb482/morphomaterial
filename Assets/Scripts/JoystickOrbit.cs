@@ -6,6 +6,7 @@ public class JoystickOrbit : MonoBehaviour {
     public float maxLatitude = 90f; // Make this Nonnegative
     public float StartingLatitude = 0;
     public float StartingLongitude = 0;
+    public float StartingZoom = 1;
     public float RevolveSensitivity = 0.25f;
     public float zoomSensitivity = 0.05f;
     public float maxZoom = 5;
@@ -21,6 +22,8 @@ public class JoystickOrbit : MonoBehaviour {
 	void Start () {
         latitude = StartingLatitude;
         longitude = StartingLongitude;
+        zoom = StartingZoom;
+        changed = true;
 	}
 	
 	// Update is called once per frame
@@ -30,7 +33,7 @@ public class JoystickOrbit : MonoBehaviour {
 
         if (System.Math.Abs(thumbstick.x) > 0.1)
         {
-            longitude = (longitude + RevolveSensitivity * thumbstick.y + 360) % 360;
+            longitude = (longitude + RevolveSensitivity * thumbstick.x + 360) % 360;
             changed = true;
         }
         if (System.Math.Abs(thumbstick.y) > 0.1)
@@ -49,9 +52,9 @@ public class JoystickOrbit : MonoBehaviour {
             zoom = System.Math.Min(maxZoom, zoom + zoomSensitivity);
             changed = true;
         }
-        if (changed)
+        //if (changed)
         {
-            CameraManager.Instance.SetView(longitude, latitude, zoom);
+            CameraManager.Instance.SetView(longitude * (float)System.Math.PI/180, latitude*(float)System.Math.PI / 180, zoom);
             changed = false;
         }
     }   

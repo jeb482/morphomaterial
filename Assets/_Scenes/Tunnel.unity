@@ -1227,10 +1227,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a77a28219c8ee6478a0dab5a771522d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxLatitude: 90
+  maxLatitude: 89
   StartingLatitude: 0
-  StartingLongitude: 0
-  RevolveSensitivity: 0.25
+  StartingLongitude: 180
+  StartingZoom: 1
+  RevolveSensitivity: 1
   zoomSensitivity: 0.01
   maxZoom: 5
   minZoom: 0.01

@@ -70,6 +70,19 @@ public class ViewportCamera : MonoBehaviour {
         transform.position = Focus.position + (displacement.normalized) * distance;
 
     }
+
+
+    public void SetView(float longitude, float latitude, float zoom)
+    {
+        float x = (float)(System.Math.Cos(latitude)* System.Math.Cos(longitude));
+        float y = (float)(System.Math.Sin(latitude));
+        float z = (float)(System.Math.Cos(latitude) * System.Math.Sin(longitude));
+
+        Vector3 displacement = new Vector3(x, y, z);
+        transform.position = Focus.position + (displacement.normalized) * zoom;
+        transform.LookAt(Focus.position);
+    }
+
     // Update is called once per frame
     void Update () {
 
