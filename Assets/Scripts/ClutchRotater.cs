@@ -38,10 +38,10 @@ public class ClutchRotater : MonoBehaviour {
                     CameraManager.Instance.Focus.rotation = absoluteRotation * startingRotation;
                     break;
                 case CameraManager.CameraConfiguration.ViewportCam:
-                    CameraManager.Instance.Focus.rotation = Quaternion.Inverse(world2Screen) * Quaternion.Inverse(absoluteRotation) * world2Screen * startingRotation;
+                    CameraManager.Instance.Focus.rotation =  (absoluteRotation) * world2View * Quaternion.Inverse(world2Screen) * startingRotation;
                     break;
                 case CameraManager.CameraConfiguration.FishTankCam:
-                   // CameraManager.Instance.Focus.rotation = screen2View * absoluteRotation * world2Screen;
+                    CameraManager.Instance.Focus.rotation = (absoluteRotation) * world2View * Quaternion.Inverse(world2Screen) * startingRotation;
                     break;
 
             }
