@@ -34,7 +34,7 @@ public class CameraManager : MonoBehaviour {
     private bool lockDeltaY = false;
     private FishtankCamera fishTankCam;
     private ViewportCamera viewportCam;
-
+    private GameObject HMDAnchor;
     private Transform LastFocus;
     
 
@@ -59,6 +59,7 @@ public class CameraManager : MonoBehaviour {
         FishtankCamObj = FishTank.transform.Find("FishtankCamera").gameObject;
         fishTankCam = FishtankCamObj.GetComponent<FishtankCamera>();
         viewportCam = Viewport.GetComponent<ViewportCamera>();
+        HMDAnchor = CameraRig.transform.Find("TrackingSpace").Find("CenterEyeAnchor").gameObject;
         //FishtankCam = FishtankCamObj.GetComponent<Camera>();
     }
 	
@@ -100,6 +101,7 @@ public class CameraManager : MonoBehaviour {
             case CameraConfiguration.HMDCam:
                 Viewport.SetActive(false);
                 CameraRig.SetActive(true);
+                HMDAnchor.SetActive(true);
                 Player.SetActive(true);
                 FishTank.SetActive(false);
                 break;
@@ -115,8 +117,9 @@ public class CameraManager : MonoBehaviour {
     void ConfigureViewport()
     {
         Viewport.SetActive(true);
-        CameraRig.SetActive(false);
-        Player.SetActive(false);
+        Player.SetActive(true);
+        CameraRig.SetActive(true);
+        HMDAnchor.SetActive(false);
         FishTank.SetActive(false);
         if (Focus != null) {
             var Cam = Viewport.GetComponent<Camera>();
@@ -131,6 +134,7 @@ public class CameraManager : MonoBehaviour {
     {
         Viewport.SetActive(false);
         Player.SetActive(true);
+        HMDAnchor.SetActive(false);
         Player.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
         CameraRig.SetActive(false);
         FishTank.SetActive(true);
@@ -195,6 +199,18 @@ public class CameraManager : MonoBehaviour {
             default:
                 return new Ray();
         }
+    }
 
+    public Quaternion GetCameraOrientation()
+    {
+        switch (cameraConfig)
+        {
+            case CameraConfiguration.FishTankCam:
+                return FishtankCamObj.GetComponent<Camera>().transform.rotation;
+            case CameraConfiguration.ViewportCam:
+                return Viewport.GetComponent<Camera>().transform.rotation;
+            default:
+                return HMDAnchor.transform.rotation;
+        }
     }
 }
