@@ -19,6 +19,7 @@ public class FishtankCamera : MonoBehaviour {
     public float zNear = .1f;
     public float zFar = 10f;
 
+    private Quaternion orbitRotation = Quaternion.identity;
     private Camera cam;
     private Vector2 screenSpaceL;
     private Vector2 screenSpaceH;
@@ -52,6 +53,7 @@ public class FishtankCamera : MonoBehaviour {
 
     public void orbitAndZoom()
     {
+        return;
         // Establish whether or not we are orbiting
         if (Input.GetMouseButtonDown(0) && Input.GetKey(KeyCode.LeftAlt))
         {
@@ -99,7 +101,7 @@ public class FishtankCamera : MonoBehaviour {
     public void modifyScale()
     {
         float zoomInput = Input.GetAxis("Mouse ScrollWheel");
-        viewScale = System.Math.Min(validScaleRange.y, System.Math.Max(validScaleRange.x, viewScale + scaleSensitivity* zoomInput));
+        //.3viewScale = System.Math.Min(validScaleRange.y, System.Math.Max(validScaleRange.x, viewScale + scaleSensitivity* zoomInput));
     }
 
 
@@ -124,8 +126,8 @@ public class FishtankCamera : MonoBehaviour {
         screenSpaceHeadPos = getTransformedEyePose(leftEyeTracker.transform.TransformPoint(fishtankEyeOffset));
 
         // Align with virtual screen;
-        transform.position = Focus.TransformPoint(screenSpaceHeadPos);
-        //transform.position = lastRotation.
+        transform.position = Focus.position + orbitRotation*screenSpaceHeadPos;
+        transform.LookAt(Focus.position);
 
         // Construct a viewing frustum intersecting the screen.
         frustumPlanes.zNear = zNear;
@@ -139,7 +141,11 @@ public class FishtankCamera : MonoBehaviour {
         cam.projectionMatrix = Matrix4x4.Frustum(frustumPlanes);
     }
 
-
+    public void SetView(float longitude, float latitude, float zoom)
+    {
+        orbitRotation = Quaternion.AngleAxis(longitude* 180/(float)System.Math.PI, new Vector3(0, 1, 0)) * Quaternion.AngleAxis(latitude * 180 / (float)System.Math.PI, new Vector3(1,0,0));
+        viewScale = 2f * zoom;
+    }
 
     void updateWindowData()
     {

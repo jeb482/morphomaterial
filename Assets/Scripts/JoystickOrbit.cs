@@ -52,7 +52,7 @@ public class JoystickOrbit : MonoBehaviour {
             zoom = System.Math.Min(maxZoom, zoom + zoomSensitivity);
             changed = true;
         }
-        //if (changed)
+
         {
             CameraManager.Instance.SetView(longitude * (float)System.Math.PI/180, latitude*(float)System.Math.PI / 180, zoom);
             changed = false;

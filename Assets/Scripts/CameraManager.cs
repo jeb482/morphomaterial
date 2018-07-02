@@ -136,7 +136,7 @@ public class CameraManager : MonoBehaviour {
         Player.SetActive(true);
         HMDAnchor.SetActive(false);
         Player.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
-        CameraRig.SetActive(false);
+        CameraRig.SetActive(true);
         FishTank.SetActive(true);
         if (Focus != null)
         {
@@ -220,6 +220,7 @@ public class CameraManager : MonoBehaviour {
         switch (cameraConfig)
         {
             case CameraConfiguration.FishTankCam:
+                fishTankCam.SetView(longitude, latitude, zoom);
                 return;
             case CameraConfiguration.ViewportCam:
                 viewportCam.SetView(longitude, latitude, zoom);

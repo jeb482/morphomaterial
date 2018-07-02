@@ -22,6 +22,7 @@ public class ViewportCamera : MonoBehaviour {
 
     public void orbitAndZoom()
     {
+
         // Establish whether or not we are orbiting
         if (Input.GetMouseButtonDown(0) && Input.GetKey(KeyCode.LeftAlt))
         {
