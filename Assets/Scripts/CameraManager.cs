@@ -213,4 +213,18 @@ public class CameraManager : MonoBehaviour {
                 return HMDAnchor.transform.rotation;
         }
     }
+
+    public void SetView(float longitude, float latitude, float zoom)
+    {
+        Debug.Log(longitude + " " + latitude + " " + zoom);
+        switch (cameraConfig)
+        {
+            case CameraConfiguration.FishTankCam:
+                return;
+            case CameraConfiguration.ViewportCam:
+                return;
+            default:
+                return;
+        }
+    }
 }

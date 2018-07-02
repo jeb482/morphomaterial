@@ -1183,6 +1183,7 @@ GameObject:
   m_Component:
   - component: {fileID: 649907861}
   - component: {fileID: 649907862}
+  - component: {fileID: 649907863}
   m_Layer: 0
   m_Name: ClutchManipulator
   m_TagString: Untagged
@@ -1215,6 +1216,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 1989230853}
+--- !u!114 &649907863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 649907860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a77a28219c8ee6478a0dab5a771522d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxLatitude: 90
+  StartingLatitude: 0
+  StartingLongitude: 0
+  RevolveSensitivity: 0.25
+  zoomSensitivity: 0.01
+  maxZoom: 5
+  minZoom: 0.01
 --- !u!1 &654108864
 GameObject:
   m_ObjectHideFlags: 0
