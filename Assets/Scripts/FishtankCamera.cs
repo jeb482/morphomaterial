@@ -126,8 +126,8 @@ public class FishtankCamera : MonoBehaviour {
         screenSpaceHeadPos = getTransformedEyePose(leftEyeTracker.transform.TransformPoint(fishtankEyeOffset));
 
         // Align with virtual screen;
-        transform.position = Focus.position + orbitRotation*screenSpaceHeadPos;
-        transform.LookAt(Focus.position);
+        transform.position = Focus.position+ orbitRotation*screenSpaceHeadPos;
+        transform.rotation = orbitRotation;
 
         // Construct a viewing frustum intersecting the screen.
         frustumPlanes.zNear = zNear;

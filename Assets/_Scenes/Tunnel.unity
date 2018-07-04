@@ -2843,6 +2843,11 @@ Prefab:
       propertyPath: m_AngularDrag
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 23602588443811048, guid: 55ad92d63ef5d2248869ae9752a52f82,
+        type: 2}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 55ad92d63ef5d2248869ae9752a52f82, type: 2}
   m_IsPrefabParent: 0
