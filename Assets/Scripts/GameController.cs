@@ -11,6 +11,7 @@ using System;
 public class GameController : MonoBehaviour {
 
     public static GameController Instance;
+    public int ParticipantNumber = -1;
 
     public Vector3 rightControllerOffset;
     public Vector3 lowerLeftScreenCorner;

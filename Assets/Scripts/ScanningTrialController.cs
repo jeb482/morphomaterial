@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class ScanningTrialController : MonoBehaviour {
     private int trialNum;
     public int TrialNumber
@@ -9,7 +10,7 @@ public class ScanningTrialController : MonoBehaviour {
         get { return trialNum;}
         set { UpdateTrial(value); }
     }
-    private List<ScanningTrialDescription> trials = new List<ScanningTrialDescription>();
+    private RandomizedList<ScanningTrialDescription> trials;
 
     private void UpdateTrial(int index)
     {
@@ -36,7 +37,14 @@ public class ScanningTrialController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
+        List<ScanningTrialDescription> trialsPrototype = new List<ScanningTrialDescription>();
+        for (int i = 1; i < 13; i++)
+        {
+            trialsPrototype.Add(new ScanningTrialDescription(i + ".png"));
+        }
+        trials = new RandomizedList<ScanningTrialDescription>(trialsPrototype, GameController.Instance.ParticipantNumber);
+        Debug.Log("Randomizing scanning trials for Participant " + GameController.Instance.ParticipantNumber);
+        Debug.Log(trials.GetIndicesAsString());
 	}
 	
 	// Update is called once per frame
