@@ -4,12 +4,9 @@ using UnityEngine;
 
 
 public class ScanningTrialController : MonoBehaviour {
-    private int trialNum;
-    public int TrialNumber
-    {
-        get { return trialNum;}
-        set { UpdateTrial(value); }
-    }
+    public int TrialNum;
+    private int lastTrialNum;
+
     private RandomizedList<ScanningTrialDescription> trials;
 
     private void UpdateTrial(int index)
@@ -45,10 +42,19 @@ public class ScanningTrialController : MonoBehaviour {
         trials = new RandomizedList<ScanningTrialDescription>(trialsPrototype, GameController.Instance.ParticipantNumber);
         Debug.Log("Randomizing scanning trials for Participant " + GameController.Instance.ParticipantNumber);
         Debug.Log(trials.GetIndicesAsString());
+        
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
-	}
+        if (Input.GetKeyDown(KeyCode.Equals))
+            TrialNum = (lastTrialNum + 1) % trials.Count;
+        else if (Input.GetKeyDown(KeyCode.Minus))
+            TrialNum = (lastTrialNum - 1 + trials.Count) % trials.Count;
+        if (TrialNum != lastTrialNum)
+            UpdateTrial(TrialNum);
+        lastTrialNum = TrialNum;
+    }
+
+
 }
