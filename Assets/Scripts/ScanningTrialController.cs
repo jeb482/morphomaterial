@@ -43,8 +43,8 @@ public class ScanningTrialController : MonoBehaviour {
         trials = new RandomizedList<ScanningTrialDescription>(trialsPrototype, GameController.Instance.ParticipantNumber);
         Debug.Log("Randomizing scanning trials for Participant " + GameController.Instance.ParticipantNumber);
         Debug.Log(trials.GetIndicesAsString());
-        
-	}
+        GameController.Instance.GetTrialTimeElapsed();
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -53,7 +53,11 @@ public class ScanningTrialController : MonoBehaviour {
         else if (Input.GetKeyDown(KeyCode.Minus))
             TrialNum = (lastTrialNum - 1 + trials.Count) % trials.Count;
         if (TrialNum != lastTrialNum)
+        {
             UpdateTrial(TrialNum);
+            GameController.Instance.dataCsv[1][trials.IndexList[lastTrialNum]] = GameController.Instance.GetTrialTimeElapsed().ToString();
+        }
+            
         lastTrialNum = TrialNum;
     }
 

@@ -32,7 +32,7 @@ public class GameController : MonoBehaviour {
 
     private bool isSaved = false;
     private static string calibrationPath;
-
+    private DateTime lastTimeChecked;
 
     void Awake() {
         if (Instance == null)
@@ -46,7 +46,6 @@ public class GameController : MonoBehaviour {
         }
     }
 
-
     private void Start()
     {
         LoadCalibration();
@@ -55,20 +54,28 @@ public class GameController : MonoBehaviour {
         dataCsv = new EasyCsv.Csv();
     }
 
+    /// <summary>
+    /// Checks a singleton timer and resets it to start at the current time.
+    /// 
+    /// This is used by TrialControllers for each task, and should not
+    /// be accessed by other classes, since it will mess up the singleton 
+    /// timer.
+    /// </summary>
+    /// <returns></returns>
+    public TimeSpan GetTrialTimeElapsed()
+    {
+        var now = DateTime.Now;
+        TimeSpan elapsed =  now - lastTimeChecked;
+        lastTimeChecked = now;
+        return elapsed;
+    }
     // Update is called once per frame
     void Update() {
         if (Input.GetKeyUp(KeyCode.S) && !isSaved)
             SaveCalibration();
 
-        if (Input.GetKeyDown(KeyCode.PageDown))
-        {
-            StartCoroutine(LoadNextScene());
-        }
-        
-        if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            swapExperiment();
-        }
+        if (Input.GetKeyDown(KeyCode.Alpha0))
+            GetTrialTimeElapsed();
     }
 
     IEnumerator LoadNextScene()
