@@ -55,11 +55,14 @@ public class ScanningTrialController : MonoBehaviour {
         if (TrialNum != lastTrialNum)
         {
             UpdateTrial(TrialNum);
-            GameController.Instance.dataCsv[1][trials.IndexList[lastTrialNum]] = GameController.Instance.GetTrialTimeElapsed().ToString();
+            GameController.Instance.dataCsv[1][trials.IndexList[lastTrialNum]] = GameController.Instance.GetTrialTimeElapsed().TotalMilliseconds.ToString();
         }
             
         lastTrialNum = TrialNum;
     }
 
-
+    public enum ScanningShape
+    {
+        Triangle, Square, Star
+    };
 }

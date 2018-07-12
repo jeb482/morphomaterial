@@ -4,7 +4,7 @@ using System.IO;
 using UnityEngine;
 //using CsvHelper
 
-public class TrialPicker : MonoBehaviour {
+public class WoodTrialController : MonoBehaviour {
     public int TrialNumber {
         get { return trialNum; }
         set { updateTrial(value); }
@@ -119,4 +119,9 @@ public class TrialPicker : MonoBehaviour {
             // Deal with specular reflection here
         }
     }
+
+    public enum WoodComparison
+    {
+        Same,Different
+    };
 }

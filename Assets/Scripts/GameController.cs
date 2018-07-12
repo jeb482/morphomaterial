@@ -23,7 +23,47 @@ public class GameController : MonoBehaviour {
 
     public Matrix4x4 realWorldToScreen;
 
+    /// <summary>
+    /// Data CSV Layout Description:
+    /// Column 0 = Labels
+    /// Row 0  Viewport Scanning Triangle/Square/Star
+    /// Row 1  Viewport Scanning Duration
+    /// Row 2  FishTank Scanning Triangle/Square/Star
+    /// Row 3  FishTank Scanning Duration
+    /// Row 4  HMD      Scanning Triangle/Square/Star
+    /// Row 5  HMD      Scanning Duration
+    /// Row 6  Viewport Compare  Same/Different
+    /// Row 7  Viewport Compare  Duration
+    /// Row 8  FishTank Compare  Same/Different
+    /// Row 9  FishTank Compare  Duration
+    /// Row 10 HMD      Compare  Same/Different
+    /// Row 11 HMD      Compare  Duration
+    /// Row 12 Viewport Tuneing  Distance
+    /// Row 13 Viewport Tuneing  Duration
+    /// Row 14 FishTank Tuneing  Distance
+    /// Row 15 FishTank Tuneing  Duration
+    /// Row 16 HMD      Tuneing  Distance
+    /// Row 17 HMD      Tuneing  Duration
+    /// </summary>
     public EasyCsv.Csv dataCsv;
+
+    public void RecordTrialData(CameraManager.CameraConfiguration config, ScanningTrialController.ScanningShape shape, TimeSpan duration, int trialNum)
+    {
+        dataCsv[2 * (int)config][trialNum+1] = shape.ToString();
+        dataCsv[2 * (int)config + 1][trialNum+1] = duration.TotalMilliseconds.ToString();
+    }
+
+    public void RecordTrialData(CameraManager.CameraConfiguration config, WoodTrialController.WoodComparison comp, TimeSpan duration, int trialNum)
+    {
+        dataCsv[2 * (int)config + 6][trialNum+1] = comp.ToString();
+        dataCsv[2 * (int)config + 7][trialNum+1] = duration.TotalMilliseconds.ToString();
+    }
+
+    public void RecordTrialData(CameraManager.CameraConfiguration config, float tuningDifference, TimeSpan duration, int trialNum)
+    {
+        dataCsv[2 * (int)config + 12][trialNum + 1] = tuningDifference.ToString();
+        dataCsv[2 * (int)config + 13][trialNum + 1] = duration.TotalMilliseconds.ToString();
+    }
 
     enum Experiment { None, Wood, Bottle };
 

@@ -17,7 +17,7 @@ public class CameraManager : MonoBehaviour {
     public Transform Focus;
     public Transform EyeLocation;
     
-    public enum CameraConfiguration { HMDCam, FishTankCam, ViewportCam};
+    public enum CameraConfiguration { ViewportCam = 0, FishTankCam = 1, HMDCam = 2};
     public CameraConfiguration cameraConfig = CameraConfiguration.HMDCam;
 
     private GameObject CameraRig;
