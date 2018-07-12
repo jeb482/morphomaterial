@@ -8,6 +8,7 @@ using System.Xml.Serialization;
 using System.IO;
 using System;
 
+
 public class GameController : MonoBehaviour {
 
     public static GameController Instance;
@@ -22,6 +23,7 @@ public class GameController : MonoBehaviour {
 
     public Matrix4x4 realWorldToScreen;
 
+    public EasyCsv.Csv dataCsv;
 
     enum Experiment { None, Wood, Bottle };
 
@@ -50,6 +52,7 @@ public class GameController : MonoBehaviour {
         LoadCalibration();
         targetObject = Instantiate(Resources.Load("Bottle")) as GameObject;
         DontDestroyOnLoad(targetObject);
+        dataCsv = new EasyCsv.Csv();
     }
 
     // Update is called once per frame
@@ -170,6 +173,13 @@ public class GameController : MonoBehaviour {
         realWorldToScreen.SetRow(1, new Vector4(y.x, y.y, y.z, -Vector3.Dot(y, origin)));
         realWorldToScreen.SetRow(2, new Vector4(z.x, z.y, z.z, -Vector3.Dot(z, origin)));
         realWorldToScreen.SetRow(3, new Vector4(  0,   0,   0,                       1));
+    }
+
+    public void OnDestroy()
+    {
+        if (!dataCsv.IsEmpty) {
+            dataCsv.WriteToFile("D:\\workspace\\" + DateTime.Now.ToString("MMddHHmmssffff") + ".csv");
+        }
     }
 }
 

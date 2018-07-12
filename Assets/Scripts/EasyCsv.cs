@@ -9,9 +9,21 @@ namespace EasyCsv {
         int NumRows;
         int NumCols;
 
+        
+
         public Csv()
         {
             Rows = new List<Row>();
+        }
+
+        public bool IsEmpty
+        {
+            get {
+                foreach (var r in Rows)
+                    if (!r.IsEmpty)
+                        return false;
+                return true;
+            }
         }
 
         private void FillUntil(int i)
@@ -56,6 +68,19 @@ namespace EasyCsv {
                 get
                 {
                     return RowData.Count;
+                }
+            }
+
+            public bool IsEmpty
+            {
+                get
+                {
+                    foreach (var s in RowData)
+                        if (s != "")
+                        {
+                            return false;
+                        }
+                    return true;
                 }
             }
 
