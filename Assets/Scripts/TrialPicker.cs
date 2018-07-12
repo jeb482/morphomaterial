@@ -9,6 +9,7 @@ public class TrialPicker : MonoBehaviour {
         get { return trialNum; }
         set { updateTrial(value); }
     }
+
     public GameObject block1;
     public GameObject block2;
     public Transform block1Origin;

@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class ScanningTrialController : MonoBehaviour {
     public int TrialNum;
+    public GameObject scanningObject;
     private int lastTrialNum;
 
     private RandomizedList<ScanningTrialDescription> trials;
@@ -13,7 +14,7 @@ public class ScanningTrialController : MonoBehaviour {
     {
         if (index >= trials.Count)
             index = 0;
-        trials[index].PopulateMaterial(CameraManager.Instance.Focus.GetComponent<Renderer>().material);
+        trials[index].PopulateMaterial(scanningObject.GetComponent<Renderer>().material);
     }
     
     private class ScanningTrialDescription
@@ -37,7 +38,7 @@ public class ScanningTrialController : MonoBehaviour {
         List<ScanningTrialDescription> trialsPrototype = new List<ScanningTrialDescription>();
         for (int i = 1; i < 13; i++)
         {
-            trialsPrototype.Add(new ScanningTrialDescription(i + ".png"));
+            trialsPrototype.Add(new ScanningTrialDescription("" + i));
         }
         trials = new RandomizedList<ScanningTrialDescription>(trialsPrototype, GameController.Instance.ParticipantNumber);
         Debug.Log("Randomizing scanning trials for Participant " + GameController.Instance.ParticipantNumber);
