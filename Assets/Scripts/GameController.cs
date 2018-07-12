@@ -109,13 +109,18 @@ public class GameController : MonoBehaviour {
         lastTimeChecked = now;
         return elapsed;
     }
+
     // Update is called once per frame
     void Update() {
         if (Input.GetKeyUp(KeyCode.S) && !isSaved)
             SaveCalibration();
 
-        if (Input.GetKeyDown(KeyCode.Alpha0))
+        if (Input.GetKeyDown(KeyCode.Keypad0))
+        {
+            Debug.Log("Timer reset.");
             GetTrialTimeElapsed();
+        }
+            
     }
 
     IEnumerator LoadNextScene()
