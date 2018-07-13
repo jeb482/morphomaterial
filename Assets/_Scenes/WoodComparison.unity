@@ -367,7 +367,7 @@ GameObject:
   - component: {fileID: 647446035}
   - component: {fileID: 647446034}
   m_Layer: 0
-  m_Name: WoodController
+  m_Name: WoodTrialController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -388,7 +388,8 @@ MonoBehaviour:
   block2: {fileID: 687082844}
   block1Origin: {fileID: 1024418370}
   block2Origin: {fileID: 279614806}
-  trialNum: 0
+  joystickController: {fileID: 761548984}
+  TrialNum: 0
 --- !u!4 &647446035
 Transform:
   m_ObjectHideFlags: 0

@@ -25,7 +25,25 @@ public class JoystickOrbit : MonoBehaviour {
         zoom = StartingZoom;
         changed = true;
 	}
-	
+
+    /// <summary>
+    /// Sets longitude equal its opposite.
+    /// </summary>
+    public void flipLongitude()
+    {
+        longitude = (longitude + 180) % 360;
+    }
+
+    /// <summary>
+    /// Randomly selects a viewing direction within deg degrees of 
+    /// the current one.
+    /// </summary>
+    /// <param name="degrees"></param>
+    public void jitter(float deg)
+    {
+        longitude = (longitude + Random.Range(-Mathf.Abs(deg), Mathf.Abs(deg)) + 360) % 360;
+    }
+
 	// Update is called once per frame
 	void Update () {
         Vector2 thumbstick = OVRInput.Get(OVRInput.Axis2D.SecondaryThumbstick);

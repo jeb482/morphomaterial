@@ -11,6 +11,7 @@ public class WoodTrialController : MonoBehaviour {
     public GameObject block2;
     public Transform block1Origin;
     public Transform block2Origin;
+    public JoystickOrbit joystickController;
     public int TrialNum;
     private int lastTrialNum;
     private RandomizedList<WoodTrialDescription> trials;
@@ -25,7 +26,7 @@ public class WoodTrialController : MonoBehaviour {
         trialsProtoype.Add(new WoodTrialDescription("walnut1-sq", "cmaple-sq", "cmaple-sq", "cmaple-sq", 0.05f, "cmaple-sq", "cmaple-sq", "cmaple-sq", "cmaple-sq", 0.05f));
         trialsProtoype.Add(new WoodTrialDescription("walnut1-sq", "walnut2-sq", "walnut1-sq", "walnut1-sq", 0.05f, "walnut1-sq", "walnut1-sq", "walnut1-sq", "walnut1-sq", 0.05f));
         trialsProtoype.Add(new WoodTrialDescription("walnut2-sq", "walnut2-sq", "padauk-sq", "walnut2-sq", 0.05f, "walnut2-sq", "walnut2-sq", "walnut2-sq", "walnut2-sq", 0.05f));
-        trialsProtoype.Add(new WoodTrialDescription("padauk-sq", "padauk-sq", "padauk-sq", "cmaple-sq", 0.05f, "padauk-sq", "padauk-sq", "padauk-sq", "padauk-sq", 0.05f));
+        trialsProtoype.Add(new WoodTrialDescription("padauk-sq", "padauk-sq", "padauk-sq", "walnut2-sq", 0.05f, "padauk-sq", "padauk-sq", "padauk-sq", "padauk-sq", 0.05f));
 
         trials = new RandomizedList<WoodTrialDescription>(trialsProtoype, GameController.Instance.ParticipantNumber);
         UpdateTrial(0);
@@ -57,7 +58,14 @@ public class WoodTrialController : MonoBehaviour {
         // Switch block of focus
         if (OVRInput.GetDown(OVRInput.Button.SecondaryThumbstick))
         {
-            Debug.Log("Swapped focus");
+            if (joystickController != null)
+            {
+                Debug.Log("Swapped focus");
+                joystickController.flipLongitude();
+                joystickController.jitter(5);
+            }
+                
+            
             if (CameraManager.Instance.Focus == block1Origin)
                 CameraManager.Instance.Focus = block2Origin;
             else

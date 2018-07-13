@@ -39,6 +39,8 @@ public class Teleporter : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if (CameraManager.Instance.cameraConfig != CameraManager.CameraConfiguration.HMDCam)
+            return;
 	    if (OVRInput.GetDown(OVRInput.Button.SecondaryThumbstick))
         {
             Debug.Log("splat");
