@@ -5,49 +5,59 @@ using UnityEngine;
 //using CsvHelper
 
 public class WoodTrialController : MonoBehaviour {
-    public int TrialNumber {
-        get { return trialNum; }
-        set { updateTrial(value); }
-    }
+
 
     public GameObject block1;
     public GameObject block2;
     public Transform block1Origin;
     public Transform block2Origin;
-    public int trialNum;
+    public int TrialNum;
     private int lastTrialNum;
-    private List<WoodTrialDescription> trials = new List<WoodTrialDescription>();
+    private RandomizedList<WoodTrialDescription> trials;
 
     private void Start()
     {
-        trials.Add(new WoodTrialDescription("cmaple-sq", "cmaple-sq", "cmaple-sq", "cmaple-sq", 0.05f, "cmaple-sq", "cmaple-sq", "cmaple-sq", "cmaple-sq", 0.05f));
-        trials.Add(new WoodTrialDescription("walnut1-sq", "walnut1-sq", "walnut1-sq", "walnut1-sq", 0.05f, "walnut1-sq", "walnut1-sq", "walnut1-sq", "walnut1-sq", 0.05f));
-        trials.Add(new WoodTrialDescription("walnut2-sq", "walnut2-sq", "walnut2-sq", "walnut2-sq", 0.05f, "walnut2-sq", "walnut2-sq", "walnut2-sq", "walnut2-sq", 0.05f));
-        trials.Add(new WoodTrialDescription("padauk-sq", "padauk-sq", "padauk-sq", "padauk-sq", 0.05f, "padauk-sq", "padauk-sq", "padauk-sq", "padauk-sq", 0.05f));
-        trials.Add(new WoodTrialDescription("walnut1-sq", "cmaple-sq", "cmaple-sq", "cmaple-sq", 0.05f, "cmaple-sq", "cmaple-sq", "cmaple-sq", "cmaple-sq", 0.05f));
-        trials.Add(new WoodTrialDescription("walnut1-sq", "walnut2-sq", "walnut1-sq", "walnut1-sq", 0.05f, "walnut1-sq", "walnut1-sq", "walnut1-sq", "walnut1-sq", 0.05f));
-        trials.Add(new WoodTrialDescription("walnut2-sq", "walnut2-sq", "padauk-sq", "walnut2-sq", 0.05f, "walnut2-sq", "walnut2-sq", "walnut2-sq", "walnut2-sq", 0.05f));
-        trials.Add(new WoodTrialDescription("padauk-sq", "padauk-sq", "padauk-sq", "cmaple-sq", 0.05f, "padauk-sq", "padauk-sq", "padauk-sq", "padauk-sq", 0.05f));
+        List<WoodTrialDescription> trialsProtoype = new List<WoodTrialDescription>();
+        trialsProtoype.Add(new WoodTrialDescription("cmaple-sq", "cmaple-sq", "cmaple-sq", "cmaple-sq", 0.05f, "cmaple-sq", "cmaple-sq", "cmaple-sq", "cmaple-sq", 0.05f));
+        trialsProtoype.Add(new WoodTrialDescription("walnut1-sq", "walnut1-sq", "walnut1-sq", "walnut1-sq", 0.05f, "walnut1-sq", "walnut1-sq", "walnut1-sq", "walnut1-sq", 0.05f));
+        trialsProtoype.Add(new WoodTrialDescription("walnut2-sq", "walnut2-sq", "walnut2-sq", "walnut2-sq", 0.05f, "walnut2-sq", "walnut2-sq", "walnut2-sq", "walnut2-sq", 0.05f));
+        trialsProtoype.Add(new WoodTrialDescription("padauk-sq", "padauk-sq", "padauk-sq", "padauk-sq", 0.05f, "padauk-sq", "padauk-sq", "padauk-sq", "padauk-sq", 0.05f));
+        trialsProtoype.Add(new WoodTrialDescription("walnut1-sq", "cmaple-sq", "cmaple-sq", "cmaple-sq", 0.05f, "cmaple-sq", "cmaple-sq", "cmaple-sq", "cmaple-sq", 0.05f));
+        trialsProtoype.Add(new WoodTrialDescription("walnut1-sq", "walnut2-sq", "walnut1-sq", "walnut1-sq", 0.05f, "walnut1-sq", "walnut1-sq", "walnut1-sq", "walnut1-sq", 0.05f));
+        trialsProtoype.Add(new WoodTrialDescription("walnut2-sq", "walnut2-sq", "padauk-sq", "walnut2-sq", 0.05f, "walnut2-sq", "walnut2-sq", "walnut2-sq", "walnut2-sq", 0.05f));
+        trialsProtoype.Add(new WoodTrialDescription("padauk-sq", "padauk-sq", "padauk-sq", "cmaple-sq", 0.05f, "padauk-sq", "padauk-sq", "padauk-sq", "padauk-sq", 0.05f));
 
-        updateTrial(0);
-        //    block1.GetComponent<Renderer>().material.
+        trials = new RandomizedList<WoodTrialDescription>(trialsProtoype, GameController.Instance.ParticipantNumber);
+        UpdateTrial(0);
+        Debug.Log("Randomizing scanning trials for Participant " + GameController.Instance.ParticipantNumber);
+        Debug.Log(trials.GetIndicesAsString());
+        GameController.Instance.GetTrialTimeElapsed();
     }
 
     void Update()
     {
         // Switch wood models on blocks
-        if (Input.GetKeyDown(KeyCode.Equals))
-            trialNum = (lastTrialNum + 1) % trials.Count;
-        else if (Input.GetKeyDown(KeyCode.Minus))
-            trialNum = (lastTrialNum - 1 + trials.Count) % trials.Count;
-        if (trialNum != lastTrialNum)
-            updateTrial(trialNum);
-        lastTrialNum = trialNum;
+        WoodComparison comp = WoodComparison.None;
+        if (Input.GetKeyDown(KeyCode.Keypad4))
+        {
+            comp = WoodComparison.Same;
+            TrialNum = (lastTrialNum + 1) % trials.Count;
+        } else if (Input.GetKeyDown(KeyCode.Keypad5))
+        {
+            comp = WoodComparison.Different;
+            TrialNum = (lastTrialNum + 1) % trials.Count;
+        }
+        if (TrialNum != lastTrialNum)
+        {
+            UpdateTrial(TrialNum);
+            GameController.Instance.RecordTrialData(CameraManager.Instance.cameraConfig, comp, GameController.Instance.GetTrialTimeElapsed(), lastTrialNum);
+        }
+        lastTrialNum = TrialNum;
 
         // Switch block of focus
-        if (Input.GetKeyDown(KeyCode.Z))
+        if (OVRInput.GetDown(OVRInput.Button.SecondaryThumbstick))
         {
-            Debug.Log("Z");
+            Debug.Log("Swapped focus");
             if (CameraManager.Instance.Focus == block1Origin)
                 CameraManager.Instance.Focus = block2Origin;
             else
@@ -60,7 +70,7 @@ public class WoodTrialController : MonoBehaviour {
 
     // Use this for initialization
     // Need from resources and assign to tetures like "_DiffuseTex"
-    void updateTrial(int index)
+    void UpdateTrial(int index)
     {
         if (index >= trials.Count)
             index = 0;
@@ -122,6 +132,6 @@ public class WoodTrialController : MonoBehaviour {
 
     public enum WoodComparison
     {
-        Same,Different
+        None,Same,Different
     };
 }

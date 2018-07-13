@@ -49,7 +49,6 @@ public class ScanningTrialController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         ScanningShape shape = ScanningShape.None;
-        
        
         if (Input.GetKeyDown(KeyCode.Keypad7))
         {
@@ -65,19 +64,11 @@ public class ScanningTrialController : MonoBehaviour {
             shape = ScanningShape.Star;
             TrialNum = (lastTrialNum + 1) % trials.Count;
         }
-          
-        
-        //if (Input.GetKeyDown(KeyCode.Keypad7) {
-        //    GameController.Instance.RecordTrialData(CameraManager.Instance.cameraConfig, ScanningShape.Triangle, GameController.Instance.GetTrialTimeElapsed(), lastTrialNum);
-        //}
-
-
 
         if (TrialNum != lastTrialNum)
         {
             UpdateTrial(TrialNum);
             GameController.Instance.RecordTrialData(CameraManager.Instance.cameraConfig, shape, GameController.Instance.GetTrialTimeElapsed(), lastTrialNum);
-            //GameController.Instance.dataCsv[1][trials.IndexList[lastTrialNum]] = GameController.Instance.GetTrialTimeElapsed().TotalMilliseconds.ToString();
         }
             
         lastTrialNum = TrialNum;
