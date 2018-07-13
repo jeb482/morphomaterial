@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-public class TuningController : MonoBehaviour {
+public class TuningTrialController : MonoBehaviour
+{
 
     public GameObject object1;
     public GameObject object2;
+    
     public Transform object1Origin;
     public Transform object2Origin;
+    public JoystickOrbit JoystickController;
     public float TuningIncrement = 1;
     public int trialNum;
     private int lastTrialNum;
@@ -26,11 +29,19 @@ public class TuningController : MonoBehaviour {
 
     void Update()
     {
-        // Switch block of focus
-        if (Input.GetKeyDown(KeyCode.Z))
+
+
+        if (OVRInput.GetDown(OVRInput.Button.SecondaryThumbstick))
         {
-            Debug.Log("Z");
-            if (CameraManager.Instance.Focus.transform == object1Origin)
+            if (JoystickController != null)
+            {
+                Debug.Log("Swapped focus");
+                JoystickController.flipLongitude();
+                JoystickController.jitter(5);
+            }
+
+
+            if (CameraManager.Instance.Focus == object1Origin)
                 CameraManager.Instance.Focus = object2Origin;
             else
                 CameraManager.Instance.Focus = object1Origin;
@@ -47,11 +58,12 @@ public class TuningController : MonoBehaviour {
         {
             delta = OVRInput.Get(OVRInput.Axis2D.SecondaryThumbstick).y;
             // HMD CONTROLS
-        } else
+        }
+        else
         {
             if (Input.GetKey(KeyCode.UpArrow))
             {
-                delta = 1; 
+                delta = 1;
             }
             if (Input.GetKey(KeyCode.DownArrow))
             {
@@ -61,6 +73,11 @@ public class TuningController : MonoBehaviour {
 
         var mat = object2.GetComponent<Renderer>().material;
         mat.SetFloat("_Distance", System.Math.Min(System.Math.Max(mat.GetFloat("_Distance") + delta, minGrating), maxGrating));
-   
+
+    }
+
+    public class TuningTrialDescription
+    {
+
     }
 }
