@@ -2,7 +2,7 @@
 	Properties{
 		_Color("Main Color", Color) = (1,1,1,1)
 		_MainTex("Diffuse (RGB) Alpha (A)", 2D) = "white" {}
-		_SpecularTex("Specular (R) Gloss (G) Anisotropic Mask (B)", 2D) = "gray" {}
+		_SpecularTex("Specular (R) Gloss (G) Anisotropic Mask (B)", 2D) = "grey" {}
 		_BumpMap("Normal (Normal)", 2D) = "bump" {}
 		_AnisoTex("Anisotropic Direction (Normal)", 2D) = "bump" {}
 		_AnisoOffset("Anisotropic Highlight Offset", Range(-1,1)) = -0.2
@@ -54,9 +54,10 @@
 
 	sampler2D _MainTex, _SpecularTex, _BumpMap, _AnisoTex;
 
+	float4 _Color;
 	void surf(Input IN, inout SurfaceOutputAniso o)
 	{
-		fixed4 albedo = tex2D(_MainTex, IN.uv_MainTex);
+		fixed4 albedo = _Color * tex2D(_MainTex, IN.uv_MainTex);
 		o.Albedo = albedo.rgb;
 		o.Alpha = albedo.a;
 		o.Normal = UnpackNormal(tex2D(_BumpMap, IN.uv_MainTex));

@@ -14,7 +14,7 @@ public class ScanningTrialController : MonoBehaviour {
     {
         if (index >= trials.Count)
             index = 0;
-        trials[index].PopulateMaterial(scanningObject.GetComponent<Renderer>().material);
+        trials[index].PopulateMaterial(scanningObject.GetComponent<Renderer>().material, MyColors.Metals[Random.Range(0,MyColors.Metals.Length)]);
     }
     
     private class ScanningTrialDescription
@@ -25,10 +25,11 @@ public class ScanningTrialController : MonoBehaviour {
         {
             brushTexturePath = brushTexPath;
         }
-        public void PopulateMaterial(Material mat)
+        public void PopulateMaterial(Material mat, Color color)
         {
             var brushTex = Resources.Load("cylinder_maps\\" + brushTexturePath) as Texture2D;
             mat.SetTexture("_AnisoTex", brushTex);
+            mat.SetColor("_Color", color);
         }
 
     }
