@@ -145,7 +145,7 @@ public class FishtankCamera : MonoBehaviour {
     public void SetView(float longitude, float latitude, float zoom)
     {
         orbitRotation = Quaternion.AngleAxis(longitude* 180/(float)System.Math.PI, new Vector3(0, 1, 0)) * Quaternion.AngleAxis(latitude * 180 / (float)System.Math.PI, new Vector3(1,0,0));
-        viewScale = 2f * zoom;
+        viewScale = zoom;
     }
 
     void updateWindowData()
