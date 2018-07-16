@@ -50,61 +50,6 @@ public class FishtankCamera : MonoBehaviour {
         return GameController.Instance.realWorldToScreen.MultiplyPoint3x4(worldSpacePosition);
     }
 
-
-    public void orbitAndZoom()
-    {
-        return;
-        // Establish whether or not we are orbiting
-        if (Input.GetMouseButtonDown(0) && Input.GetKey(KeyCode.LeftAlt))
-        {
-            isOrbiting = true; lastMousePos = Input.mousePosition;
-            lastMousePos = Input.mousePosition;
-            lastPosition = transform.position;
-            lastRotation = transform.rotation;
-        }
-        else if (Input.GetMouseButtonUp(0))
-        {
-            isOrbiting = false;
-            return;
-        }
-
-        // Handle input for revolution.
-        if (isOrbiting && Focus != null)
-        {
-            Vector3 screenX = (cam.ScreenToWorldPoint(new Vector3(100, 0, 1)) - cam.ScreenToWorldPoint(new Vector3(0, 0, 1)));
-            screenX.y = 0;
-            screenX.Normalize();
-            Vector3 screenY = (cam.ScreenToWorldPoint(new Vector3(0, 100, 1)) - cam.ScreenToWorldPoint(new Vector3(0, 0, 1))).normalized;
-
-            Vector3 delta = Input.mousePosition - lastMousePos;
-            Debug.Log(delta);
-            Vector3 oldViewDir = transform.InverseTransformVector(new Vector3(0, 0, 1)).normalized;
-            transform.RotateAround(Focus.transform.position, screenX, RotationSensitivity * -delta.y);
-            Vector3 newViewDir = transform.InverseTransformVector(new Vector3(0, 0, 1)).normalized;
-
-            if (System.Math.Sign(newViewDir.x) != System.Math.Sign(oldViewDir.x) ||
-                System.Math.Sign(newViewDir.z) != System.Math.Sign(oldViewDir.z) &&
-                (oldViewDir.x != 0 || oldViewDir.z != 0))
-            {
-                transform.RotateAround(Focus.transform.position, screenX, RotationSensitivity * delta.y);
-            }
-            transform.RotateAround(Focus.transform.position, new Vector3(0, 1, 0), RotationSensitivity * delta.x);
-            lastMousePos = Input.mousePosition;
-            lastPosition = transform.position;
-            lastRotation = transform.rotation;
-        }
-
-        modifyScale();
-
-    }
-
-    public void modifyScale()
-    {
-        float zoomInput = Input.GetAxis("Mouse ScrollWheel");
-        //.3viewScale = System.Math.Min(validScaleRange.y, System.Math.Max(validScaleRange.x, viewScale + scaleSensitivity* zoomInput));
-    }
-
-
     // Update is called once per frame
     void Update () {
         updateWindowData();
