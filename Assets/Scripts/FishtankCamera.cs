@@ -45,7 +45,7 @@ public class FishtankCamera : MonoBehaviour {
         if (Focus == null)
             return;
         ScreenPlane.transform.position = Focus.position;
-        ScreenPlane.transform.rotation = GameController.Instance.realWorldToScreen.rotation;
+        ScreenPlane.transform.rotation = orbitRotation * Quaternion.Euler(-90, 0, 0);//Quaternion.LookRotation(orbitRotation, new Vector3(0,1,0)) * Quaternion.Euler(90,0,0);
     }
 
     /// <summary>
