@@ -80,7 +80,7 @@ public class CameraManager : MonoBehaviour {
         {
             case CameraConfiguration.FishTankCam:
                 //fishTankCam.orbitAndZoom();
-                fishTankCam.modifyScale();
+                //fishTankCam.modifyScale();
                 break;
             case CameraConfiguration.ViewportCam:
                 viewportCam.orbitAndZoom();

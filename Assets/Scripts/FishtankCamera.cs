@@ -7,6 +7,7 @@ public class FishtankCamera : MonoBehaviour {
     public GameObject leftEyeTracker;
     public GameObject rightEyeTracker; // If only one tracker, set same as left?
     public Transform Focus;
+    public GameObject ScreenPlane;
     Vector2 viewportSize = new Vector2(.475f, .3f);
     public Vector3 screenSpaceHeadPos;
     public float viewScale = 1;
@@ -39,6 +40,13 @@ public class FishtankCamera : MonoBehaviour {
     }
 
 
+    void UpdatePlane()
+    {
+        if (Focus == null)
+            return;
+        ScreenPlane.transform.position = Focus.position;
+        ScreenPlane.transform.rotation = GameController.Instance.realWorldToScreen.rotation;
+    }
 
     /// <summary>
     /// Returns the position of the eye in the coordinate space of the physical screen.
@@ -56,10 +64,14 @@ public class FishtankCamera : MonoBehaviour {
         if (leftEyeTracker == null)
             return;
         UpdateViewFrustumFocus();
+        UpdatePlane();
     }
 
     void UpdateViewFrustumFocus()
     {
+        if (Focus == null)
+            return;
+
         Vector2 screemDims = new Vector2(.475f, .3f);
 
         // Deal with offset from controller to eye
@@ -71,7 +83,6 @@ public class FishtankCamera : MonoBehaviour {
         screenSpaceHeadPos = getTransformedEyePose(leftEyeTracker.transform.TransformPoint(fishtankEyeOffset));
 
         // Align with virtual screen;
-        
         transform.position = Focus.position + orbitRotation * screenSpaceHeadPos;//*viewScale;//Focus.transform.TransformPoint(viewScale*screenSpaceHeadPos);//orbitRotation * screenSpaceHeadPos;//Focus.position+ orbitRotation*screenSpaceHeadPos;
         transform.rotation = orbitRotation;
 
@@ -84,7 +95,21 @@ public class FishtankCamera : MonoBehaviour {
         frustumPlanes.bottom = screenToNearScale*(-halfS*screenDims.y - screenSpaceHeadPos.y);
         frustumPlanes.left   = screenToNearScale*(-halfS*screenDims.x - screenSpaceHeadPos.x);
         frustumPlanes.zFar = zFar;
-        cam.projectionMatrix = Matrix4x4.Frustum(frustumPlanes);
+
+
+        // M construct a rotation matrix.
+        //Vector3 eyeZ = -screenSpaceHeadPos.normalized;
+        //Vector3 eyeX = Vector3.Cross(eyeZ, new Vector3(0, 1, 0));
+        //Vector3 eyeY = Vector3.Cross(eyeX, eyeZ);
+        //Matrix4x4 m = new Matrix4x4();
+        var M = Matrix4x4.LookAt(screenSpaceHeadPos, Vector3.zero, new Vector3(0, 1, 0));
+
+        var T = Matrix4x4.Translate(screenSpaceHeadPos);
+        //GameController.Instance.realWorldToScreen.rotation * Quaternion.Inverse(leftEyeTracker.t);
+
+
+        cam.projectionMatrix = Matrix4x4.Frustum(frustumPlanes);// * Matrix4x4.Rotate(Quaternion.Inverse(leftEyeTracker.transform.rotation)*GameController.Instance.realWorldToScreen.rotation).transpose; //* M.transpose * T;
+
     }
 
     public void SetView(float longitude, float latitude, float zoom)

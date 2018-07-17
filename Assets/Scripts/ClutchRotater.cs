@@ -15,7 +15,7 @@ public class ClutchRotater : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
         float gripAxis = OVRInput.Get(OVRInput.Axis1D.SecondaryHandTrigger);
         //Debug.Log(gripAxis);
         if (!clutchActive &&  gripAxis > 0.8)
