@@ -8,6 +8,7 @@ public class FishtankCamera : MonoBehaviour {
     public GameObject rightEyeTracker; // If only one tracker, set same as left?
     public Transform Focus;
     public GameObject ScreenPlane;
+    public float screenSpaceZOffset = 0.2f;
     Vector2 viewportSize = new Vector2(.475f, .3f);
     public Vector3 screenSpaceHeadPos;
     public float viewScale = 1;
@@ -22,15 +23,6 @@ public class FishtankCamera : MonoBehaviour {
 
     private Quaternion orbitRotation = Quaternion.identity;
     private Camera cam;
-    private Vector2 screenSpaceL;
-    private Vector2 screenSpaceH;
-    private Matrix4x4 virtualScreenToWorldMat = new Matrix4x4();
-    private bool isOrbiting = false;
-    private Vector3 lastMousePos;
-    private Vector3 lastPosition;
-    private Quaternion lastRotation;
-    Transform parentTransform;
-    
 
 
     // Use this for initialization
@@ -79,9 +71,10 @@ public class FishtankCamera : MonoBehaviour {
         if (GameController.Instance.fishtankEyeOffset != null)
             fishtankEyeOffset = GameController.Instance.fishtankEyeOffset;
 
-        // Get head pos in Screen Frame
+        // Get head pos in Screen Frames
         screenSpaceHeadPos = getTransformedEyePose(leftEyeTracker.transform.TransformPoint(fishtankEyeOffset));
-
+        screenSpaceHeadPos.z -= screenSpaceZOffset;
+        
         // Align with virtual screen;
         transform.position = Focus.position + orbitRotation * screenSpaceHeadPos;//*viewScale;//Focus.transform.TransformPoint(viewScale*screenSpaceHeadPos);//orbitRotation * screenSpaceHeadPos;//Focus.position+ orbitRotation*screenSpaceHeadPos;
         transform.rotation = orbitRotation;
@@ -107,7 +100,7 @@ public class FishtankCamera : MonoBehaviour {
         var T = Matrix4x4.Translate(screenSpaceHeadPos);
         //GameController.Instance.realWorldToScreen.rotation * Quaternion.Inverse(leftEyeTracker.t);
 
-
+   
         cam.projectionMatrix = Matrix4x4.Frustum(frustumPlanes);// * Matrix4x4.Rotate(Quaternion.Inverse(leftEyeTracker.transform.rotation)*GameController.Instance.realWorldToScreen.rotation).transpose; //* M.transpose * T;
 
     }
