@@ -550,6 +550,7 @@ MonoBehaviour:
   StartingLatitude: 0
   StartingLongitude: 45
   StartingZoom: 1
+  StartingFTZoom: 3
   RevolveSensitivity: 0.25
   zoomSensitivity: 0.05
   maxZoom: 5
@@ -1255,6 +1256,11 @@ Prefab:
         type: 2}
       propertyPath: screenDims.y
       value: 0.27
+      objectReference: {fileID: 0}
+    - target: {fileID: 114379169196047884, guid: a9a85640d4a2432489d923cf189d76ed,
+        type: 2}
+      propertyPath: viewScale
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a9a85640d4a2432489d923cf189d76ed, type: 2}

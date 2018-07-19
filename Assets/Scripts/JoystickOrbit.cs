@@ -7,6 +7,7 @@ public class JoystickOrbit : MonoBehaviour {
     public float StartingLatitude = 0;
     public float StartingLongitude = 0;
     public float StartingZoom = 1;
+    public float StartingFTZoom = 4;
     public float RevolveSensitivity = 0.25f;
     public float zoomSensitivity = 0.05f;
     public float maxZoom = 5;
@@ -17,6 +18,8 @@ public class JoystickOrbit : MonoBehaviour {
     private float zoom;
 
     private bool changed = true;
+
+
 
 	// Use this for initialization
 	void Start () {
@@ -44,8 +47,16 @@ public class JoystickOrbit : MonoBehaviour {
         longitude = (longitude + Random.Range(-Mathf.Abs(deg), Mathf.Abs(deg)) + 360) % 360;
     }
 
-	// Update is called once per frame
-	void Update () {
+    // Update is called once per frame
+    void Update() {
+        if (Input.GetKeyDown(KeyCode.Alpha2)) { 
+            zoom = StartingFTZoom;
+            flipLongitude();
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3)) { 
+            zoom = StartingZoom;
+            flipLongitude();
+        }
         Vector2 thumbstick = OVRInput.Get(OVRInput.Axis2D.SecondaryThumbstick);
 
 
