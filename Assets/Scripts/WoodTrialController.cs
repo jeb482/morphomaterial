@@ -70,7 +70,7 @@ public class WoodTrialController : MonoBehaviour {
         }
 
         UpdateTrial(0);
-        Debug.Log("Randomizing scanning trials for Participant " + GameController.Instance.ParticipantNumber);
+        Debug.Log("Randomizing comparison trials for Participant " + GameController.Instance.ParticipantNumber);
         Debug.Log(trials.GetIndicesAsString());
         GameController.Instance.GetTrialTimeElapsed();
     }
@@ -91,7 +91,7 @@ public class WoodTrialController : MonoBehaviour {
         if (TrialNum != lastTrialNum)
         {
             UpdateTrial(TrialNum);
-            GameController.Instance.RecordTrialData(CameraManager.Instance.cameraConfig, comp, GameController.Instance.GetTrialTimeElapsed(), lastTrialNum);
+            GameController.Instance.RecordTrialData(CameraManager.Instance.cameraConfig, comp, GameController.Instance.GetTrialTimeElapsed(), trials.IndexList[lastTrialNum]);
         }
         lastTrialNum = TrialNum;
 
@@ -100,7 +100,7 @@ public class WoodTrialController : MonoBehaviour {
         {
             if (joystickController != null)
             {
-                Debug.Log("Swapped focus");
+                //Debug.Log("Swapped focus");
                 joystickController.flipLongitude();
                 joystickController.jitter(5);
             }
