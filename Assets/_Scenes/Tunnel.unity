@@ -226,7 +226,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TrialNum: 0
-  doTraining: 1
+  doTraining: 0
   scanningObject: {fileID: 1016961357}
   TrialCounterText: {fileID: 518781281}
 --- !u!4 &90028029
@@ -264,7 +264,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 270153026}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.5, y: 1.57, z: -1.37}
+  m_LocalPosition: {x: 1.5, y: 1.52, z: -1.37}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1165523209}
@@ -1544,7 +1544,7 @@ Prefab:
     - target: {fileID: 114771861184430958, guid: 006e31c2ff788834a8e1b587e939b454,
         type: 2}
       propertyPath: ParticipantNumber
-      value: 1
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 006e31c2ff788834a8e1b587e939b454, type: 2}
@@ -1865,6 +1865,11 @@ Prefab:
     - target: {fileID: 23602588443811048, guid: 55ad92d63ef5d2248869ae9752a52f82,
         type: 2}
       propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 136548627974529400, guid: 55ad92d63ef5d2248869ae9752a52f82,
+        type: 2}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
