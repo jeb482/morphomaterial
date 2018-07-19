@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.UI;
 //using CsvHelper
 
 public class WoodTrialController : MonoBehaviour {
@@ -13,8 +14,15 @@ public class WoodTrialController : MonoBehaviour {
     public Transform block2Origin;
     public JoystickOrbit joystickController;
     public int TrialNum;
+    public Text TrialCounterText;
+    public bool doTraining;
+
     private int lastTrialNum;
     private RandomizedList<WoodTrialDescription> trials;
+
+    private List<WoodTrialDescription> trainingTrials;
+    private List<string> trainingTrialStrings;
+
 
     private void Start()
     {
@@ -29,6 +37,21 @@ public class WoodTrialController : MonoBehaviour {
         trialsProtoype.Add(new WoodTrialDescription("padauk-sq", "padauk-sq", "padauk-sq", "walnut2-sq", 0.05f, "padauk-sq", "padauk-sq", "padauk-sq", "padauk-sq", 0.05f));
 
         trials = new RandomizedList<WoodTrialDescription>(trialsProtoype, GameController.Instance.ParticipantNumber);
+
+        trainingTrials = new List<WoodTrialDescription>();
+        trainingTrials.Add(new WoodTrialDescription("training1", "training1", "training1", "training1", 0.05f, "training1", "training1", "training1", "training1", 0.05f));
+        trainingTrials.Add(new WoodTrialDescription("training1", "training1", "training1", "training1", 0.05f, "training1", "training1", "training2", "training1", 0.05f));
+        trainingTrials.Add(new WoodTrialDescription("training1", "training1", "training1", "training1", 0.05f, "training1", "training1", "training1", "training2", 0.05f));
+        trainingTrials.Add(new WoodTrialDescription("training1", "training1", "training1", "training1", 0.05f, "training2", "training1", "training1", "training1", 0.05f));
+        trainingTrials.Add(new WoodTrialDescription("training1", "training1", "training2", "training2", 0.05f, "training1", "training2", "training2", "training2", 0.05f));
+
+        trainingTrialStrings = new List<string>();
+        trainingTrialStrings.Add("These two blocks are identical. Take a look. (1/5)");
+        trainingTrialStrings.Add("There two blocks are different colors. (2/5)");
+        trainingTrialStrings.Add("The highlights on these blocks are different colors. (3/5)");
+        trainingTrialStrings.Add("The the highlights on these blocks move differently. (4/5)");
+        trainingTrialStrings.Add("The highlight on one block is softer than the other. (5/5)");
+
         UpdateTrial(0);
         Debug.Log("Randomizing scanning trials for Participant " + GameController.Instance.ParticipantNumber);
         Debug.Log(trials.GetIndicesAsString());
@@ -64,15 +87,12 @@ public class WoodTrialController : MonoBehaviour {
                 joystickController.flipLongitude();
                 joystickController.jitter(5);
             }
-                
-            
+     
             if (CameraManager.Instance.Focus == block1Origin)
                 CameraManager.Instance.Focus = block2Origin;
             else
                 CameraManager.Instance.Focus = block1Origin;
         }
-
-
     }
 
 
@@ -80,10 +100,25 @@ public class WoodTrialController : MonoBehaviour {
     // Need from resources and assign to tetures like "_DiffuseTex"
     void UpdateTrial(int index)
     {
+        if (doTraining)
+        {
+            if (index >= trainingTrials.Count)
+            {
+                TrialNum = 0;
+                lastTrialNum = 0;
+                doTraining = false;
+                UpdateTrial(0);
+                return;
+            }
+            trainingTrials[index].PopulateMaterials(block1.GetComponent<Renderer>().material, block2.GetComponent<Renderer>().material);
+            TrialCounterText.text = trainingTrialStrings[index];
+            return;
+        }
+
         if (index >= trials.Count)
             index = 0;
-
         trials[index].PopulateMaterials(block1.GetComponent<Renderer>().material, block2.GetComponent<Renderer>().material);
+        TrialCounterText.text = "Trial " + (index + 1) + " of " + trials.Count + ".";
     }
 
 
