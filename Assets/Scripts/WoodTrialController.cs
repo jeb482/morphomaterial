@@ -26,31 +26,48 @@ public class WoodTrialController : MonoBehaviour {
 
     private void Start()
     {
+
         List<WoodTrialDescription> trialsProtoype = new List<WoodTrialDescription>();
-        trialsProtoype.Add(new WoodTrialDescription("cmaple-sq", "cmaple-sq", "cmaple-sq", "cmaple-sq", 0.05f, "cmaple-sq", "cmaple-sq", "cmaple-sq", "cmaple-sq", 0.05f));
+        // RealMaple, RealWal1, RealWal2, RealPad
+        trialsProtoype.Add(new WoodTrialDescription("cmaple-sq", "cmaple-sq", "cmaple-sq", "cmaple-sq", 0.05f, "cmaple-sq", "cmaple-sq", "cmaple-sq", "cmaple-sq", 0.05f)); 
         trialsProtoype.Add(new WoodTrialDescription("walnut1-sq", "walnut1-sq", "walnut1-sq", "walnut1-sq", 0.05f, "walnut1-sq", "walnut1-sq", "walnut1-sq", "walnut1-sq", 0.05f));
         trialsProtoype.Add(new WoodTrialDescription("walnut2-sq", "walnut2-sq", "walnut2-sq", "walnut2-sq", 0.05f, "walnut2-sq", "walnut2-sq", "walnut2-sq", "walnut2-sq", 0.05f));
         trialsProtoype.Add(new WoodTrialDescription("padauk-sq", "padauk-sq", "padauk-sq", "padauk-sq", 0.05f, "padauk-sq", "padauk-sq", "padauk-sq", "padauk-sq", 0.05f));
+        // RealVOneoff: Maple-Wal1Axis, Wal1-Train2Hil, Wal2-PadDiff, Pad-Wal2Fiber  
         trialsProtoype.Add(new WoodTrialDescription("walnut1-sq", "cmaple-sq", "cmaple-sq", "cmaple-sq", 0.05f, "cmaple-sq", "cmaple-sq", "cmaple-sq", "cmaple-sq", 0.05f));
-        trialsProtoype.Add(new WoodTrialDescription("walnut1-sq", "walnut2-sq", "walnut1-sq", "walnut1-sq", 0.05f, "walnut1-sq", "walnut1-sq", "walnut1-sq", "walnut1-sq", 0.05f));
-        trialsProtoype.Add(new WoodTrialDescription("walnut2-sq", "walnut2-sq", "padauk-sq", "walnut2-sq", 0.05f, "walnut2-sq", "walnut2-sq", "walnut2-sq", "walnut2-sq", 0.05f));
+        trialsProtoype.Add(new WoodTrialDescription("walnut1-sq", "walnut1-sq", "walnut1-sq", "walnut1-sq", 0.05f, "walnut1-sq", "training2", "walnut1-sq", "walnut1-sq", 0.05f));
+        trialsProtoype.Add(new WoodTrialDescription("walnut2-sq", "walnut2-sq", "walnut2-sq", "walnut2-sq", 0.05f, "walnut2-sq", "walnut2-sq", "padauk-sq", "walnut2-sq", 0.05f));
         trialsProtoype.Add(new WoodTrialDescription("padauk-sq", "padauk-sq", "padauk-sq", "walnut2-sq", 0.05f, "padauk-sq", "padauk-sq", "padauk-sq", "padauk-sq", 0.05f));
+        // FrankensteinEqual
+        trialsProtoype.Add(new WoodTrialDescription("walnut1-sq", "cmaple-sq", "walnut2-sq", "padauk-sq", 0.05f, "walnut1-sq", "cmaple-sq", "walnut2-sq", "padauk-sq", 0.05f));
+        trialsProtoype.Add(new WoodTrialDescription("padauk-sq", "walnut1-sq", "cmaple-sq", "walnut2-sq", 0.05f, "padauk-sq", "walnut1-sq", "cmaple-sq", "walnut2-sq", 0.05f));
+        trialsProtoype.Add(new WoodTrialDescription("walnut2-sq", "padauk-sq", "walnut1-sq", "cmaple-sq", 0.05f, "walnut2-sq", "padauk-sq", "walnut1-sq", "cmaple-sq", 0.05f));
+        trialsProtoype.Add(new WoodTrialDescription("cmaple-sq", "walnut2-sq", "padauk-sq", "walnut1-sq", 0.05f, "cmaple-sq", "walnut2-sq", "padauk-sq", "walnut1-sq", 0.05f));
+        // FrankensteinDiff
+        trialsProtoype.Add(new WoodTrialDescription("walnut1-sq", "cmaple-sq", "walnut2-sq", "padauk-sq", 0.05f, "padauk", "cmaple-sq", "walnut2-sq", "padauk-sq", 0.05f));
+        trialsProtoype.Add(new WoodTrialDescription("padauk-sq", "walnut1-sq", "cmaple-sq", "walnut2-sq", 0.05f, "padauk-sq", "training2", "cmaple-sq", "walnut2-sq", 0.05f));
+        trialsProtoype.Add(new WoodTrialDescription("walnut2-sq", "padauk-sq", "walnut1-sq", "cmaple-sq", 0.05f, "walnut2-sq", "padauk-sq", "cmaple-sq", "cmaple-sq", 0.05f));
+        trialsProtoype.Add(new WoodTrialDescription("cmaple-sq", "walnut2-sq", "padauk-sq", "walnut1-sq", 0.05f, "cmaple-sq", "walnut2-sq", "padauk-sq", "cmaple-sq", 0.05f));
 
         trials = new RandomizedList<WoodTrialDescription>(trialsProtoype, GameController.Instance.ParticipantNumber);
 
-        trainingTrials = new List<WoodTrialDescription>();
-        trainingTrials.Add(new WoodTrialDescription("training1", "training1", "training1", "training1", 0.05f, "training1", "training1", "training1", "training1", 0.05f));
-        trainingTrials.Add(new WoodTrialDescription("training1", "training1", "training1", "training1", 0.05f, "training1", "training1", "training2", "training1", 0.05f));
-        trainingTrials.Add(new WoodTrialDescription("training1", "training1", "training1", "training1", 0.05f, "training1", "training1", "training1", "training2", 0.05f));
-        trainingTrials.Add(new WoodTrialDescription("training1", "training1", "training1", "training1", 0.05f, "training2", "training1", "training1", "training1", 0.05f));
-        trainingTrials.Add(new WoodTrialDescription("training1", "training1", "training2", "training2", 0.05f, "training1", "training2", "training2", "training2", 0.05f));
 
-        trainingTrialStrings = new List<string>();
-        trainingTrialStrings.Add("These two blocks are identical. Take a look. (1/5)");
-        trainingTrialStrings.Add("There two blocks are different colors. (2/5)");
-        trainingTrialStrings.Add("The highlights on these blocks are different colors. (3/5)");
-        trainingTrialStrings.Add("The the highlights on these blocks move differently. (4/5)");
-        trainingTrialStrings.Add("The highlight on one block is softer than the other. (5/5)");
+        if (doTraining)
+        {
+            trainingTrials = new List<WoodTrialDescription>();
+            trainingTrials.Add(new WoodTrialDescription("training1", "training1", "training1", "training1", 0.05f, "training1", "training1", "training1", "training1", 0.05f));
+            trainingTrials.Add(new WoodTrialDescription("training1", "training1", "training1", "training1", 0.05f, "training1", "training1", "training2", "training1", 0.05f));
+            trainingTrials.Add(new WoodTrialDescription("training1", "training1", "training1", "training1", 0.05f, "training1", "training1", "training1", "training2", 0.05f));
+            trainingTrials.Add(new WoodTrialDescription("training1", "training1", "training1", "training1", 0.05f, "training2", "training1", "training1", "training1", 0.05f));
+            trainingTrials.Add(new WoodTrialDescription("training1", "training1", "training2", "training2", 0.05f, "training1", "training2", "training2", "training2", 0.05f));
+
+            trainingTrialStrings = new List<string>();
+            trainingTrialStrings.Add("These two blocks are identical. Take a look. (1/5)");
+            trainingTrialStrings.Add("There two blocks are different colors. (2/5)");
+            trainingTrialStrings.Add("The highlights on these blocks are different colors. (3/5)");
+            trainingTrialStrings.Add("The the highlights on these blocks move differently. (4/5)");
+            trainingTrialStrings.Add("The highlight on one block is softer than the other. (5/5)");
+        }
 
         UpdateTrial(0);
         Debug.Log("Randomizing scanning trials for Participant " + GameController.Instance.ParticipantNumber);
