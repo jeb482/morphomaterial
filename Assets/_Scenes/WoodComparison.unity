@@ -684,7 +684,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxLatitude: 90
   StartingLatitude: 0
-  StartingLongitude: 0
+  StartingLongitude: 45
   StartingZoom: 1
   RevolveSensitivity: 0.25
   zoomSensitivity: 0.05
