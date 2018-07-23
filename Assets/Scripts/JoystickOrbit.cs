@@ -12,6 +12,7 @@ public class JoystickOrbit : MonoBehaviour {
     public float zoomSensitivity = 0.05f;
     public float maxZoom = 5;
     public float minZoom = 0.01f;
+    public bool allowZoom = true;
 
     private float latitude;
     private float longitude;
@@ -57,6 +58,7 @@ public class JoystickOrbit : MonoBehaviour {
             zoom = StartingZoom;
             flipLongitude();
         }
+
         Vector2 thumbstick = OVRInput.Get(OVRInput.Axis2D.SecondaryThumbstick);
 
 
@@ -71,12 +73,12 @@ public class JoystickOrbit : MonoBehaviour {
             changed = true;
         }
 
-        if (OVRInput.Get(OVRInput.Button.Two))
+        if (OVRInput.Get(OVRInput.Button.Two) && allowZoom)
         {
             zoom = System.Math.Max(minZoom, zoom - zoomSensitivity);
             changed = true;
         }
-        if (OVRInput.Get(OVRInput.Button.One))
+        if (OVRInput.Get(OVRInput.Button.One) && allowZoom)
         {
             zoom = System.Math.Min(maxZoom, zoom + zoomSensitivity);
             changed = true;

@@ -4,8 +4,9 @@ Shader "Custom/DiffractionShader" {
 	Properties {
 		_Color ("Color", Color) = (1,1,1,1)
 		_MainTex ("Albedo (RGB)", 2D) = "white" {}
-		_Glossiness ("Smoothness", Range(0,1)) = 0.5
-		_Metallic ("Metallic", Range(0,1)) = 0.0
+		_Glossiness("Smoothness", Range(0,1)) = 0.5
+		_Metallic("Metallic", Range(0,1)) = 0.0
+		_IrridescenceMultiplier("Irridescence Multiplier", Range(0,1)) = 1
 
 
 		// Adapted from https://www.alanzucconi.com/2017/07/15/cd-rom-shader-1/
@@ -32,6 +33,7 @@ Shader "Custom/DiffractionShader" {
 		float _Distance;
 		half _Glossiness;
 		half _Metallic;
+		float _IrridescenceMultiplier;
 		fixed4 _Color;
 		float4 worldTangent;
 
@@ -88,6 +90,7 @@ Shader "Custom/DiffractionShader" {
 			float3 V = viewDir;
 			float3 T = worldTangent;
 
+
 			float d = _Distance;
 			float cos_ThetaL = dot(L, T);
 			float cos_ThetaV = dot(V, T);
@@ -98,12 +101,12 @@ Shader "Custom/DiffractionShader" {
 
 			// Calculate Irridescent Reflection Color
 			fixed3 color = 0;
-			for (int n = 1; n <= 8; n++) {
+			for (int n = 1; n <= 16; n++) {
 				float wavelength = u * d / n;
 				color += spectral_zucconi6(wavelength);
 			}
 			color = saturate(color);
-			pbr.rgb += color;
+			pbr.rgb += color * _IrridescenceMultiplier;
 			return pbr;
 		}
 
