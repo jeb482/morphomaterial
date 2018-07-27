@@ -65,7 +65,7 @@ public class Teleporter : MonoBehaviour {
             Ray r = new Ray(transform.position, transform.TransformDirection(new Vector3(0,0,1)));
             RaycastHit hit;
             
-            if (Physics.Raycast(r, out hit, 16))
+            if (Physics.Raycast(r, out hit))
             {
                 splat.SetActive(true);
                 //Debug.Log(hit.point);

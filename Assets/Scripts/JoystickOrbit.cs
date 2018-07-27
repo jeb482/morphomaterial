@@ -13,8 +13,8 @@ public class JoystickOrbit : MonoBehaviour {
     public float maxZoom = 5;
     public float minZoom = 0.01f;
 
-    private float latitude;
-    private float longitude;
+    public float latitude;
+    public float longitude;
     private float zoom;
 
     private bool changed = true;

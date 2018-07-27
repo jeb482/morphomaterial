@@ -64,7 +64,6 @@ public class FishtankCamera : MonoBehaviour {
         if (Focus == null)
             return;
 
-        Vector2 screemDims = new Vector2(.475f, .3f);
 
         // Deal with offset from controller to eye
         Vector3 fishtankEyeOffset = new Vector3(0, 0, 0);
